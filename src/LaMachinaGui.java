@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 public class LaMachinaGui extends Application
 {
     private Stage primary;
-    private int q = 24;
+    public int q = 24;
     @Override
     public void start(Stage primaryStage) throws Exception
     {
