@@ -1,3 +1,6 @@
+
+
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,21 +17,21 @@ import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
 
-
 public class LaMachinaGui extends Application
 {
     private final int PADDING = 25;
     private final int WIDTH = 400, HEIGHT = 500;
     private Stage primary;
+
     private GridPane gridPane;
     private Scene scene;
     private MenuBar menuBar;
     private HBox firstRow;
     private VBox firstColumn, secondColumn;
 
+
     @Override
-    public void start(Stage primaryStage)
-            throws Exception
+    public void start(Stage primaryStage) throws Exception
     {
         this.primary = primaryStage;
         this.primary.setTitle("Adam is less of a Chode");
@@ -51,6 +54,7 @@ public class LaMachinaGui extends Application
         ((VBox) scene.getRoot()).getChildren().addAll(firstRow);
 
         this.primary.show();
+
     }
 
     public void createMenuBar()
@@ -188,7 +192,10 @@ public class LaMachinaGui extends Application
      */
     public static void main(String[] args)
     {
+
         launch(args);
+
     }
+
 
 }
