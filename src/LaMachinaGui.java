@@ -1,9 +1,7 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-/**
- * Created by Adam Fowles on 1/4/2016.
- */
+
 public class LaMachinaGui extends Application
 {
     private Stage primary;
@@ -12,7 +10,7 @@ public class LaMachinaGui extends Application
             throws Exception
     {
         this.primary = primaryStage;
-        this.primary.setTitle("Jons a Chode");
+        this.primary.setTitle("Adam is a Chode");
         this.primary.show();
     }
 
