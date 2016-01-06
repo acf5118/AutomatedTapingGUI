@@ -1,17 +1,14 @@
-
-
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
@@ -20,7 +17,8 @@ import javafx.scene.layout.VBox;
 public class LaMachinaGui extends Application
 {
     private final int PADDING = 25;
-    private final int WIDTH = 400, HEIGHT = 500;
+    private final int SPACING = 10;
+    private final int WIDTH = 600, HEIGHT = 400;
     private Stage primary;
 
     private GridPane gridPane;
@@ -37,6 +35,7 @@ public class LaMachinaGui extends Application
         this.primary.setTitle("Adam is less of a Chode");
         scene = new Scene(new VBox(), WIDTH, HEIGHT);
         scene.setFill(Color.OLDLACE);
+        scene.getStylesheets().addAll("Style.css");
         primary.setScene(scene);
 
         firstRow = new HBox();
@@ -80,49 +79,58 @@ public class LaMachinaGui extends Application
 
         Label lblCurrFile = new Label("Current file name");
         //label.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-        Button btnConnect = new Button("Connect \n to Machine");
+        Button btnConnect = new Button("Connect to Machine");
         btnConnect.setMaxWidth(Double.MAX_VALUE);
+        btnConnect.getStyleClass().add("glass-grey");
 
         Button btnZero = new Button("Zero");
-        btnZero.setMaxWidth(Double.MAX_VALUE);
+        btnZero.setMaxWidth(90);
 
-        // Will have images to go with thiss
-        Button btnLeft = new Button("Left");
-        Button btnRight = new Button("Right");
+        Button btnLeft = new Button();
+        btnLeft.setGraphic(new ImageView(
+                new Image(getClass().getResourceAsStream("Left Arrow.png"))));
+        Button btnRight = new Button();
+        btnRight.setGraphic(new ImageView(
+                new Image(getClass().getResourceAsStream("Right Arrow.png"))));
+        Button btnClockwise = new Button();
+        btnClockwise.setGraphic(new ImageView(
+                new Image(getClass().getResourceAsStream("Clockwise.png"))));
+        Button btnCounterClock = new Button();
+        btnCounterClock.setGraphic(new ImageView(
+                new Image(getClass().getResourceAsStream("Counterclockwise.png"))));
 
-        Button btnArrowLeft = new Button("Arrow Left");
-        Button btnArrowRight = new Button("Arrow Right");
+
+        Text lop = new Text("Length of Part: ?");
+        Text dop = new Text("Diameter of Part: ?");
+        Text wop = new Text("Width of Part: ?");
 
         firstColumn.setSpacing(10);
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
 
-        HBox r1 = new HBox();
-        r1.setSpacing(10);
-        r1.getChildren().addAll(lblCurrFile, btnConnect);
+        HBox r1 = new HBox(SPACING);
+        r1.getChildren().addAll(btnConnect,lblCurrFile);
 
-        HBox r2 = new HBox();
-        r2.setSpacing(10);
+        HBox r2 = new HBox(SPACING);
         r2.getChildren().add(btnZero);
         HBox.setHgrow(btnZero, Priority.ALWAYS);
         VBox.setVgrow(btnZero, Priority.ALWAYS);
 
-        HBox r3 = new HBox();
-        r3.setSpacing(10);
+        HBox r3 = new HBox(SPACING);
         r3.getChildren().addAll(btnLeft, btnRight);
 
-        HBox r4 = new HBox();
-        r4.setSpacing(10);
-        r4.getChildren().addAll(btnArrowLeft, btnArrowRight);
+        HBox r4 = new HBox(SPACING);
+        r4.getChildren().addAll(btnClockwise, btnCounterClock);
 
         HBox r5 = new HBox();
-
+        r5.setSpacing(10);
+        r5.getChildren().addAll(lop, dop, wop);
 
         VBox.setVgrow(r1, Priority.ALWAYS);
         VBox.setVgrow(r2, Priority.ALWAYS);
         VBox.setVgrow(r3, Priority.ALWAYS);
         VBox.setVgrow(r4, Priority.ALWAYS);
 
-        firstColumn.getChildren().addAll(r1, r2, r3, r4);
+        firstColumn.getChildren().addAll(r1, r2,r3, r4, r5);
 
         firstRow.getChildren().addAll(firstColumn);
     }
@@ -140,11 +148,35 @@ public class LaMachinaGui extends Application
         btnStart.setMaxWidth(Double.MAX_VALUE);
         btnEStop.setMaxWidth(Double.MAX_VALUE);
 
+        HBox.setHgrow(btnStart, Priority.ALWAYS);
+        HBox.setHgrow(btnEStop, Priority.ALWAYS);
 
-        HBox vbButtons = new HBox();
         secondColumn.setSpacing(10);
         secondColumn.setPadding(new Insets(10, 0, 10, 10));
-        secondColumn.getChildren().addAll(btnStart, btnEStop);
+
+        HBox row = new HBox();
+        row.getChildren().addAll(btnStart,btnEStop);
+
+        VBox c1 = new VBox();
+
+        HBox r1 = new HBox();
+        r1.setSpacing(10);
+        r1.getChildren().addAll(new Label("Input Length of Part: "), new TextField());
+        HBox r2 = new HBox();
+        r2.setSpacing(10);
+        r2.getChildren().addAll(new Label("Input Diameter of Part: "), new TextField());
+        HBox r3 = new HBox();
+        r3.setSpacing(10);
+        r3.getChildren().addAll(new Label("Input Tape Type of Part: "), new TextField("not this"));
+        HBox r4 = new HBox();
+        r4.setSpacing(10);
+        r4.getChildren().addAll(new Label("Input Tape Width: "), new TextField());
+        HBox r5 = new HBox();
+        r5.setSpacing(10);
+        r5.getChildren().addAll(new Label("Input Number of Tape Sections: "), new TextField());
+
+        c1.getChildren().addAll(new Label("Program New Part"), r1,r2,r3,r4,r5);
+        secondColumn.getChildren().addAll(row, c1);
 
         firstRow.getChildren().addAll(secondColumn);
     }
@@ -184,17 +216,13 @@ public class LaMachinaGui extends Application
 
     }
 
-
-
     /**
      * Starts application
      * @param args
      */
     public static void main(String[] args)
     {
-
         launch(args);
-
     }
 
 
