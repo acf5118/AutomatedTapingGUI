@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,7 +20,7 @@ public class LaMachinaGui extends Application
 {
     private final int PADDING = 25;
     private final int SPACING = 10;
-    private final int WIDTH = 600, HEIGHT = 400;
+    private final int WIDTH = 670, HEIGHT = 400;
     private Stage primary;
 
     private GridPane gridPane;
@@ -32,7 +34,7 @@ public class LaMachinaGui extends Application
     public void start(Stage primaryStage) throws Exception
     {
         this.primary = primaryStage;
-        this.primary.setTitle("Adam is less of a Chode");
+        this.primary.setTitle("Adam is even less of a Chode");
         scene = new Scene(new VBox(), WIDTH, HEIGHT);
         scene.setFill(Color.OLDLACE);
         scene.getStylesheets().addAll("Style.css");
@@ -44,7 +46,7 @@ public class LaMachinaGui extends Application
         createSecondColumn();
 
         // Make the rows fill horizontally
-        HBox.setHgrow(firstColumn, Priority.ALWAYS);
+        //HBox.setHgrow(firstColumn, Priority.ALWAYS);
         HBox.setHgrow(secondColumn, Priority.ALWAYS);
 
         // Make the column fill vertically
@@ -139,44 +141,94 @@ public class LaMachinaGui extends Application
     {
 
         secondColumn = new VBox();
-        Button btnStart = new Button("Start");
-        btnStart.setStyle("-fx-base: #41e051;");
-        Button btnEStop = new Button("Emergency Stop");
-        btnEStop.setStyle("-fx-base: #ef1515;");
+
+        Button btnStart = new Button();
+        btnStart.setGraphic(new ImageView(
+                new Image(getClass().getResourceAsStream("Play Green Button.png"))));
+        Button btnStop = new Button();
+        btnStop.setGraphic(new ImageView(
+                new Image(getClass().getResourceAsStream("Stop Red Button.png"))));
+
+        Button btnPause = new Button();
+        btnPause.setGraphic(new ImageView(
+                new Image(getClass().getResourceAsStream("Pause Blue Button.png"))));
+        //btnStop.setStyle("-fx-base: #ef1515;");
 
 
         btnStart.setMaxWidth(Double.MAX_VALUE);
-        btnEStop.setMaxWidth(Double.MAX_VALUE);
+        btnStop.setMaxWidth(Double.MAX_VALUE);
 
-        HBox.setHgrow(btnStart, Priority.ALWAYS);
-        HBox.setHgrow(btnEStop, Priority.ALWAYS);
 
         secondColumn.setSpacing(10);
-        secondColumn.setPadding(new Insets(10, 0, 10, 10));
+        secondColumn.setPadding(new Insets(10, 10, 10, 10));
 
-        HBox row = new HBox();
-        row.getChildren().addAll(btnStart,btnEStop);
+        HBox row = new HBox(SPACING);
+        row.getChildren().addAll(btnStart,btnStop, btnPause);
 
-        VBox c1 = new VBox();
+        VBox col = new VBox();
+        col.getStyleClass().add("bordered-titled-border");
 
-        HBox r1 = new HBox();
-        r1.setSpacing(10);
-        r1.getChildren().addAll(new Label("Input Length of Part: "), new TextField());
-        HBox r2 = new HBox();
-        r2.setSpacing(10);
-        r2.getChildren().addAll(new Label("Input Diameter of Part: "), new TextField());
-        HBox r3 = new HBox();
-        r3.setSpacing(10);
-        r3.getChildren().addAll(new Label("Input Tape Type of Part: "), new TextField("not this"));
-        HBox r4 = new HBox();
-        r4.setSpacing(10);
-        r4.getChildren().addAll(new Label("Input Tape Width: "), new TextField());
-        HBox r5 = new HBox();
-        r5.setSpacing(10);
-        r5.getChildren().addAll(new Label("Input Number of Tape Sections: "), new TextField());
 
-        c1.getChildren().addAll(new Label("Program New Part"), r1,r2,r3,r4,r5);
-        secondColumn.getChildren().addAll(row, c1);
+        /*
+        ObservableList<String> listOptions =
+                FXCollections.observableArrayList(
+                        "Input Length of Part:",
+                        "Input Diameter of Part:",
+                        "Input Tape Type of Part:",
+                        "Input Tape Width of Part:",
+                        "Input Number of Tape Sections:"
+        );
+        */
+        //ListView c1List = new ListView(listOptions);
+
+        Label lblPartLength = new Label("Input Length of Part: ");
+        TextField tfPartLength =  new TextField();
+
+        Label lblPartDiameter = new Label("Input Diameter of Part: ");
+        TextField tfPartDiameter =  new TextField();
+
+        Label lblPartTapeType = new Label("Input Tape Type of Part: ");
+        ObservableList<String> options =
+                FXCollections.observableArrayList(
+                        "Ad",
+                        "Num"
+                );
+        ComboBox cmboTapeType = new ComboBox(options);
+
+        Label lblPartTapeWidth = new Label("Input Tape Width of Part: ");
+        TextField tfPartTapeWidth =  new TextField();
+
+        Label lblTapeSections = new Label("Input Tape Sections of Part: ");
+        TextField tfTapeSections =  new TextField();
+
+        HBox r1 = new HBox(SPACING);
+        r1.getChildren().addAll(lblPartLength, tfPartLength);
+
+        HBox r2 = new HBox(SPACING);
+        r2.getChildren().addAll(lblPartDiameter, tfPartDiameter);
+
+        HBox r3 = new HBox(SPACING);
+        r3.getChildren().addAll(lblPartTapeType, cmboTapeType);
+
+        HBox r4 = new HBox(SPACING);
+        r4.getChildren().addAll(lblPartTapeWidth, tfPartTapeWidth);
+
+        col.getChildren().addAll(r1,r2,r3,r4);
+
+        HBox.setHgrow(col, Priority.ALWAYS);
+        VBox.setVgrow(col, Priority.ALWAYS);
+
+        VBox.setVgrow(r1, Priority.ALWAYS);
+        VBox.setVgrow(r2, Priority.ALWAYS);
+        VBox.setVgrow(r3, Priority.ALWAYS);
+        VBox.setVgrow(r4, Priority.ALWAYS);
+        HBox.setHgrow(r1, Priority.ALWAYS);
+
+
+
+
+
+        secondColumn.getChildren().addAll(row, col);
 
         firstRow.getChildren().addAll(secondColumn);
     }

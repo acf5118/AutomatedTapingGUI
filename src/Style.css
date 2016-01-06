@@ -1,5 +1,10 @@
 .root {
     -fx-font-size: 12px;
+    -fx-font-size: 12px;
+        -fx-font-weight: bold;
+        -fx-text-fill: #333333;
+        -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+;
 }
 
 .bevel-grey {
@@ -31,5 +36,32 @@
 .glass-grey:pressed {
     -fx-background-insets: 1 0 0 0,1 0 1 0, 1 0 1 0, 1 0 1 0;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+}
 
+.bordered-titled-title {
+  -fx-translate-x:  8;
+  -fx-translate-y: -10;
+  -fx-padding: 0 0 0 4;
+  -fx-background-color: -fx-background;
+}
+
+.bordered-titled-border {
+  -fx-content-display: top;
+  -fx-border-insets: 2 0 0 0;
+  -fx-border-color: -fx-text-box-border;
+  -fx-border-width: 2;
+}
+
+.bordered-titled-content {
+  -fx-padding: 18 5 5 5;
+}
+
+.raisedbox {
+    padding: 10px;
+    border: 1px solid #77aaff;
+    box-shadow:  -1px 1px #77aaff,
+         -2px 2px #77aaff,
+         -3px 3px #77aaff,
+         -4px 4px #77aaff,
+         -5px 5px #77aaff;
 }
