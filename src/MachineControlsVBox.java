@@ -11,37 +11,51 @@ import javafx.scene.layout.VBox;
  */
 public class MachineControlsVBox extends VBox
 {
+    private final int SPACING = 10;
+    /**
+     * Constructor for the Machine Control
+     * VBox.
+     */
     public MachineControlsVBox()
     {
+        // Call to VBox constructor
         super();
-        setPadding(new Insets(0,5,5,5));
+        // Inside offsets, none for the top, and 5 for
+        // the right, bottom and left
+        setPadding(new Insets(0,SPACING/2,SPACING/2,SPACING/2));
+        // See Style.css
         getStyleClass().add("bordered-titled-border");
+
         Label lblPlayback = new Label("Machine Controls");
         lblPlayback.getStyleClass().add("bordered-titled-title");
+
         getChildren().addAll(lblPlayback, createButtons());
     }
 
+    /**
+     * Creates the HBox container for
+     * the buttons: play, stop pause.
+     * @return - the HBox object.
+     */
     public HBox createButtons()
     {
-        HBox row = new HBox(10);
-        //row.setPadding(new Insets(5,5,5,5));
+        HBox row = new HBox(SPACING);
 
+        // Give each button an Image from Resources folder
         Button btnStart = new Button();
         btnStart.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("Play Green Button.png"))));
         Button btnStop = new Button();
         btnStop.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("Stop Red Button.png"))));
-
         Button btnPause = new Button();
         btnPause.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("Pause Blue Button.png"))));
 
-        // Can change the grey background if desired
+        // Can change the grey background if desired (as hex value)
         //btnStop.setStyle("-fx-base: #ef1515;");
-        btnStart.setMaxWidth(Double.MAX_VALUE);
-        btnStop.setMaxWidth(Double.MAX_VALUE);
 
+        // Add each button the the horizontal box
         row.getChildren().addAll(btnStart,btnStop, btnPause);
         return row;
     }

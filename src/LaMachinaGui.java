@@ -20,7 +20,7 @@ public class LaMachinaGui extends Application
 {
     private final int PADDING = 25;
     private final int SPACING = 10;
-    private final int WIDTH = 670, HEIGHT = 400;
+    private final int WIDTH = 650, HEIGHT = 500;
     private Stage primary;
 
     private GridPane gridPane;
@@ -141,94 +141,10 @@ public class LaMachinaGui extends Application
     {
 
         secondColumn = new VBox();
-
-        Button btnStart = new Button();
-        btnStart.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("Play Green Button.png"))));
-        Button btnStop = new Button();
-        btnStop.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("Stop Red Button.png"))));
-
-        Button btnPause = new Button();
-        btnPause.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("Pause Blue Button.png"))));
-        //btnStop.setStyle("-fx-base: #ef1515;");
-
-
-        btnStart.setMaxWidth(Double.MAX_VALUE);
-        btnStop.setMaxWidth(Double.MAX_VALUE);
-
-
         secondColumn.setSpacing(10);
         secondColumn.setPadding(new Insets(10, 10, 10, 10));
 
-        HBox row = new HBox(SPACING);
-        row.getChildren().addAll(btnStart,btnStop, btnPause);
-
-        VBox col = new VBox();
-        col.getStyleClass().add("bordered-titled-border");
-
-
-        /*
-        ObservableList<String> listOptions =
-                FXCollections.observableArrayList(
-                        "Input Length of Part:",
-                        "Input Diameter of Part:",
-                        "Input Tape Type of Part:",
-                        "Input Tape Width of Part:",
-                        "Input Number of Tape Sections:"
-        );
-        */
-        //ListView c1List = new ListView(listOptions);
-
-        Label lblPartLength = new Label("Input Length of Part: ");
-        TextField tfPartLength =  new TextField();
-
-        Label lblPartDiameter = new Label("Input Diameter of Part: ");
-        TextField tfPartDiameter =  new TextField();
-
-        Label lblPartTapeType = new Label("Input Tape Type of Part: ");
-        ObservableList<String> options =
-                FXCollections.observableArrayList(
-                        "Ad",
-                        "Num"
-                );
-        ComboBox cmboTapeType = new ComboBox(options);
-
-        Label lblPartTapeWidth = new Label("Input Tape Width of Part: ");
-        TextField tfPartTapeWidth =  new TextField();
-
-        Label lblTapeSections = new Label("Input Tape Sections of Part: ");
-        TextField tfTapeSections =  new TextField();
-
-        HBox r1 = new HBox(SPACING);
-        r1.getChildren().addAll(lblPartLength, tfPartLength);
-
-        HBox r2 = new HBox(SPACING);
-        r2.getChildren().addAll(lblPartDiameter, tfPartDiameter);
-
-        HBox r3 = new HBox(SPACING);
-        r3.getChildren().addAll(lblPartTapeType, cmboTapeType);
-
-        HBox r4 = new HBox(SPACING);
-        r4.getChildren().addAll(lblPartTapeWidth, tfPartTapeWidth);
-
-        col.getChildren().addAll(r1,r2,r3,r4);
-
-        HBox.setHgrow(col, Priority.ALWAYS);
-        VBox.setVgrow(col, Priority.ALWAYS);
-
-        VBox.setVgrow(r1, Priority.ALWAYS);
-        VBox.setVgrow(r2, Priority.ALWAYS);
-        VBox.setVgrow(r3, Priority.ALWAYS);
-        VBox.setVgrow(r4, Priority.ALWAYS);
-        HBox.setHgrow(r1, Priority.ALWAYS);
-
-
-
-
-
-        secondColumn.getChildren().addAll(row, col);
+        secondColumn.getChildren().addAll(new MachineControlsVBox(), new NewPartVBox());
 
         firstRow.getChildren().addAll(secondColumn);
     }
