@@ -1,6 +1,7 @@
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -11,7 +12,9 @@ import javafx.scene.layout.VBox;
  */
 public class MachineControlsVBox extends VBox
 {
+    // Constants
     private final int SPACING = 10;
+
     /**
      * Constructor for the Machine Control
      * VBox.
@@ -26,7 +29,8 @@ public class MachineControlsVBox extends VBox
         // See Style.css
         getStyleClass().add("bordered-titled-border");
 
-        Label lblPlayback = new Label("Machine Controls");
+        // Border label
+        Label lblPlayback = new Label("Playback");
         lblPlayback.getStyleClass().add("bordered-titled-title");
 
         getChildren().addAll(lblPlayback, createButtons());
@@ -43,12 +47,15 @@ public class MachineControlsVBox extends VBox
 
         // Give each button an Image from Resources folder
         Button btnStart = new Button();
+        btnStart.setTooltip(new Tooltip("Start the Machine"));
         btnStart.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("Play Green Button.png"))));
         Button btnStop = new Button();
+        btnStop.setTooltip(new Tooltip("Stop the Machine"));
         btnStop.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("Stop Red Button.png"))));
         Button btnPause = new Button();
+        btnPause.setTooltip(new Tooltip("Pause the Machine"));
         btnPause.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("Pause Blue Button.png"))));
 

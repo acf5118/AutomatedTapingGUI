@@ -20,7 +20,7 @@ public class LaMachinaGui extends Application
 {
     private final int PADDING = 25;
     private final int SPACING = 10;
-    private final int WIDTH = 650, HEIGHT = 500;
+    private final int WIDTH = 500, HEIGHT = 400;
     private Stage primary;
 
     private GridPane gridPane;
@@ -40,13 +40,13 @@ public class LaMachinaGui extends Application
         scene.getStylesheets().addAll("Style.css");
         primary.setScene(scene);
 
-        firstRow = new HBox();
+        firstRow = new HBox(20);
         createMenuBar();
         createFirstColumn();
         createSecondColumn();
 
         // Make the rows fill horizontally
-        //HBox.setHgrow(firstColumn, Priority.ALWAYS);
+        HBox.setHgrow(firstColumn, Priority.ALWAYS);
         HBox.setHgrow(secondColumn, Priority.ALWAYS);
 
         // Make the column fill vertically
@@ -77,36 +77,23 @@ public class LaMachinaGui extends Application
     {
         firstColumn = new VBox();
         firstColumn.setSpacing(10);
+
         //firstColumn.setStyle("-fx-background-color: #41e051;");
 
         Label lblCurrFile = new Label("Current file name");
         //label.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
         Button btnConnect = new Button("Connect to Machine");
         btnConnect.setMaxWidth(Double.MAX_VALUE);
-        btnConnect.getStyleClass().add("glass-grey");
+        //btnConnect.getStyleClass().add("glass-grey");
 
         Button btnZero = new Button("Zero");
         btnZero.setMaxWidth(90);
 
-        Button btnLeft = new Button();
-        btnLeft.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("Left Arrow.png"))));
-        Button btnRight = new Button();
-        btnRight.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("Right Arrow.png"))));
-        Button btnClockwise = new Button();
-        btnClockwise.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("Clockwise.png"))));
-        Button btnCounterClock = new Button();
-        btnCounterClock.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("Counterclockwise.png"))));
 
+        Text lop = new Text("Length of Part: __");
+        Text dop = new Text("Diameter of Part: __");
+        Text wop = new Text("Width of Part: __");
 
-        Text lop = new Text("Length of Part: ?");
-        Text dop = new Text("Diameter of Part: ?");
-        Text wop = new Text("Width of Part: ?");
-
-        firstColumn.setSpacing(10);
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
 
         HBox r1 = new HBox(SPACING);
@@ -117,22 +104,17 @@ public class LaMachinaGui extends Application
         HBox.setHgrow(btnZero, Priority.ALWAYS);
         VBox.setVgrow(btnZero, Priority.ALWAYS);
 
-        HBox r3 = new HBox(SPACING);
-        r3.getChildren().addAll(btnLeft, btnRight);
-
-        HBox r4 = new HBox(SPACING);
-        r4.getChildren().addAll(btnClockwise, btnCounterClock);
-
+        /*
         HBox r5 = new HBox();
         r5.setSpacing(10);
         r5.getChildren().addAll(lop, dop, wop);
+        */
 
         VBox.setVgrow(r1, Priority.ALWAYS);
         VBox.setVgrow(r2, Priority.ALWAYS);
-        VBox.setVgrow(r3, Priority.ALWAYS);
-        VBox.setVgrow(r4, Priority.ALWAYS);
 
-        firstColumn.getChildren().addAll(r1, r2,r3, r4, r5);
+
+        firstColumn.getChildren().addAll(btnConnect,lblCurrFile, r2, new MovementControlsVBox(), lop,dop,wop);
 
         firstRow.getChildren().addAll(firstColumn);
     }
@@ -143,8 +125,7 @@ public class LaMachinaGui extends Application
         secondColumn = new VBox();
         secondColumn.setSpacing(10);
         secondColumn.setPadding(new Insets(10, 10, 10, 10));
-
-        secondColumn.getChildren().addAll(new MachineControlsVBox(), new NewPartVBox());
+        secondColumn.getChildren().addAll(new MachineControlsVBox(), new PartCreationVBox());
 
         firstRow.getChildren().addAll(secondColumn);
     }
