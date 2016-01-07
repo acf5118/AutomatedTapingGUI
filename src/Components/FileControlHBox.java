@@ -1,5 +1,7 @@
 package Components;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -45,7 +47,9 @@ public class FileControlHBox
         btnSave.setTooltip(new Tooltip("Save Contents"));
         btnSave.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("../Save.png"))));
+        btnSave.setOnAction(new SaveEventHandler());
         Button btnErase = new Button();
+        btnErase.setOnAction(new EraseEventHandler());
         btnErase.setTooltip(new Tooltip("Clear Contents"));
         btnErase.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("../Eraser.png"))));
@@ -55,5 +59,26 @@ public class FileControlHBox
 
         getChildren().addAll(btnSave,btnErase);//,spacer,lblUnits,comboUnits);
 
+    }
+
+    private class SaveEventHandler
+            implements EventHandler<ActionEvent>
+    {
+        @Override
+        public void handle(ActionEvent event)
+        {
+            System.out.println("Saved");
+        }
+    }
+
+    private class EraseEventHandler
+            implements EventHandler<ActionEvent>
+    {
+
+        @Override
+        public void handle(ActionEvent event)
+        {
+            System.out.println("Cleared");
+        }
     }
 }

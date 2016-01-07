@@ -16,15 +16,15 @@ public class MovementControlsVBox
         extends VBox implements ComponentInterface
 {
     /**
-     *
+     * Constructor
      */
     public MovementControlsVBox()
     {
         super();
         getStyleClass().add("bordered-titled-border");
-        // Inside offsets, none for the top, and 5 for
-        // the right, bottom and left
-        setPadding(new Insets(0,20,10,20));
+        // Inside offsets, none for the top, and half spacing for
+        // the right and left, full spacing on bottom
+        setPadding(new Insets(0,SPACING/2,SPACING,SPACING/2));
         createComponents();
     }
     public void createComponents()
