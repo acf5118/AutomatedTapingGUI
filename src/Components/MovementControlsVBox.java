@@ -12,10 +12,12 @@ import javafx.scene.layout.*;
 /**
  * Created by Adam Fowles on 1/7/2016.
  */
-public class MovementControlsVBox extends VBox
+public class MovementControlsVBox
+        extends VBox implements ComponentInterface
 {
-    private final int SPACING = 10;
-
+    /**
+     *
+     */
     public MovementControlsVBox()
     {
         super();
@@ -23,8 +25,6 @@ public class MovementControlsVBox extends VBox
         // Inside offsets, none for the top, and 5 for
         // the right, bottom and left
         setPadding(new Insets(0,20,10,20));
-        VBox.setVgrow(this, Priority.ALWAYS);
-        //HBox.setHgrow(this, Priority.ALWAYS);
         createComponents();
     }
     public void createComponents()

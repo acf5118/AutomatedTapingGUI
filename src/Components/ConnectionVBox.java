@@ -12,19 +12,27 @@ import javafx.scene.layout.VBox;
 /**
  * Created by Adam Fowles on 1/7/2016.
  */
-public class ConnectionVBox extends VBox
+public class ConnectionVBox
+        extends VBox implements ComponentInterface
 {
-    private final int SPACING = 10;
 
+    /**
+     * Constructor
+     */
     public ConnectionVBox()
     {
         super();
+        // Inside offsets, none for the top, and half spacing for
+        // the right, bottom and left
         setPadding(new Insets(0,SPACING/2,SPACING/2,SPACING/2));
         getStyleClass().add("bordered-titled-border");
         createComponents();
-
     }
 
+    /**
+     * Creates the inner components and
+     * adds them to this VBox.
+     */
     public void createComponents()
     {
         VBox col = new VBox(SPACING);

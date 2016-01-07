@@ -12,11 +12,11 @@ import javafx.scene.layout.VBox;
 /**
  * Created by Adam Fowles on 1/6/2016.
  */
-public class PartCreationVBox extends VBox
+public class PartCreationVBox
+        extends VBox implements ComponentInterface
 {
     // Constants
-    private final int SPACING = 10;
-    private final int TFSIZE = 100;
+    private final int TF_SIZE = 100;
 
     /**
      * Constructor for this part of
@@ -48,13 +48,13 @@ public class PartCreationVBox extends VBox
         TextField tfPartLength =  new TextField();
         tfPartLength.setPromptText("Enter Length");
         // sets the size of the text field
-        tfPartLength.setPrefWidth(TFSIZE);
+        tfPartLength.setPrefWidth(TF_SIZE);
 
         // Second items
         Label lblPartDiameter = new Label("Diameter of Part:");
         TextField tfPartDiameter =  new TextField();
         tfPartDiameter.setPromptText("Enter Diameter");
-        tfPartDiameter.setPrefWidth(TFSIZE);
+        tfPartDiameter.setPrefWidth(TF_SIZE);
 
         // Third items
         Label lblPartTapeType = new Label("Tape Type of Part:");
@@ -65,31 +65,28 @@ public class PartCreationVBox extends VBox
                 );
         ComboBox<String> comboTapeType = new ComboBox(options);
         comboTapeType.setValue(options.get(0));
-        comboTapeType.setPrefWidth(TFSIZE);
+        comboTapeType.setPrefWidth(TF_SIZE);
 
         // Fourth items
         Label lblPartTapeWidth = new Label("Tape Width:");
         TextField tfPartTapeWidth =  new TextField();
         tfPartTapeWidth.setPromptText("Enter Width");
-        tfPartTapeWidth.setPrefWidth(TFSIZE);
+        tfPartTapeWidth.setPrefWidth(TF_SIZE);
 
         // Fifth items
         Label lblTapeSections = new Label("Number of Tape Sections:");
         TextField tfTapeSections =  new TextField();
         tfTapeSections.setPromptText("Enter Sections");
-        tfTapeSections.setPrefWidth(TFSIZE);
+        tfTapeSections.setPrefWidth(TF_SIZE);
 
         // Sixth items
         Label lblStartEnd = new Label("Start and End of First Section:");
         TextField tfStart = new TextField();
         tfStart.setPromptText("Start");
-        tfStart.setPrefWidth(TFSIZE/2 - 1);
+        tfStart.setPrefWidth(TF_SIZE/2 - 1);
         TextField tfEnd = new TextField();
         tfEnd.setPromptText("End");
-        tfEnd.setPrefWidth(TFSIZE/2 - 1);
-
-        // Seventh items
-
+        tfEnd.setPrefWidth(TF_SIZE/2 - 1);
 
         // Spacers separating text field from labels
         Region s1 = new Region(),s2 = new Region(),

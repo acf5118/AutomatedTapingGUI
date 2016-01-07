@@ -10,18 +10,16 @@ import javafx.scene.layout.HBox;
 /**
  * Created by Adam Fowles on 1/7/2016.
  */
-public class FileControlHBox extends HBox
+public class FileControlHBox
+        extends HBox implements ComponentInterface
 {
-    // Constants
-    private final int SPACING = 5;
-
     /**
      * Constructor
      */
     public FileControlHBox()
     {
         super();
-        setSpacing(SPACING);
+        setSpacing(SPACING/2);
         createComponents();
     }
 

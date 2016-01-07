@@ -12,11 +12,9 @@ import javafx.scene.layout.VBox;
 /**
  * Created by Adam Fowles on 1/6/2016.
  */
-public class MachineControlsVBox extends VBox
+public class MachineControlsVBox
+        extends VBox implements ComponentInterface
 {
-    // Constants
-    private final int SPACING = 10;
-
     /**
      * Constructor for the Machine Control
      * VBox.
@@ -25,17 +23,12 @@ public class MachineControlsVBox extends VBox
     {
         // Call to VBox constructor
         super();
-        // Inside offsets, none for the top, and 5 for
+        // Inside offsets, none for the top, and half spacing for
         // the right, bottom and left
         setPadding(new Insets(0,SPACING/2,SPACING/2,SPACING/2));
         // See Style.css
         getStyleClass().add("bordered-titled-border");
-
-        // Border label
-        Label lblPlayback = new Label("Playback");
-        lblPlayback.getStyleClass().add("bordered-titled-title");
-
-        getChildren().addAll(lblPlayback, createButtons());
+        createComponents();
     }
 
     /**
@@ -43,8 +36,12 @@ public class MachineControlsVBox extends VBox
      * the buttons: play, stop pause.
      * @return - the HBox object.
      */
-    public HBox createButtons()
+    public void createComponents()
     {
+        // Border label
+        Label lblPlayback = new Label("Playback");
+        lblPlayback.getStyleClass().add("bordered-titled-title");
+
         HBox row = new HBox(SPACING);
 
         // Give each button an Image from Resources folder
@@ -66,6 +63,6 @@ public class MachineControlsVBox extends VBox
 
         // Add each button the the horizontal box
         row.getChildren().addAll(btnStart,btnStop, btnPause);
-        return row;
+        getChildren().addAll(lblPlayback, row);
     }
 }
