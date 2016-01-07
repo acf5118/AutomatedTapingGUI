@@ -1,15 +1,10 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
+package Components;
+
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 
 
 /**
@@ -51,11 +46,11 @@ public class FileControlHBox extends HBox
         Button btnSave = new Button();
         btnSave.setTooltip(new Tooltip("Save Contents"));
         btnSave.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("Save.png"))));
+                new Image(getClass().getResourceAsStream("../Save.png"))));
         Button btnErase = new Button();
         btnErase.setTooltip(new Tooltip("Clear Contents"));
         btnErase.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("Eraser.png"))));
+                new Image(getClass().getResourceAsStream("../Eraser.png"))));
 
         //Region spacer = new Region();
         //HBox.setHgrow(spacer, Priority.ALWAYS);

@@ -1,6 +1,6 @@
+package Main;
+
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,12 +15,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
+import Components.*;
 
 public class LaMachinaGui extends Application
 {
     private final int PADDING = 25;
     private final int SPACING = 10;
-    private final int WIDTH = 500, HEIGHT = 400;
+    private final int WIDTH = 515, HEIGHT = 425;
     private Stage primary;
 
     private GridPane gridPane;
@@ -80,14 +81,6 @@ public class LaMachinaGui extends Application
 
         //firstColumn.setStyle("-fx-background-color: #41e051;");
 
-        Label lblCurrFile = new Label("Current file name");
-        //label.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-        Button btnConnect = new Button("Connect to Machine");
-        btnConnect.setMaxWidth(Double.MAX_VALUE);
-        //btnConnect.getStyleClass().add("glass-grey");
-
-        Button btnZero = new Button("Zero");
-        btnZero.setMaxWidth(90);
 
 
         Text lop = new Text("Length of Part: __");
@@ -96,13 +89,10 @@ public class LaMachinaGui extends Application
 
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
 
-        HBox r1 = new HBox(SPACING);
-        r1.getChildren().addAll(btnConnect,lblCurrFile);
-
         HBox r2 = new HBox(SPACING);
-        r2.getChildren().add(btnZero);
-        HBox.setHgrow(btnZero, Priority.ALWAYS);
-        VBox.setVgrow(btnZero, Priority.ALWAYS);
+        //r2.getChildren().add(btnZero);
+        //HBox.setHgrow(btnZero, Priority.ALWAYS);
+        //VBox.setVgrow(btnZero, Priority.ALWAYS);
 
         /*
         HBox r5 = new HBox();
@@ -110,11 +100,11 @@ public class LaMachinaGui extends Application
         r5.getChildren().addAll(lop, dop, wop);
         */
 
-        VBox.setVgrow(r1, Priority.ALWAYS);
+        //VBox.setVgrow(r1, Priority.ALWAYS);
         VBox.setVgrow(r2, Priority.ALWAYS);
 
 
-        firstColumn.getChildren().addAll(btnConnect,lblCurrFile, r2, new MovementControlsVBox(), lop,dop,wop);
+        firstColumn.getChildren().addAll(new ConnectionVBox(), r2, new MovementControlsVBox(), lop,dop,wop);
 
         firstRow.getChildren().addAll(firstColumn);
     }
