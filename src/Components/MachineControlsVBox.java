@@ -48,15 +48,15 @@ public class MachineControlsVBox
         Button btnStart = new Button();
         btnStart.setTooltip(new Tooltip("Start the Machine"));
         btnStart.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../Play Green Button.png"))));
+                new Image(getClass().getResourceAsStream("/Resources/Play Green Button.png"))));
         Button btnStop = new Button();
         btnStop.setTooltip(new Tooltip("Stop the Machine"));
         btnStop.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../Stop Red Button.png"))));
+                new Image(getClass().getResourceAsStream("/Resources/Stop Red Button.png"))));
         Button btnPause = new Button();
         btnPause.setTooltip(new Tooltip("Pause the Machine"));
         btnPause.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../Pause Blue Button.png"))));
+                new Image(getClass().getResourceAsStream("/Resources/Pause Blue Button.png"))));
 
         // Can change the grey background if desired (as hex value)
         //btnStop.setStyle("-fx-base: #ef1515;");

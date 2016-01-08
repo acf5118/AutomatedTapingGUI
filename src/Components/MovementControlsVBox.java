@@ -38,16 +38,16 @@ public class MovementControlsVBox
 
         Button btnLeft = new Button();
         btnLeft.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../Left Arrow.png"))));
+                new Image(getClass().getResourceAsStream("/Resources/Left Arrow.png"))));
         Button btnRight = new Button();
         btnRight.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../Right Arrow.png"))));
+                new Image(getClass().getResourceAsStream("/Resources/Right Arrow.png"))));
         Button btnClockwise = new Button();
         btnClockwise.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../Clockwise.png"))));
+                new Image(getClass().getResourceAsStream("/Resources/Clockwise.png"))));
         Button btnCounterClock = new Button();
         btnCounterClock.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../Counterclockwise.png"))));
+                new Image(getClass().getResourceAsStream("/Resources/Counterclockwise.png"))));
 
         VBox col = new VBox(SPACING);
         GridPane gpMovement = new GridPane();

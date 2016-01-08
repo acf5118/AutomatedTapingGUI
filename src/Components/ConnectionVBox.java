@@ -49,7 +49,7 @@ public class ConnectionVBox
         //btnConnect.getStyleClass().add("glass-grey");
 
         ImageView ivConnection = new ImageView(
-                new Image(getClass().getResourceAsStream("../Not Connected.png")));
+                new Image(getClass().getResourceAsStream("/Resources/Not Connected.png")));
 
         HBox r1 = new HBox(SPACING);
         r1.getChildren().addAll(lblConnection, ivConnection);

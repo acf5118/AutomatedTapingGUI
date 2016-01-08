@@ -53,13 +53,13 @@ public class FileControlHBox
         Button btnSave = new Button();
         btnSave.setTooltip(new Tooltip("Save Contents"));
         btnSave.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../Save.png"))));
+                new Image(getClass().getResourceAsStream("/Resources/Save.png"))));
         btnSave.setOnAction(new SaveEventHandler());
         Button btnErase = new Button();
         btnErase.setOnAction(new EraseEventHandler());
         btnErase.setTooltip(new Tooltip("Clear Contents"));
         btnErase.setGraphic(new ImageView(
-                new Image(getClass().getResourceAsStream("../Eraser.png"))));
+                new Image(getClass().getResourceAsStream("/Resources/Eraser.png"))));
 
         //Region spacer = new Region();
         //HBox.setHgrow(spacer, Priority.ALWAYS);
