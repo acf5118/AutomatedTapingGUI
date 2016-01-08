@@ -16,6 +16,8 @@ public class ConnectionVBox
         extends VBox implements ComponentInterface
 {
 
+
+
     /**
      * Constructor
      */

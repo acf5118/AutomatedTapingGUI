@@ -9,6 +9,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
+
 /**
  * Created by Adam Fowles on 1/6/2016.
  */
@@ -17,6 +19,7 @@ public class PartCreationVBox
 {
     // Constants
     private final int TF_SIZE = 100;
+    private ArrayList<TextField> fields;
 
     /**
      * Constructor for this part of
@@ -30,6 +33,7 @@ public class PartCreationVBox
         // Inside offsets, none for the top, and 5 for
         // the right, bottom and left
         setPadding(new Insets(0,5,5,5));
+        fields = new ArrayList<TextField>();
         createComponents();
     }
 
@@ -80,11 +84,13 @@ public class PartCreationVBox
         tfTapeSections.setPrefWidth(TF_SIZE);
 
         // Sixth items
-        Label lblStartEnd = new Label("Start and End of First Section:");
+        Label lblStartEnd = new Label("Start and End of Sections:");
         TextField tfStart = new TextField();
+        tfStart.setTooltip(new Tooltip("Comma separate values \nfor multiple sections"));
         tfStart.setPromptText("Start");
         tfStart.setPrefWidth(TF_SIZE/2 - 1);
         TextField tfEnd = new TextField();
+        tfEnd.setTooltip(new Tooltip("Comma separate values \nfor multiple sections"));
         tfEnd.setPromptText("End");
         tfEnd.setPrefWidth(TF_SIZE/2 - 1);
 
@@ -116,6 +122,12 @@ public class PartCreationVBox
         HBox r6 = new HBox(SPACING/5);
         r6.getChildren().addAll(lblStartEnd, s6, tfStart, tfEnd);
 
+        fields.add(tfPartLength);
+        fields.add(tfPartDiameter);
+        fields.add(tfPartTapeWidth);
+        fields.add(tfTapeSections);
+        fields.add(tfStart);
+        fields.add(tfEnd);
 
         // Add a separator between rows 6 and 7
         Separator separator = new Separator();
@@ -123,7 +135,7 @@ public class PartCreationVBox
 
         // add all the components to this VBox
         getChildren().addAll(lblBorderTitle,r1,r2,r3,r4,r5,r6,
-                separator, new FileControlHBox());
+                separator, new FileControlHBox(this));
 
         // Make sure everything expands properly
         HBox.setHgrow(this, Priority.ALWAYS);
@@ -137,4 +149,6 @@ public class PartCreationVBox
         VBox.setVgrow(r6, Priority.ALWAYS);
 
     }
+
+    public ArrayList<TextField> getFields(){return fields;}
 }

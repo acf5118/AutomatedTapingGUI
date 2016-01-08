@@ -2,7 +2,10 @@ package Components;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,13 +18,17 @@ import javafx.scene.layout.HBox;
 public class FileControlHBox
         extends HBox implements ComponentInterface
 {
+    private PartCreationVBox parent;
     /**
      * Constructor
+     * @param parent - takes in the parent so it
+     *               can save and erase data
      */
-    public FileControlHBox()
+    public FileControlHBox(PartCreationVBox parent)
     {
         super();
-        setSpacing(SPACING/2);
+        this.parent = parent;
+        setSpacing(SPACING / 2);
         createComponents();
     }
 
@@ -71,13 +78,25 @@ public class FileControlHBox
         }
     }
 
+    /**
+     * Event Handler Class for the Clear button
+     * (looks like an eraser).
+     */
     private class EraseEventHandler
             implements EventHandler<ActionEvent>
     {
-
+        /**
+         * Loops through all the text fields
+         * and clears them.
+         * @param event - unused
+         */
         @Override
         public void handle(ActionEvent event)
         {
+            for (TextField tf: parent.getFields())
+            {
+                tf.clear();
+            }
             System.out.println("Cleared");
         }
     }
