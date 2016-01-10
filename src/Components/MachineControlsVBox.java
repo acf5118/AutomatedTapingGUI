@@ -65,4 +65,6 @@ public class MachineControlsVBox
         row.getChildren().addAll(btnStart,btnStop, btnPause);
         getChildren().addAll(lblPlayback, row);
     }
+
+
 }

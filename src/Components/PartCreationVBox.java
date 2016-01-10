@@ -18,7 +18,6 @@ public class PartCreationVBox
         extends VBox implements ComponentInterface
 {
     // Constants
-    private final int TF_SIZE = 100;
     private ArrayList<TextField> fields;
 
     /**

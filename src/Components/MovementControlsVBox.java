@@ -1,5 +1,8 @@
 package Components;
 
+import Serial.ArduinoSerial;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,16 +18,18 @@ import javafx.scene.layout.*;
 public class MovementControlsVBox
         extends VBox implements ComponentInterface
 {
+    private ArduinoSerial arduinoSerial;
     /**
      * Constructor
      */
-    public MovementControlsVBox()
+    public MovementControlsVBox(ArduinoSerial as)
     {
         super();
         getStyleClass().add("bordered-titled-border");
         // Inside offsets, none for the top, and half spacing for
         // the right and left, full spacing on bottom
         setPadding(new Insets(0,SPACING/2,SPACING,SPACING/2));
+        arduinoSerial = as;
         createComponents();
     }
     public void createComponents()
@@ -35,6 +40,7 @@ public class MovementControlsVBox
 
         Button btnZero = new Button("Zero");
         btnZero.setTooltip(new Tooltip("Zero the Machine"));
+        btnZero.setOnAction(new ZeroEventHandler());
 
         Button btnLeft = new Button();
         btnLeft.setGraphic(new ImageView(
@@ -65,5 +71,18 @@ public class MovementControlsVBox
 
         col.getChildren().addAll(r0, gpMovement);
         getChildren().addAll(lblBorderTitle, col);
+    }
+
+    private class ZeroEventHandler
+            implements EventHandler<ActionEvent>
+    {
+
+        @Override
+        public void handle(ActionEvent event)
+        {
+            //arduinoSerial.writeOut("G28\n");
+            arduinoSerial.writeOut("G20 G91 G0 x10\n");
+            System.out.println("Hello");
+        }
     }
 }

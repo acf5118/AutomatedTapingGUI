@@ -1,5 +1,6 @@
 package Main;
 
+import Serial.ArduinoSerial;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -20,13 +21,13 @@ public class LaMachinaGui extends Application
 {
     private final int SPACING = 10;
     private final int WIDTH = 530, HEIGHT = 400;
-    private Stage primary;
+    private Stage primaryStage;
 
     private Scene scene;
     private MenuBar menuBar;
     private HBox firstRow;
     private VBox firstColumn, secondColumn;
-
+    private ArduinoSerial arduinoSerial;
 
     /**
      * Starting point for the GUI creation
@@ -36,12 +37,13 @@ public class LaMachinaGui extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        this.primary = primaryStage;
-        this.primary.setTitle("La Machina GUI");
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("La Machina GUI");
         scene = new Scene(new VBox(), WIDTH, HEIGHT);
         scene.setFill(Color.OLDLACE);
         scene.getStylesheets().addAll("Style.css");
-        primary.setScene(scene);
+        primaryStage.setScene(scene);
+        arduinoSerial = new ArduinoSerial();
 
         firstRow = new HBox(SPACING*2);
         createMenuBar();
@@ -56,7 +58,7 @@ public class LaMachinaGui extends Application
         VBox.setVgrow(firstRow, Priority.ALWAYS);
         ((VBox) scene.getRoot()).getChildren().addAll(firstRow);
 
-        this.primary.show();
+        this.primaryStage.show();
     }
 
     /**
@@ -64,17 +66,7 @@ public class LaMachinaGui extends Application
      */
     public void createMenuBar()
     {
-        menuBar = new MenuBar();
-        // List of menus
-        Menu menuFile = new Menu("File");
-        Menu menuEdit = new Menu("Edit");
-        Menu menuView = new Menu("View");
-        Menu menuSetting = new Menu("Settings");
-
-        // Add all of the menus to the menubar
-        menuBar.getMenus().addAll(menuFile, menuEdit, menuView, menuSetting);
-
-        ((VBox)scene.getRoot()).getChildren().addAll(menuBar);
+        ((VBox)scene.getRoot()).getChildren().addAll(new LaMachinaMenuBar(primaryStage));
     }
 
     /**
@@ -91,7 +83,8 @@ public class LaMachinaGui extends Application
         Text wop = new Text("Width of Part: __");
 
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
-        firstColumn.getChildren().addAll(new ConnectionVBox(), new MovementControlsVBox(), lop,dop,wop);
+        firstColumn.getChildren().addAll(new ConnectionVBox(arduinoSerial),
+                new MovementControlsVBox(arduinoSerial), lop,dop,wop);
         firstRow.getChildren().addAll(firstColumn);
     }
 
