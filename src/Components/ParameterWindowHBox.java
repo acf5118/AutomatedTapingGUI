@@ -1,5 +1,6 @@
 package Components;
 
+import FileIO.ParameterReader;
 import javafx.beans.NamedArg;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,15 +18,18 @@ import javafx.scene.layout.VBox;
  */
 public class ParameterWindowHBox extends VBox implements ComponentInterface
 {
-    public ParameterWindowHBox()
+    private double[] params;
+    public ParameterWindowHBox(double[] params)
     {
         super(10);
+        this.params = params;
         createComponents();
     }
 
     @Override
     public void createComponents()
     {
+
         createFirstColumn();
         setPadding(new Insets(SPACING,SPACING,SPACING,SPACING));
     }
@@ -34,7 +38,6 @@ public class ParameterWindowHBox extends VBox implements ComponentInterface
     {
         Label lblJog = new Label("Jog");
         lblJog.setAlignment(Pos.CENTER);
-
 
         Separator spacer = new Separator();
 
@@ -47,18 +50,20 @@ public class ParameterWindowHBox extends VBox implements ComponentInterface
         Label lblTranslate = new Label("Translate");
         lblTranslate.getStyleClass().add("bordered-titled-title");
 
-        Label lblMaxAccel = new Label("Increment");
-        lblMaxAccel.setPrefWidth(TF_SIZE);
-        TextField tfMaxAccel = new TextField();
-        tfMaxAccel.setPrefWidth(TF_SIZE);
+        Label lblInc = new Label("Increment");
+        lblInc.setPrefWidth(TF_SIZE);
+        TextField tfInc = new TextField();
+        tfInc.setPromptText(Double.toString(params[3]));
+        tfInc.setPrefWidth(TF_SIZE);
 
         Label lblMaxSpeed = new Label("Max Speed");
         lblMaxSpeed.setPrefWidth(TF_SIZE);
         TextField tfMaxSpeed = new TextField();
         tfMaxSpeed.setPrefWidth(TF_SIZE);
+        tfMaxSpeed.setPromptText(Double.toString(params[4]));
 
         HBox r1 = new HBox(SPACING);
-        r1.getChildren().addAll(lblMaxAccel, tfMaxAccel);
+        r1.getChildren().addAll(lblInc, tfInc);
 
         HBox r2 = new HBox(SPACING);
         r2.getChildren().addAll(lblMaxSpeed, tfMaxSpeed);
@@ -75,18 +80,20 @@ public class ParameterWindowHBox extends VBox implements ComponentInterface
         Label lblRotate = new Label("Rotate");
         lblRotate.getStyleClass().add("bordered-titled-title");
 
-        Label lblMaxAccelR = new Label("Increment");
-        lblMaxAccelR.setPrefWidth(TF_SIZE);
-        TextField tfMaxAccelR = new TextField();
-        tfMaxAccelR.setPrefWidth(TF_SIZE);
+        Label lblIncR = new Label("Increment");
+        lblIncR.setPrefWidth(TF_SIZE);
+        TextField tfIncR = new TextField();
+        tfIncR.setPromptText(Double.toString(params[0]));
+        tfIncR.setPrefWidth(TF_SIZE);
 
         Label lblMaxSpeedR = new Label("Max Speed");
         lblMaxSpeedR.setPrefWidth(TF_SIZE);
         TextField tfMaxSpeedR = new TextField();
+        tfMaxSpeedR.setPromptText(Double.toString(params[1]));
         tfMaxSpeedR.setPrefWidth(TF_SIZE);
 
         HBox r1R = new HBox(SPACING);
-        r1R.getChildren().addAll(lblMaxAccelR, tfMaxAccelR);
+        r1R.getChildren().addAll(lblIncR, tfIncR);
 
         HBox r2R = new HBox(SPACING);
         r2R.getChildren().addAll(lblMaxSpeedR, tfMaxSpeedR);

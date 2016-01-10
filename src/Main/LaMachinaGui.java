@@ -1,5 +1,6 @@
 package Main;
 
+import FileIO.ParameterReader;
 import Serial.ArduinoSerial;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -13,6 +14,8 @@ import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
 import Components.*;
+
+import java.util.ArrayList;
 
 /**
  * Created by Adam Fowles on 1/5/2016.
@@ -28,7 +31,10 @@ public class LaMachinaGui extends Application
     private HBox firstRow;
     private VBox firstColumn, secondColumn;
     private ArduinoSerial arduinoSerial;
+    private ParameterReader paramReader;
 
+    // Different Components
+    private MovementControlsVBox mvControls;
     /**
      * Starting point for the GUI creation
      * @param primaryStage - the "canvas"
@@ -37,6 +43,7 @@ public class LaMachinaGui extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        paramReader = new ParameterReader("src/Settings");
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("La Machina GUI");
         scene = new Scene(new VBox(), WIDTH, HEIGHT);
@@ -66,7 +73,8 @@ public class LaMachinaGui extends Application
      */
     public void createMenuBar()
     {
-        ((VBox)scene.getRoot()).getChildren().addAll(new LaMachinaMenuBar(primaryStage));
+        ((VBox)scene.getRoot()).getChildren().addAll(
+                new LaMachinaMenuBar(primaryStage,paramReader.getParams()));
     }
 
     /**
@@ -83,8 +91,10 @@ public class LaMachinaGui extends Application
         Text wop = new Text("Width of Part: __");
 
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
-        firstColumn.getChildren().addAll(new ConnectionVBox(arduinoSerial),
-                new MovementControlsVBox(arduinoSerial), lop,dop,wop);
+        mvControls = new MovementControlsVBox(
+                arduinoSerial, paramReader.getParams());
+        firstColumn.getChildren().addAll(new MachineStatusVBox(arduinoSerial, this),
+                mvControls, lop,dop,wop);
         firstRow.getChildren().addAll(firstColumn);
     }
 
@@ -97,7 +107,7 @@ public class LaMachinaGui extends Application
         secondColumn = new VBox();
         secondColumn.setSpacing(SPACING);
         secondColumn.setPadding(new Insets(SPACING, SPACING, SPACING, SPACING));
-        secondColumn.getChildren().addAll(new MachineControlsVBox(), new PartCreationVBox());
+        secondColumn.getChildren().addAll(new PlaybackVBox(), new PartCreationVBox());
         firstRow.getChildren().addAll(secondColumn);
     }
 
@@ -110,5 +120,6 @@ public class LaMachinaGui extends Application
         launch(args);
     }
 
+    public ArrayList<Button> getControlButtons(){return mvControls.getButtons();}
 
 }

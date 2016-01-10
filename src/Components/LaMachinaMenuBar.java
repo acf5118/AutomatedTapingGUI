@@ -1,5 +1,6 @@
 package Components;
 
+import FileIO.ParameterReader;
 import Main.LaMachinaGui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,11 +19,13 @@ import javafx.stage.Stage;
 public class LaMachinaMenuBar extends MenuBar
 {
     private Stage parentStage;
-    public LaMachinaMenuBar(Stage parent)
+    private double[] params;
+    public LaMachinaMenuBar(Stage parent, double[] params)
     {
         super();
         createMenu();
         parentStage = parent;
+        this.params = params;
     }
 
     public void createMenu()
@@ -49,7 +52,7 @@ public class LaMachinaMenuBar extends MenuBar
         public void handle(ActionEvent event)
         {
             Stage stage = new Stage();
-            Scene scene = new Scene(new ParameterWindowHBox()); stage.show();
+            Scene scene = new Scene(new ParameterWindowHBox(params)); stage.show();
             stage.setTitle("Parameters");
             scene.getStylesheets().addAll("Style.css");
             stage.setX(parentStage.getX() + 250);

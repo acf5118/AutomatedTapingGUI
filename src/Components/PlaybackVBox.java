@@ -12,14 +12,14 @@ import javafx.scene.layout.VBox;
 /**
  * Created by Adam Fowles on 1/6/2016.
  */
-public class MachineControlsVBox
+public class PlaybackVBox
         extends VBox implements ComponentInterface
 {
     /**
      * Constructor for the Machine Control
      * VBox.
      */
-    public MachineControlsVBox()
+    public PlaybackVBox()
     {
         // Call to VBox constructor
         super();
