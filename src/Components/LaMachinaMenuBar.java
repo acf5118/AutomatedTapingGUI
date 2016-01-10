@@ -52,7 +52,7 @@ public class LaMachinaMenuBar extends MenuBar
         public void handle(ActionEvent event)
         {
             Stage stage = new Stage();
-            Scene scene = new Scene(new ParameterWindowHBox(params)); stage.show();
+            Scene scene = new Scene(new ParameterWindowHBox(params, stage)); stage.show();
             stage.setTitle("Parameters");
             scene.getStylesheets().addAll("Style.css");
             stage.setX(parentStage.getX() + 250);
