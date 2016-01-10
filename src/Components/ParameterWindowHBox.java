@@ -1,6 +1,7 @@
 package Components;
 
 import FileIO.ParameterReader;
+import FileIO.ParameterWriter;
 import javafx.beans.NamedArg;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,103 +20,78 @@ import javafx.stage.Stage;
 /**
  * Created by Adam Fowles on 1/9/2016.
  */
-public class ParameterWindowHBox extends VBox implements ComponentInterface
+public class ParameterWindowHBox
+        extends VBox implements ComponentInterface
 {
+    // private fields
     private double[] params;
-    private TextField tfInc, tfMaxSpeed, tfIncR, tfMaxSpeedR;
+    private TextField tfIncRotate, tfFeedRateRotate,
+            tfIncTranslate, tfFeedRateTranslate;
     private Stage parent;
 
+    /**
+     * Constructor, calls the super for a VBox
+     * and create the inner components
+     * @param params - the parameter settings as a double[]
+     * @param parent - the parent window
+     */
     public ParameterWindowHBox(double[] params, Stage parent)
     {
-        super(10);
+        super(SPACING);
         this.params = params;
         this.parent = parent;
         createComponents();
-
     }
 
+    /**
+     * Creates all of the components
+     * may be adding more than just the one column
+     * in the future.
+     */
     @Override
     public void createComponents()
     {
-
-        createFirstColumn();
+        createColumn();
+        // Set the padding for the window
         setPadding(new Insets(SPACING,SPACING,SPACING,SPACING));
     }
 
-    public void createFirstColumn()
+    /**
+     * Creates all of the components in the first
+     * column.
+     */
+    public void createColumn()
     {
+        // Top Label
         Label lblJog = new Label("Jog");
         lblJog.setAlignment(Pos.CENTER);
 
+        // The separator line
         Separator spacer = new Separator();
 
-        VBox middle = new VBox();
-        middle.setPadding(new Insets(0,SPACING,SPACING,SPACING));
-        middle.getStyleClass().add("bordered-titled-border");
-        // Inside offsets, none for the top, and 5 for
-        // the right, bottom and left
-        setPadding(new Insets(0,5,5,5));
-        Label lblTranslate = new Label("Translate");
-        lblTranslate.getStyleClass().add("bordered-titled-title");
+        // All of the text fields to be used
+        tfIncRotate = new TextField();
+        tfFeedRateRotate = new TextField();
+        tfIncTranslate = new TextField();
+        tfFeedRateTranslate = new TextField();
 
-        Label lblInc = new Label("Increment");
-        lblInc.setPrefWidth(TF_SIZE);
-        tfInc = new TextField();
-        tfInc.setFocusTraversable(false);
-        tfInc.setPromptText(Double.toString(params[3]));
-        tfInc.setPrefWidth(TF_SIZE);
+        // Create the rotate (x) box
+        VBox v1 = createBox(tfIncRotate,
+                tfFeedRateRotate, "Rotate", params[0], params[1]);
 
-        Label lblMaxSpeed = new Label("Max Speed");
-        lblMaxSpeed.setPrefWidth(TF_SIZE);
-        tfMaxSpeed = new TextField();
-        tfMaxSpeed.setFocusTraversable(false);
-        tfMaxSpeed.setPrefWidth(TF_SIZE);
-        tfMaxSpeed.setPromptText(Double.toString(params[4]));
+        // Create the translate (y) box
+        VBox v2 = createBox(tfIncTranslate,
+                tfFeedRateTranslate, "Translate", params[2], params[3]);
 
-        HBox r1 = new HBox(SPACING);
-        r1.getChildren().addAll(lblInc, tfInc);
-
-        HBox r2 = new HBox(SPACING);
-        r2.getChildren().addAll(lblMaxSpeed, tfMaxSpeed);
-        middle.getChildren().addAll(lblTranslate, r1, r2);
-
-        // TODO make a function for the duplication
-
-        VBox rotate = new VBox();
-        rotate.setPadding(new Insets(0,SPACING,SPACING,SPACING));
-        rotate.getStyleClass().add("bordered-titled-border");
-        // Inside offsets, none for the top, and 5 for
-        // the right, bottom and left
-        setPadding(new Insets(0,5,5,5));
-        Label lblRotate = new Label("Rotate");
-        lblRotate.getStyleClass().add("bordered-titled-title");
-
-        Label lblIncR = new Label("Increment");
-        lblIncR.setPrefWidth(TF_SIZE);
-        tfIncR = new TextField();
-        tfIncR.setFocusTraversable(false);
-        tfIncR.setPromptText(Double.toString(params[0]));
-        tfIncR.setPrefWidth(TF_SIZE);
-
-        Label lblMaxSpeedR = new Label("Max Speed");
-        lblMaxSpeedR.setPrefWidth(TF_SIZE);
-        tfMaxSpeedR = new TextField();
-        tfMaxSpeedR.setFocusTraversable(false);
-        tfMaxSpeedR.setPromptText(Double.toString(params[1]));
-        tfMaxSpeedR.setPrefWidth(TF_SIZE);
-
-        HBox r1R = new HBox(SPACING);
-        r1R.getChildren().addAll(lblIncR, tfIncR);
-
-        HBox r2R = new HBox(SPACING);
-        r2R.getChildren().addAll(lblMaxSpeedR, tfMaxSpeedR);
-        rotate.getChildren().addAll(lblRotate, r1R, r2R);
-
+        // Create the row for the buttons
         HBox r3 = new HBox(SPACING);
 
+        // Create all of the buttons
         Button btnDefault = new Button("Default");
+        // What to do on button click
         btnDefault.setOnAction(new DefaultEventHandler());
         Button btnApply = new Button("Apply");
+        btnApply.setOnAction(new ApplyEventHandler());
         Button btnCancel = new Button("Cancel");
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -124,33 +100,113 @@ public class ParameterWindowHBox extends VBox implements ComponentInterface
             }
         });
 
+        // Add them all to the third row
         r3.getChildren().addAll(btnDefault, btnApply, btnCancel);
 
-        getChildren().addAll(lblJog, spacer, middle, rotate, r3);
+        // Add them all to this VBox
+        getChildren().addAll(lblJog, spacer, v1, v2, r3);
 
     }
 
+    /**
+     * Creates the two boxes shown
+     * @param inc - the increment text field either rotate
+     *            or translate
+     * @param feedRate - same as above but for feed rate
+     * @param message - the title border, either rotate
+     *                or translate
+     * @param incDefault - parameter for either rotate
+     *                   or translate
+     * @param feedDefault - same as above
+     * @return - the newly created VBox
+     */
+    private VBox createBox(
+            TextField inc, TextField feedRate, String message,
+            double incDefault, double feedDefault)
+    {
+        VBox box = new VBox();
+        box.setPadding(new Insets(0, SPACING, SPACING, SPACING));
+        box.getStyleClass().add("bordered-titled-border");
+        // Inside offsets, none for the top, and 5 for
+        // the right, bottom and left
+        setPadding(new Insets(0,5,5,5));
+        Label lblMessage = new Label(message);
+        lblMessage.getStyleClass().add("bordered-titled-title");
+
+        Label lblInc = new Label("Increment");
+        lblInc.setPrefWidth(TF_SIZE);
+
+        inc.setFocusTraversable(false);
+        inc.setPromptText(Double.toString(incDefault));
+        inc.setPrefWidth(TF_SIZE);
+
+        Label lblFeedRate = new Label("Feed rate");
+        lblFeedRate.setPrefWidth(TF_SIZE);
+
+        feedRate.setFocusTraversable(false);
+        feedRate.setPrefWidth(TF_SIZE);
+        feedRate.setPromptText(Double.toString(feedDefault));
+
+        HBox r1 = new HBox(SPACING);
+        r1.getChildren().addAll(lblInc, inc);
+
+        HBox r2 = new HBox(SPACING);
+        r2.getChildren().addAll(lblFeedRate, feedRate);
+
+        box.getChildren().addAll(lblMessage, r1, r2);
+        return box;
+    }
+
+    /**
+     * Class for the button handler
+     * for the default button
+     */
     private class DefaultEventHandler
             implements EventHandler<ActionEvent>
     {
+        /**
+         * Clears all of the data
+         * returning to the messages showing
+         * default values.
+         * @param event - unused
+         */
         @Override
         public void handle(ActionEvent event)
         {
-            tfInc.clear();
-            tfIncR.clear();
-            tfMaxSpeed.clear();
-            tfMaxSpeedR.clear();
+            tfIncRotate.clear();
+            tfIncTranslate.clear();
+            tfFeedRateRotate.clear();
+            tfFeedRateTranslate.clear();
         }
     }
 
+    /**
+     * Class for the button handler
+     * for the Apply button
+     */
     private class ApplyEventHandler
             implements EventHandler<ActionEvent>
     {
 
+        /**
+         * Grabs all the values from
+         * the text fields and then writes them
+         * out to the settings file.
+         * @param event - unused
+         */
         @Override
         public void handle(ActionEvent event)
         {
-
+            double[] parameters = new double[]{
+                    Double.parseDouble(tfIncRotate.getText()),
+                    Double.parseDouble(tfFeedRateRotate.getText()),
+                    Double.parseDouble(tfIncTranslate.getText()),
+                    Double.parseDouble(tfFeedRateTranslate.getText()),
+                    120};
+            ParameterWriter pr = new ParameterWriter(parameters);
+            pr.writeFile("src/Settings");
+            // Close the window after you apply the new values
+            parent.close();
         }
     }
 
