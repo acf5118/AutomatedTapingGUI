@@ -21,8 +21,11 @@ import java.util.ArrayList;
 public class PlaybackVBox
         extends VBox implements ComponentInterface
 {
+    // private fields
     private ArrayList<String> gCodeLines;
     private ArduinoSerial arduinoSerial;
+    private Button btnStart, btnStop, btnPause;
+
     /**
      * Constructor for the Machine Control
      * VBox.
@@ -36,14 +39,17 @@ public class PlaybackVBox
         setPadding(new Insets(0,SPACING/2,SPACING/2,SPACING/2));
         // See Style.css
         getStyleClass().add("bordered-titled-border");
+        // Each G Code line is a string in this list
         gCodeLines = new ArrayList<>();
+        // Serial Connection to the Arduino
         arduinoSerial = ar;
+        // Create all the inner components
         createComponents();
     }
 
     /**
      * Creates the HBox container for
-     * the buttons: play, stop pause.
+     * the buttons: play, stop, pause.
      * @return - the HBox object.
      */
     public void createComponents()
@@ -55,49 +61,89 @@ public class PlaybackVBox
         HBox row = new HBox(SPACING);
 
         // Give each button an Image from Resources folder
-        Button btnStart = new Button();
+        btnStart = new Button();
         btnStart.setTooltip(new Tooltip("Start the Machine"));
         btnStart.setOnAction(new StartEventHandler());
         btnStart.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Play Green Button.png"))));
-        Button btnStop = new Button();
+        // Disable the buttons until a connection has been established
+        btnStart.setDisable(true);
+        btnStop = new Button();
         btnStop.setTooltip(new Tooltip("Stop the Machine"));
         btnStop.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Stop Red Button.png"))));
-        Button btnPause = new Button();
+        btnStop.setDisable(true);
+        btnPause = new Button();
         btnPause.setTooltip(new Tooltip("Pause the Machine"));
         btnPause.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Pause Blue Button.png"))));
-
-        // Can change the grey background if desired (as hex value)
-        //btnStop.setStyle("-fx-base: #ef1515;");
+        btnPause.setDisable(true);
 
         // Add each button the the horizontal box
         row.getChildren().addAll(btnStart,btnStop, btnPause);
+        // Add the row and label to this VBox
         getChildren().addAll(lblPlayback, row);
     }
 
+    /**
+     * Set the lines of g-code to execute on play
+     * @param lines
+     */
     public void setGCodeLines(ArrayList<String> lines)
     {
         gCodeLines = lines;
     }
 
+    /**
+     * Enable the buttons once a connection has been established
+     */
+    public void enableButtons()
+    {
+        btnStart.setDisable(false);
+        btnStop.setDisable(false);
+        btnPause.setDisable(false);
+    }
+
+    /**
+     * Event Handler for the Start button
+     */
     private class StartEventHandler
             implements EventHandler<ActionEvent>
     {
+        // Start will most likely be pressed
+        // more than once, keep track of it.
+        private int numTimes = 0;
 
         @Override
         public void handle(ActionEvent event)
         {
-            for(String s: gCodeLines)
+            if (numTimes == 1)
             {
                 try {
-                    arduinoSerial.writeOut(s);
+                    arduinoSerial.writeOut("Y F100\n");
                 } catch (SerialPortException e) {
                     e.printStackTrace();
                 }
             }
-            System.out.println("Start");
+            else
+            {
+                // Execute each line of gCode
+                for (String s : gCodeLines)
+                {
+                    try
+                    {
+                        arduinoSerial.writeOut(s);
+                    }
+                    catch (SerialPortException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println("Start");
+                numTimes++;
+            }
         }
     }
+
+
 }

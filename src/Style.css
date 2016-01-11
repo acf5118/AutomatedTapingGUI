@@ -4,8 +4,8 @@
         -fx-font-weight: bold;
         -fx-text-fill: #333333;
         -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
-;
 }
+
 .bevel-grey {
     -fx-background-color:
         linear-gradient(#f2f2f2, #d6d6d6),
@@ -63,4 +63,12 @@
          -3px 3px #77aaff,
          -4px 4px #77aaff,
          -5px 5px #77aaff;
+}
+.persistent-prompt-error
+{
+    -fx-prompt-text-fill: #e60000 derive(-fx-control-inner-background,-30%);
+}
+.persistent-prompt
+{
+    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
 }

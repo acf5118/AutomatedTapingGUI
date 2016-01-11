@@ -1,6 +1,7 @@
 package Main;
 
 import FileIO.ParameterReader;
+import GCodeUtil.GCodeGenerator;
 import Serial.ArduinoSerial;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -9,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class LaMachinaGui extends Application
 {
     private final int SPACING = 10;
-    private final int WIDTH = 530, HEIGHT = 400;
+    private final int WIDTH = 530, HEIGHT = 425;
     private Stage primaryStage;
 
     private Scene scene;
@@ -32,6 +32,7 @@ public class LaMachinaGui extends Application
     private VBox firstColumn, secondColumn;
     private ArduinoSerial arduinoSerial;
     private ParameterReader paramReader;
+    private PlaybackVBox playback;
 
     // Different Components
     private MovementControlsVBox mvControls;
@@ -43,7 +44,7 @@ public class LaMachinaGui extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        paramReader = new ParameterReader("src/Settings");
+        paramReader = new ParameterReader("src/ParameterSettings");
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("La Machina GUI");
         scene = new Scene(new VBox(), WIDTH, HEIGHT);
@@ -74,7 +75,7 @@ public class LaMachinaGui extends Application
     public void createMenuBar()
     {
         ((VBox)scene.getRoot()).getChildren().addAll(
-                new LaMachinaMenuBar(primaryStage,paramReader.getParams()));
+                new LaMachinaMenuBar(primaryStage,paramReader.getParams(), this));
     }
 
     /**
@@ -86,15 +87,13 @@ public class LaMachinaGui extends Application
         firstColumn = new VBox();
         firstColumn.setSpacing(10);
 
-        Text lop = new Text("Length of Part: __");
-        Text dop = new Text("Diameter of Part: __");
-        Text wop = new Text("Width of Part: __");
+
 
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
         mvControls = new MovementControlsVBox(
-                arduinoSerial, paramReader.getParams());
+                arduinoSerial, paramReader.getParams(), this);
         firstColumn.getChildren().addAll(new MachineStatusVBox(arduinoSerial, this),
-                mvControls, lop,dop,wop);
+                mvControls, new QuickViewVBox());
         firstRow.getChildren().addAll(firstColumn);
     }
 
@@ -107,7 +106,8 @@ public class LaMachinaGui extends Application
         secondColumn = new VBox();
         secondColumn.setSpacing(SPACING);
         secondColumn.setPadding(new Insets(SPACING, SPACING, SPACING, SPACING));
-        secondColumn.getChildren().addAll(new PlaybackVBox(), new PartCreationVBox());
+        playback = new PlaybackVBox(arduinoSerial);
+        secondColumn.getChildren().addAll(playback, new PartCreationVBox(this));
         firstRow.getChildren().addAll(secondColumn);
     }
 
@@ -121,5 +121,12 @@ public class LaMachinaGui extends Application
     }
 
     public ArrayList<Button> getControlButtons(){return mvControls.getButtons();}
-
+    public void enablePlayback(){playback.enableButtons();}
+    public void updateParameters(double[] params){mvControls.updateParameters(params);}
+    public void updateProgramParameters(double[] params)
+    {
+        GCodeGenerator gc = new GCodeGenerator();
+        playback.setGCodeLines(gc.generateLines(params));
+    }
+    public Stage getPrimaryStage(){return primaryStage;}
 }

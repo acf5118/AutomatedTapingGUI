@@ -1,6 +1,7 @@
 package Components;
 
 import GCodeUtil.GCodeMessages;
+import Main.LaMachinaGui;
 import Serial.ArduinoSerial;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,14 +28,18 @@ public class MovementControlsVBox
     private Button btnZero, btnLeft, btnRight, btnClockwise, btnCounterClock;
     private double[] params;
     private boolean zeroBefore;
+    private LaMachinaGui parent;
 
     /**
      * Constructor
      */
-    public MovementControlsVBox(ArduinoSerial as, double[] params)
+    public MovementControlsVBox(ArduinoSerial as,
+                                double[] params,
+                                LaMachinaGui parent)
     {
         super();
         this.params = params;
+        this.parent = parent;
         getStyleClass().add("bordered-titled-border");
         // Inside offsets, none for the top, and half spacing for
         // the right and left, full spacing on bottom
@@ -127,6 +132,8 @@ public class MovementControlsVBox
                 {
                     b.setDisable(false);
                 }
+                parent.enablePlayback();
+
             }
         }
     }

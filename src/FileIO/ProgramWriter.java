@@ -17,17 +17,17 @@ public class ProgramWriter
         this.params = params;
     }
 
-    public void writeFile(String filename)
+    public void writeFile(File f)
     {
         BufferedWriter writer = null;
         try {
-            File f = new File(filename);
             if (!f.exists()) {
                 f.createNewFile();
             }
-            FileWriter fileWriter = new FileWriter(filename);
+            System.out.println(f.getPath());
+            FileWriter fileWriter = new FileWriter(f.getPath());
             writer = new BufferedWriter(fileWriter);
-
+            System.out.println("Wrote this file");
 
             writer.write("c Program file\n");
             writer.write("c <length> <x1> <x2> <x3> <y1> <y2> <y3> <f1> <f2>\n");

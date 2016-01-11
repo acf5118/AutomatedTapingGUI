@@ -3,8 +3,10 @@ package Components;
 import Main.LaMachinaGui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -53,6 +55,14 @@ public class PartCreationVBox
         Label lblPartLength = new Label("Length of Part:");
         // Text field to enter data
         TextField tfPartLength =  new TextField();
+        tfPartLength.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                TextField tf = (TextField)event.getSource();
+                tf.clear();
+                tf.setStyle("-fx-text-fill: #333333;");
+            }
+        });
         tfPartLength.setPromptText("Enter Length");
         // sets the size of the text field
         tfPartLength.setPrefWidth(TF_SIZE);
@@ -64,11 +74,11 @@ public class PartCreationVBox
         tfPartDiameter.setPrefWidth(TF_SIZE);
 
         // Third items
-        Label lblPartTapeType = new Label("Tape Type of Part:");
+        Label lblPartTapeType = new Label("Tape Type:");
         ObservableList<String> options =
                 FXCollections.observableArrayList(
-                        "Ad",
-                        "Num"
+                        "Adhesive",
+                        "Non-Adhesive"
                 );
         ComboBox<String> comboTapeType = new ComboBox(options);
         comboTapeType.setValue(options.get(0));
