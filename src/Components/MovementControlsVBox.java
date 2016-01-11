@@ -24,6 +24,7 @@ public class MovementControlsVBox
 {
     private ArduinoSerial arduinoSerial;
     private ArrayList<Button> buttons;
+    private Button btnZero, btnLeft, btnRight, btnClockwise, btnCounterClock;
     private double[] params;
     private boolean zeroBefore;
 
@@ -49,29 +50,29 @@ public class MovementControlsVBox
         Label lblBorderTitle = new Label("Controls");
         lblBorderTitle.getStyleClass().add("bordered-titled-title");
 
-        Button btnZero = new Button("Zero");
+        btnZero = new Button("Zero");
         btnZero.setTooltip(new Tooltip("Zero the Machine"));
         btnZero.setOnAction(new GCodeEventHandler(GCodeMessages.getGCodeZeroMessage(params[3])));
         buttons.add(btnZero);
-        Button btnLeft = new Button();
+        btnLeft = new Button();
         btnLeft.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Left Arrow.png"))));
         btnLeft.setOnAction(new GCodeEventHandler(
                 GCodeMessages.getGCodeTranslateMessage(params[2], params[3], -1)));
         buttons.add(btnLeft);
-        Button btnRight = new Button();
+        btnRight = new Button();
         btnRight.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Right Arrow.png"))));
         btnRight.setOnAction(new GCodeEventHandler(
                 GCodeMessages.getGCodeTranslateMessage(params[2], params[3], 1)));
         buttons.add(btnRight);
-        Button btnClockwise = new Button();
+        btnClockwise = new Button();
         btnClockwise.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Clockwise.png"))));
         btnClockwise.setOnAction(new GCodeEventHandler(
                 GCodeMessages.getGCodeRevolveMessage(params[0], params[1], -1)));
         buttons.add(btnClockwise);
-        Button btnCounterClock = new Button();
+        btnCounterClock = new Button();
         btnCounterClock.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Counterclockwise.png"))));
         btnCounterClock.setOnAction(new GCodeEventHandler(GCodeMessages.getGCodeRevolveMessage(params[0], params[1], 1)));
@@ -132,7 +133,25 @@ public class MovementControlsVBox
 
     public ArrayList<Button> getButtons(){return buttons;}
 
+    public void updateParameters(double[] params)
+    {
+        this.params = params;
+        updateButtonGCode();
+    }
 
+    public void updateButtonGCode()
+    {
+        btnZero.setOnAction(new GCodeEventHandler(
+                GCodeMessages.getGCodeZeroMessage(params[3])));
+        btnLeft.setOnAction(new GCodeEventHandler(
+                GCodeMessages.getGCodeTranslateMessage(params[2], params[3], -1)));
+        btnRight.setOnAction(new GCodeEventHandler(
+                GCodeMessages.getGCodeTranslateMessage(params[2], params[3], 1)));
+        btnClockwise.setOnAction(new GCodeEventHandler(
+                GCodeMessages.getGCodeRevolveMessage(params[0], params[1], -1)));
+        btnCounterClock.setOnAction(new GCodeEventHandler(
+                GCodeMessages.getGCodeRevolveMessage(params[0], params[1], 1)));
+    }
 
 
 }

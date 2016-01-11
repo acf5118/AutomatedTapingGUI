@@ -1,14 +1,11 @@
 package Components;
 
-import FileIO.ParameterReader;
 import FileIO.ParameterWriter;
-import javafx.beans.NamedArg;
+import Main.LaMachinaGui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -27,7 +24,8 @@ public class ParameterWindowHBox
     private double[] params;
     private TextField tfIncRotate, tfFeedRateRotate,
             tfIncTranslate, tfFeedRateTranslate;
-    private Stage parent;
+    private Stage window;
+    private LaMachinaGui parent;
 
     /**
      * Constructor, calls the super for a VBox
@@ -35,10 +33,13 @@ public class ParameterWindowHBox
      * @param params - the parameter settings as a double[]
      * @param parent - the parent window
      */
-    public ParameterWindowHBox(double[] params, Stage parent)
+    public ParameterWindowHBox(double[] params,
+                               Stage window,
+                               LaMachinaGui parent)
     {
         super(SPACING);
         this.params = params;
+        this.window = window;
         this.parent = parent;
         createComponents();
     }
@@ -96,7 +97,7 @@ public class ParameterWindowHBox
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                parent.close();
+                window.close();
             }
         });
 
@@ -206,7 +207,8 @@ public class ParameterWindowHBox
             ParameterWriter pr = new ParameterWriter(parameters);
             pr.writeFile("src/Settings");
             // Close the window after you apply the new values
-            parent.close();
+            parent.updateParameters(parameters);
+            window.close();
         }
     }
 

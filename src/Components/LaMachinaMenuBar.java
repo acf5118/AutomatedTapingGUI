@@ -20,12 +20,17 @@ public class LaMachinaMenuBar extends MenuBar
 {
     private Stage parentStage;
     private double[] params;
-    public LaMachinaMenuBar(Stage parent, double[] params)
+    private LaMachinaGui parentGui;
+
+    public LaMachinaMenuBar(Stage parent,
+                            double[] params,
+                            LaMachinaGui gui)
     {
         super();
         createMenu();
         parentStage = parent;
         this.params = params;
+        this.parentGui = gui;
     }
 
     public void createMenu()
@@ -52,7 +57,7 @@ public class LaMachinaMenuBar extends MenuBar
         public void handle(ActionEvent event)
         {
             Stage stage = new Stage();
-            Scene scene = new Scene(new ParameterWindowHBox(params, stage)); stage.show();
+            Scene scene = new Scene(new ParameterWindowHBox(params, stage, parentGui)); stage.show();
             stage.setTitle("Parameters");
             scene.getStylesheets().addAll("Style.css");
             stage.setX(parentStage.getX() + 250);

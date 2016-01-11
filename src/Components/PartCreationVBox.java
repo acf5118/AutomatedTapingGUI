@@ -1,5 +1,6 @@
 package Components;
 
+import Main.LaMachinaGui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -9,6 +10,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+import javax.xml.soap.Text;
 import java.util.ArrayList;
 
 /**
@@ -19,12 +21,13 @@ public class PartCreationVBox
 {
     // Constants
     private ArrayList<TextField> fields;
+    private LaMachinaGui parent;
 
     /**
      * Constructor for this part of
      * the GUI
      */
-    public PartCreationVBox()
+    public PartCreationVBox(LaMachinaGui parent)
     {
         super();
         // See Style.css
@@ -33,6 +36,7 @@ public class PartCreationVBox
         // the right, bottom and left
         setPadding(new Insets(0,5,5,5));
         fields = new ArrayList<TextField>();
+        this.parent = parent;
         createComponents();
     }
 
@@ -77,10 +81,11 @@ public class PartCreationVBox
         tfPartTapeWidth.setPrefWidth(TF_SIZE);
 
         // Fifth items
-        Label lblTapeSections = new Label("Number of Tape Sections:");
-        TextField tfTapeSections =  new TextField();
-        tfTapeSections.setPromptText("Enter Sections");
-        tfTapeSections.setPrefWidth(TF_SIZE);
+        Label lblTapePercent = new Label("Tape Overlap Percentage:");
+        TextField tfTapePercent=  new TextField();
+        tfTapePercent.setPromptText("Enter %");
+        tfTapePercent.setTooltip(new Tooltip("A value from 0 to 100"));
+        tfTapePercent.setPrefWidth(TF_SIZE);
 
         // Sixth items
         Label lblStartEnd = new Label("Start and End of Sections:");
@@ -93,14 +98,22 @@ public class PartCreationVBox
         tfEnd.setPromptText("End");
         tfEnd.setPrefWidth(TF_SIZE/2 - 1);
 
+        // Seventh items
+        Label lblPartRPM = new Label("Part RPM:");
+        TextField tfPartRPM = new TextField();
+        tfPartRPM.setPromptText("Enter RPM");
+        tfPartRPM.setPrefWidth(TF_SIZE);
+
         // Spacers separating text field from labels
         Region s1 = new Region(),s2 = new Region(),
                 s3 = new Region(),s4 = new Region(),
-                s5 = new Region(),s6 = new Region();
+                s5 = new Region(),s6 = new Region(),
+                s7 = new Region();
 
         HBox.setHgrow(s1, Priority.ALWAYS);HBox.setHgrow(s2, Priority.ALWAYS);
         HBox.setHgrow(s3, Priority.ALWAYS);HBox.setHgrow(s4, Priority.ALWAYS);
         HBox.setHgrow(s5, Priority.ALWAYS);HBox.setHgrow(s6, Priority.ALWAYS);
+        HBox.setHgrow(s7, Priority.ALWAYS);
 
         // Rows 1 through 7
         HBox r1 = new HBox(SPACING);
@@ -116,25 +129,30 @@ public class PartCreationVBox
         r4.getChildren().addAll(lblPartTapeWidth,s4, tfPartTapeWidth);
 
         HBox r5 = new HBox(SPACING);
-        r5.getChildren().addAll(lblTapeSections,s5, tfTapeSections);
+        r5.getChildren().addAll(lblTapePercent,s5, tfTapePercent);
 
         HBox r6 = new HBox(SPACING/5);
         r6.getChildren().addAll(lblStartEnd, s6, tfStart, tfEnd);
 
+        HBox r7 = new HBox(SPACING);
+        r7.getChildren().addAll(lblPartRPM, s7, tfPartRPM);
+
         fields.add(tfPartLength);
         fields.add(tfPartDiameter);
         fields.add(tfPartTapeWidth);
-        fields.add(tfTapeSections);
+        fields.add(tfTapePercent);
         fields.add(tfStart);
         fields.add(tfEnd);
+        fields.add(tfPartRPM);
+
 
         // Add a separator between rows 6 and 7
         Separator separator = new Separator();
         separator.setPadding(new Insets(0,0,5,0));
 
         // add all the components to this VBox
-        getChildren().addAll(lblBorderTitle,r1,r2,r3,r4,r5,r6,
-                separator, new FileControlHBox(this));
+        getChildren().addAll(lblBorderTitle,r1,r2,r3,r4,r5,r6,r7,
+                separator, new FileControlHBox(this,parent));
 
         // Make sure everything expands properly
         HBox.setHgrow(this, Priority.ALWAYS);
@@ -146,8 +164,10 @@ public class PartCreationVBox
         VBox.setVgrow(r4, Priority.ALWAYS);
         VBox.setVgrow(r5, Priority.ALWAYS);
         VBox.setVgrow(r6, Priority.ALWAYS);
+        VBox.setVgrow(r7, Priority.ALWAYS);
 
     }
 
     public ArrayList<TextField> getFields(){return fields;}
+
 }
