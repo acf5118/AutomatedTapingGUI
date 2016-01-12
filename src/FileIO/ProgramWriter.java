@@ -10,11 +10,12 @@ import java.io.IOException;
  */
 public class ProgramWriter
 {
-    private double[] params;
+    private double[] params, modified;
 
-    public ProgramWriter(double[] params)
+    public ProgramWriter(double[] params, double[] modified)
     {
         this.params = params;
+        this.modified = modified;
     }
 
     public void writeFile(File f)
@@ -30,9 +31,15 @@ public class ProgramWriter
             System.out.println("Wrote this file");
 
             writer.write("c Program file\n");
-            writer.write("c <length> <x1> <x2> <x3> <y1> <y2> <y3> <f1> <f2>\n");
-            writer.write("p ");
+            writer.write("c <length> <diameter> <Tape Width> <Tape Overlap %> <Start> <End> <Part RPM>\n");
+            writer.write("p1 ");
             for (double d : params) {
+                writer.write(d + " ");
+            }
+            writer.write("\nc <length> <x1> <x2> <x3> <y1> <y2> <y3> <f1> <f2>\n");
+            writer.write("p2 ");
+            for (double d: modified)
+            {
                 writer.write(d + " ");
             }
             writer.close();

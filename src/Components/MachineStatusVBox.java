@@ -25,8 +25,7 @@ public class MachineStatusVBox
 
     private ArduinoSerial arduinoSerial;
     private ImageView ivConnection;
-    private Label lblConnection;
-
+    private Label lblConnection, lblCurrFile;
     /**
      * Constructor
      */
@@ -53,7 +52,7 @@ public class MachineStatusVBox
         Label lblStatus = new Label("Machine Status");
         lblStatus.getStyleClass().add("bordered-titled-title");
 
-        Label lblCurrFile = new Label("No File Currently Loaded");
+        lblCurrFile = new Label("No File Currently Loaded");
         lblConnection = new Label("Not Connected");
 
         Button btnConnect = new Button("Connect to Machine");
@@ -103,6 +102,9 @@ public class MachineStatusVBox
         }
     }
 
-
+    public void setFilename(String filename)
+    {
+        lblCurrFile.setText("Loaded: " + filename);
+    }
 }
 

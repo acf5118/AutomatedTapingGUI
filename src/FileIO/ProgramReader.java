@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class ProgramReader
 {
-    private double[] parts;
+    private double[] params, mod;
 
     public ProgramReader()
     {
@@ -20,7 +20,8 @@ public class ProgramReader
     public void readFile(File file)
     {
         double length, x1, x2, x3, y1, y2, y3, f1, f2;
-        parts = new double[9];
+        params = new double[7];
+        mod = new double[9];
         BufferedReader reader = null;
         String line, s[];
         // Checks on input
@@ -37,8 +38,18 @@ public class ProgramReader
                 if (s[0].equals("c")) {
                     continue;
                 }
+                else if (s[0].equals("p1"))
+                {
+                    params[0] = Double.parseDouble(s[1]);
+                    params[1] = Double.parseDouble(s[1]);
+                    params[2] = Double.parseDouble(s[1]);
+                    params[3] = Double.parseDouble(s[1]);
+                    params[4] = Double.parseDouble(s[1]);
+                    params[5] = Double.parseDouble(s[1]);
+                    params[6] = Double.parseDouble(s[1]);
+                }
                 // p represents the parameters
-                else if (s[0].equals("p")) {
+                else if (s[0].equals("p2")) {
                     length = Double.parseDouble(s[1]);
                     x1 = Double.parseDouble(s[2]);
                     x2 = Double.parseDouble(s[3]);
@@ -48,15 +59,15 @@ public class ProgramReader
                     y3 = Double.parseDouble(s[7]);
                     f1 = Double.parseDouble(s[8]);
                     f2 = Double.parseDouble(s[9]);
-                    parts[0] = length;
-                    parts[1] = x1;
-                    parts[2] = x2;
-                    parts[3] = x3;
-                    parts[4] = y1;
-                    parts[5] = y2;
-                    parts[6] = y3;
-                    parts[7] = f1;
-                    parts[8] = f2;
+                    mod[0] = length;
+                    mod[1] = x1;
+                    mod[2] = x2;
+                    mod[3] = x3;
+                    mod[4] = y1;
+                    mod[5] = y2;
+                    mod[6] = y3;
+                    mod[7] = f1;
+                    mod[8] = f2;
                     break;
                 }
             }
@@ -73,6 +84,7 @@ public class ProgramReader
         System.exit(1);
     }
 
-    public double[] getParts(){return parts;}
+    public double[] getMod(){return mod;}
+    public double[] getParams(){return params;}
 
 }

@@ -32,11 +32,13 @@ public class LaMachinaGui extends Application
     private VBox firstColumn, secondColumn;
     private ArduinoSerial arduinoSerial;
     private ParameterReader paramReader;
-    private PlaybackVBox playback;
-    private QuickViewVBox quickView;
 
     // Different Components
     private MovementControlsVBox mvControls;
+    private PlaybackVBox playback;
+    private QuickViewVBox quickView;
+    private MachineStatusVBox machineStatus;
+
     /**
      * Starting point for the GUI creation
      * @param primaryStage - the "canvas"
@@ -88,14 +90,13 @@ public class LaMachinaGui extends Application
         firstColumn = new VBox();
         firstColumn.setSpacing(10);
 
-
-
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
         mvControls = new MovementControlsVBox(
                 arduinoSerial, paramReader.getParams(), this);
         quickView = new QuickViewVBox(primaryStage);
-        firstColumn.getChildren().addAll(new MachineStatusVBox(arduinoSerial, this),
-                mvControls, quickView);
+        machineStatus = new MachineStatusVBox(arduinoSerial, this);
+        firstColumn.getChildren().addAll(
+                machineStatus, mvControls, quickView);
         firstRow.getChildren().addAll(firstColumn);
     }
 
@@ -125,12 +126,14 @@ public class LaMachinaGui extends Application
     public ArrayList<Button> getControlButtons(){return mvControls.getButtons();}
     public void enablePlayback(){playback.enableButtons();}
     public void updateParameters(double[] params){mvControls.updateParameters(params);}
-    public void updateProgramParameters(double[] params)
+    public void updateProgramParameters(double[] params, double[] mod, String filename)
     {
         GCodeGenerator gc = new GCodeGenerator();
-        playback.setGCodeLines(gc.generateLines(params));
-        quickView.setParams(params);
+        playback.setGCodeLines(gc.generateLines(mod));
+        quickView.setParams(params, mod);
         quickView.enableFullView();
+        machineStatus.setFilename(filename);
+
 
     }
     public Stage getPrimaryStage(){return primaryStage;}

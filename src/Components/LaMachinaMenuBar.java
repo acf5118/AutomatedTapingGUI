@@ -57,7 +57,7 @@ public class LaMachinaMenuBar extends MenuBar
                 if (file == null){return;}
                 ProgramReader pr = new ProgramReader();
                 pr.readFile(file);
-                parentGui.updateProgramParameters(pr.getParts());
+                parentGui.updateProgramParameters(pr.getParams(),pr.getMod(), file.getName());
             }
         });
         menuFile.getItems().add(miOpen);

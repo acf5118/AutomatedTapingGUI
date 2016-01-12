@@ -22,13 +22,14 @@ public class QuickViewVBox
         extends VBox implements ComponentInterface
 {
     private Button btnFullView;
-    private double[] params;
+    private double[] params, mod;
     private Stage parentStage;
+    private Label lop, dop, wop;
 
     public QuickViewVBox(Stage parentStage)
     {
         super();
-        setPadding(new Insets(0,SPACING/2,SPACING/2,SPACING/2));
+        setPadding(new Insets(0, SPACING / 2, SPACING / 2, SPACING / 2));
         this.parentStage = parentStage;
         getStyleClass().add("bordered-titled-border");
         createComponents();
@@ -42,9 +43,9 @@ public class QuickViewVBox
         lblStatus.getStyleClass().add("bordered-titled-title");
 
         VBox c1 = new VBox(SPACING);
-        Text lop = new Text("Length of Part: __");
-        Text dop = new Text("Diameter of Part: __");
-        Text wop = new Text("Tape Width: __");
+        lop = new Label("Length of Part: __");
+        dop = new Label("Diameter of Part: __");
+        wop = new Label("Tape Width: __");
         c1.getChildren().addAll(lop, dop, wop);
 
         VBox c2 = new VBox();
@@ -70,7 +71,7 @@ public class QuickViewVBox
         public void handle(ActionEvent event)
         {
             Stage stage = new Stage();
-            Scene scene = new Scene(new FullViewVBox(params)); stage.show();
+            Scene scene = new Scene(new FullViewVBox(mod)); stage.show();
             stage.setTitle("Full View");
             scene.getStylesheets().addAll("Style.css");
             stage.setX(parentStage.getX() + 250);
@@ -83,5 +84,13 @@ public class QuickViewVBox
     }
 
     public void enableFullView(){btnFullView.setDisable(false);}
-    public void setParams(double[] p){params = p;}
+    public void setParams(double[] p, double[] m)
+    {
+        params = p;
+        mod = m;
+        lop.setText("Length of Part: " + p[0]);
+        dop.setText("Diameter of Part: " + p[1]);
+        wop.setText("Tape Width: " + p[2]);
+
+    }
 }
