@@ -1,6 +1,6 @@
 package Components;
 
-import FileIO.ProgramWriter;
+import FileIO.ProgramFileWriter;
 import Main.LaMachinaGui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -156,9 +156,8 @@ public class FileControlHBox
                 f1 = f2*(x1/Math.sqrt(x1*x1 + y2*y2));
             }
             double[] mod = new double[]{tHalfLength, x1, x2, x3, y1, y2, y3, f1, f2};
-            ProgramWriter pw = new ProgramWriter(params, mod);
             parentGui.updateProgramParameters(params, mod, writeTo.getName());
-            pw.writeFile(writeTo);
+            ProgramFileWriter.writeFile(writeTo, params, mod);
         }
     }
 
