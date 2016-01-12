@@ -33,6 +33,7 @@ public class LaMachinaGui extends Application
     private ArduinoSerial arduinoSerial;
     private ParameterReader paramReader;
     private PlaybackVBox playback;
+    private QuickViewVBox quickView;
 
     // Different Components
     private MovementControlsVBox mvControls;
@@ -92,8 +93,9 @@ public class LaMachinaGui extends Application
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
         mvControls = new MovementControlsVBox(
                 arduinoSerial, paramReader.getParams(), this);
+        quickView = new QuickViewVBox(primaryStage);
         firstColumn.getChildren().addAll(new MachineStatusVBox(arduinoSerial, this),
-                mvControls, new QuickViewVBox());
+                mvControls, quickView);
         firstRow.getChildren().addAll(firstColumn);
     }
 
@@ -127,6 +129,9 @@ public class LaMachinaGui extends Application
     {
         GCodeGenerator gc = new GCodeGenerator();
         playback.setGCodeLines(gc.generateLines(params));
+        quickView.setParams(params);
+        quickView.enableFullView();
+
     }
     public Stage getPrimaryStage(){return primaryStage;}
 }
