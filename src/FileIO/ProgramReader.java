@@ -41,12 +41,12 @@ public class ProgramReader
                 else if (s[0].equals("p1"))
                 {
                     params[0] = Double.parseDouble(s[1]);
-                    params[1] = Double.parseDouble(s[1]);
-                    params[2] = Double.parseDouble(s[1]);
-                    params[3] = Double.parseDouble(s[1]);
-                    params[4] = Double.parseDouble(s[1]);
-                    params[5] = Double.parseDouble(s[1]);
-                    params[6] = Double.parseDouble(s[1]);
+                    params[1] = Double.parseDouble(s[2]);
+                    params[2] = Double.parseDouble(s[3]);
+                    params[3] = Double.parseDouble(s[4]);
+                    params[4] = Double.parseDouble(s[5]);
+                    params[5] = Double.parseDouble(s[6]);
+                    params[6] = Double.parseDouble(s[7]);
                 }
                 // p represents the parameters
                 else if (s[0].equals("p2")) {
