@@ -1,7 +1,6 @@
 package Components;
 
-import FileIO.ParameterReader;
-import FileIO.ProgramReader;
+import FileIO.ProgramFileReader;
 import Main.LaMachinaGui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +15,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by Adam Fowles on 1/9/2016.
@@ -55,9 +55,8 @@ public class LaMachinaMenuBar extends MenuBar
                 FileChooser fc = new FileChooser();
                 File file = fc.showOpenDialog(parentGui.getPrimaryStage());
                 if (file == null){return;}
-                ProgramReader pr = new ProgramReader();
-                pr.readFile(file);
-                parentGui.updateProgramParameters(pr.getParams(),pr.getMod(), file.getName());
+                ArrayList<double[]> pr = ProgramFileReader.readProgramFile(file);
+                parentGui.updateProgramParameters(pr.get(0), pr.get(1), file.getName());
             }
         });
         menuFile.getItems().add(miOpen);

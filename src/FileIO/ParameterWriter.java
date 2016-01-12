@@ -1,9 +1,6 @@
 package FileIO;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by Adam Fowles on 1/10/2016.
@@ -19,7 +16,7 @@ public class ParameterWriter
 
     public void writeFile(String filename)
     {
-        BufferedWriter writer = null;
+        BufferedWriter writer;
         try
         {
             File f = new File(filename);
@@ -40,7 +37,7 @@ public class ParameterWriter
 
         catch(IOException e)
         {
-            System.out.println("Couldnt write file");
+            System.out.println("Couldn't write file");
         }
     }
 

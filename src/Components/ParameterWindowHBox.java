@@ -1,6 +1,7 @@
 package Components;
 
 import FileIO.ParameterWriter;
+import FileIO.ProgramFileReader;
 import Main.LaMachinaGui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -205,7 +206,7 @@ public class ParameterWindowHBox
                     Double.parseDouble(tfFeedRateTranslate.getText()),
                     120};
             ParameterWriter pr = new ParameterWriter(parameters);
-            pr.writeFile("src/Settings");
+            pr.writeFile(ProgramFileReader.PARAMETER_FILE);
             // Close the window after you apply the new values
             parent.updateParameters(parameters);
             window.close();

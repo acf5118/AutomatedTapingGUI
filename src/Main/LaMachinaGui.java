@@ -1,6 +1,6 @@
 package Main;
 
-import FileIO.ParameterReader;
+import FileIO.ProgramFileReader;
 import GCodeUtil.GCodeGenerator;
 import Serial.ArduinoSerial;
 import javafx.application.Application;
@@ -24,6 +24,7 @@ public class LaMachinaGui extends Application
 {
     private final int SPACING = 10;
     private final int WIDTH = 530, HEIGHT = 425;
+    private double[] params;
     private Stage primaryStage;
 
     private Scene scene;
@@ -31,7 +32,6 @@ public class LaMachinaGui extends Application
     private HBox firstRow;
     private VBox firstColumn, secondColumn;
     private ArduinoSerial arduinoSerial;
-    private ParameterReader paramReader;
 
     // Different Components
     private MovementControlsVBox mvControls;
@@ -47,7 +47,7 @@ public class LaMachinaGui extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        paramReader = new ParameterReader("src/ParameterSettings");
+        this.params = ProgramFileReader.readParameterFile(this.getClass());
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("La Machina GUI");
         scene = new Scene(new VBox(), WIDTH, HEIGHT);
@@ -78,7 +78,7 @@ public class LaMachinaGui extends Application
     public void createMenuBar()
     {
         ((VBox)scene.getRoot()).getChildren().addAll(
-                new LaMachinaMenuBar(primaryStage,paramReader.getParams(), this));
+                new LaMachinaMenuBar(primaryStage,params, this));
     }
 
     /**
@@ -92,7 +92,7 @@ public class LaMachinaGui extends Application
 
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
         mvControls = new MovementControlsVBox(
-                arduinoSerial, paramReader.getParams(), this);
+                arduinoSerial,params, this);
         quickView = new QuickViewVBox(primaryStage);
         machineStatus = new MachineStatusVBox(arduinoSerial, this);
         firstColumn.getChildren().addAll(
