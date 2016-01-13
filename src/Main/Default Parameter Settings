@@ -1,3 +1,4 @@
+c This file is never modified, and serves as the default parameter settings file
 c Parameter file
 c <x increment> <x speed> <y increment> <y speed> <max part RPM>
 p 1.0 100.0 1.0 100.0 120.0 

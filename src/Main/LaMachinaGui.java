@@ -128,8 +128,7 @@ public class LaMachinaGui extends Application
     public void updateParameters(double[] params){mvControls.updateParameters(params);}
     public void updateProgramParameters(double[] params, double[] mod, String filename)
     {
-        GCodeGenerator gc = new GCodeGenerator();
-        playback.setGCodeLines(gc.generateLines(mod));
+        playback.setGCodeLines(GCodeGenerator.generateLines(mod));
         quickView.setParams(params, mod);
         quickView.enableFullView();
         machineStatus.setFilename(filename);

@@ -24,6 +24,7 @@ public class PartCreationVBox
     // Constants
     private ArrayList<TextField> fields;
     private LaMachinaGui parent;
+    private CheckBox cbApply;
 
     /**
      * Constructor for this part of
@@ -114,6 +115,10 @@ public class PartCreationVBox
         tfPartRPM.setPromptText("Enter RPM");
         tfPartRPM.setPrefWidth(TF_SIZE);
 
+        // Either items
+        cbApply = new CheckBox("Load Changes on Creation");
+        cbApply.setPadding(new Insets(0,0,SPACING/2,0));
+
         // Spacers separating text field from labels
         Region s1 = new Region(),s2 = new Region(),
                 s3 = new Region(),s4 = new Region(),
@@ -162,7 +167,7 @@ public class PartCreationVBox
 
         // add all the components to this VBox
         getChildren().addAll(lblBorderTitle,r1,r2,r3,r4,r5,r6,r7,
-                separator, new FileControlHBox(this,parent));
+                separator, cbApply, new FileControlHBox(this,parent));
 
         // Make sure everything expands properly
         HBox.setHgrow(this, Priority.ALWAYS);
@@ -179,5 +184,6 @@ public class PartCreationVBox
     }
 
     public ArrayList<TextField> getFields(){return fields;}
+    public boolean loadChanges(){return cbApply.isSelected();}
 
 }

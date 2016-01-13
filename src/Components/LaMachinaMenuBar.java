@@ -4,13 +4,10 @@ import FileIO.ProgramFileReader;
 import Main.LaMachinaGui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -81,7 +78,6 @@ public class LaMachinaMenuBar extends MenuBar
 
             stage.setScene(scene);
             stage.show();
-
         }
     }
 }

@@ -1,10 +1,8 @@
 package Components;
 
-import Main.LaMachinaGui;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * Created by Adam Fowles on 1/11/2016.

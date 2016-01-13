@@ -1,6 +1,6 @@
 package Components;
 
-import GCodeUtil.GCodeMessages;
+import GCodeUtil.GCodeGenerator;
 import Main.LaMachinaGui;
 import Serial.ArduinoSerial;
 import javafx.event.ActionEvent;
@@ -57,30 +57,30 @@ public class MovementControlsVBox
 
         btnZero = new Button("Zero");
         btnZero.setTooltip(new Tooltip("Zero the Machine"));
-        btnZero.setOnAction(new GCodeEventHandler(GCodeMessages.getGCodeZeroMessage(params[3])));
+        btnZero.setOnAction(new GCodeEventHandler(GCodeGenerator.getGCodeZeroMessage(params[3])));
         buttons.add(btnZero);
         btnLeft = new Button();
         btnLeft.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Left Arrow.png"))));
         btnLeft.setOnAction(new GCodeEventHandler(
-                GCodeMessages.getGCodeTranslateMessage(params[2], params[3], -1)));
+                GCodeGenerator.getGCodeTranslateMessage(params[2], params[3], -1)));
         buttons.add(btnLeft);
         btnRight = new Button();
         btnRight.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Right Arrow.png"))));
         btnRight.setOnAction(new GCodeEventHandler(
-                GCodeMessages.getGCodeTranslateMessage(params[2], params[3], 1)));
+                GCodeGenerator.getGCodeTranslateMessage(params[2], params[3], 1)));
         buttons.add(btnRight);
         btnClockwise = new Button();
         btnClockwise.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Clockwise.png"))));
         btnClockwise.setOnAction(new GCodeEventHandler(
-                GCodeMessages.getGCodeRevolveMessage(params[0], params[1], -1)));
+                GCodeGenerator.getGCodeRevolveMessage(params[0], params[1], -1)));
         buttons.add(btnClockwise);
         btnCounterClock = new Button();
         btnCounterClock.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Counterclockwise.png"))));
-        btnCounterClock.setOnAction(new GCodeEventHandler(GCodeMessages.getGCodeRevolveMessage(params[0], params[1], 1)));
+        btnCounterClock.setOnAction(new GCodeEventHandler(GCodeGenerator.getGCodeRevolveMessage(params[0], params[1], 1)));
         buttons.add(btnCounterClock);
 
         for (Button b: buttons)
@@ -149,15 +149,15 @@ public class MovementControlsVBox
     public void updateButtonGCode()
     {
         btnZero.setOnAction(new GCodeEventHandler(
-                GCodeMessages.getGCodeZeroMessage(params[3])));
+                GCodeGenerator.getGCodeZeroMessage(params[3])));
         btnLeft.setOnAction(new GCodeEventHandler(
-                GCodeMessages.getGCodeTranslateMessage(params[2], params[3], -1)));
+                GCodeGenerator.getGCodeTranslateMessage(params[2], params[3], -1)));
         btnRight.setOnAction(new GCodeEventHandler(
-                GCodeMessages.getGCodeTranslateMessage(params[2], params[3], 1)));
+                GCodeGenerator.getGCodeTranslateMessage(params[2], params[3], 1)));
         btnClockwise.setOnAction(new GCodeEventHandler(
-                GCodeMessages.getGCodeRevolveMessage(params[0], params[1], -1)));
+                GCodeGenerator.getGCodeRevolveMessage(params[0], params[1], -1)));
         btnCounterClock.setOnAction(new GCodeEventHandler(
-                GCodeMessages.getGCodeRevolveMessage(params[0], params[1], 1)));
+                GCodeGenerator.getGCodeRevolveMessage(params[0], params[1], 1)));
     }
 
 
