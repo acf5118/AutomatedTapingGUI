@@ -109,7 +109,7 @@ public class LaMachinaGui extends Application
         secondColumn = new VBox();
         secondColumn.setSpacing(SPACING);
         secondColumn.setPadding(new Insets(SPACING, SPACING, SPACING, SPACING));
-        playback = new PlaybackVBox(arduinoSerial);
+        playback = new PlaybackVBox(arduinoSerial, this);
         secondColumn.getChildren().addAll(playback, new PartCreationVBox(this));
         firstRow.getChildren().addAll(secondColumn);
     }
@@ -125,10 +125,12 @@ public class LaMachinaGui extends Application
 
     public ArrayList<Button> getControlButtons(){return mvControls.getButtons();}
     public void enablePlayback(){playback.enableButtons();}
+    public void toggleControls(boolean toggle){mvControls.toggleAllButtons(toggle);}
     public void updateParameters(double[] params){mvControls.updateParameters(params);}
     public void updateProgramParameters(double[] params, double[] mod, String filename)
     {
         playback.setGCodeLines(GCodeGenerator.generateLines(mod));
+        playback.setParams(mod);
         quickView.setParams(params, mod);
         quickView.enableFullView();
         machineStatus.setFilename(filename);
@@ -136,4 +138,6 @@ public class LaMachinaGui extends Application
 
     }
     public Stage getPrimaryStage(){return primaryStage;}
+
+    public void reset(){mvControls.reset();}
 }

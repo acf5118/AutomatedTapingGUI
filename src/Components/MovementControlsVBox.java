@@ -83,10 +83,7 @@ public class MovementControlsVBox
         btnCounterClock.setOnAction(new GCodeEventHandler(GCodeGenerator.getGCodeRevolveMessage(params[0], params[1], 1)));
         buttons.add(btnCounterClock);
 
-        for (Button b: buttons)
-        {
-            b.setDisable(true);
-        }
+        toggleAllButtons(true);
 
         VBox col = new VBox(SPACING);
         GridPane gpMovement = new GridPane();
@@ -160,5 +157,21 @@ public class MovementControlsVBox
                 GCodeGenerator.getGCodeRevolveMessage(params[0], params[1], 1)));
     }
 
+    public void toggleAllButtons(boolean onOff)
+    {
+        for (Button b: buttons)
+        {
+            b.setDisable(onOff);
+        }
+    }
 
+    public void reset()
+    {
+        zeroBefore = false;
+        btnZero.setDisable(false);
+        btnLeft.setDisable(true);
+        btnRight.setDisable(true);
+        btnClockwise.setDisable(true);
+        btnCounterClock.setDisable(true);
+    }
 }

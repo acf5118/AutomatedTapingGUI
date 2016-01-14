@@ -1,5 +1,7 @@
 package Components;
 
+import GCodeUtil.GCodeGenerator;
+import Main.LaMachinaGui;
 import Serial.ArduinoSerial;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,24 +21,26 @@ import java.util.ArrayList;
  * Created by Adam Fowles on 1/6/2016.
  */
 public class PlaybackVBox
-        extends VBox implements ComponentInterface
-{
+        extends VBox implements ComponentInterface {
     // private fields
     private ArrayList<String> gCodeLines;
     private ArduinoSerial arduinoSerial;
-    private Button btnStart, btnStop, btnPause;
+    private Button btnStart, btnStop, btnPause, btnCheck;
+    private double[] params;
+    private boolean pausePressed, stopPressed;
+    private LaMachinaGui parentGui;
 
     /**
      * Constructor for the Machine Control
      * VBox.
      */
-    public PlaybackVBox(ArduinoSerial ar)
+    public PlaybackVBox(ArduinoSerial ar, LaMachinaGui parent)
     {
         // Call to VBox constructor
         super();
         // Inside offsets, none for the top, and half spacing for
         // the right, bottom and left
-        setPadding(new Insets(0,SPACING/2,SPACING/2,SPACING/2));
+        setPadding(new Insets(0, SPACING / 2, SPACING / 2, SPACING / 2));
         // See Style.css
         getStyleClass().add("bordered-titled-border");
         // Each G Code line is a string in this list
@@ -44,12 +48,15 @@ public class PlaybackVBox
         // Serial Connection to the Arduino
         arduinoSerial = ar;
         // Create all the inner components
+        pausePressed = false; stopPressed = false;
+        parentGui = parent;
         createComponents();
     }
 
     /**
      * Creates the HBox container for
      * the buttons: play, stop, pause.
+     *
      * @return - the HBox object.
      */
     public void createComponents()
@@ -73,25 +80,77 @@ public class PlaybackVBox
         btnStop.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Stop Red Button.png"))));
         btnStop.setDisable(true);
+        btnStop.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String[] s = GCodeGenerator.getGCodeStopMessage();
+                try
+                {
+                    arduinoSerial.writeOut(s[0]);
+                    //arduinoSerial.reset();
+                }
+                catch(SerialPortException e)
+                {
+
+                }
+                stopPressed = true;
+                btnStart.setDisable(true);
+                btnStop.setDisable(true);
+                btnPause.setDisable(true);
+                btnCheck.setDisable(true);
+                btnStart.setOnAction(new StartEventHandler());
+                pausePressed = false;
+                parentGui.reset();
+                //arduinoSerial.reconnect();
+            }
+        });
         btnPause = new Button();
         btnPause.setTooltip(new Tooltip("Pause the Machine"));
         btnPause.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Pause Blue Button.png"))));
         btnPause.setDisable(true);
+        btnPause.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    arduinoSerial.writeOut("!\n");
+                    pausePressed = true;
+                    btnStart.setDisable(false);
+                } catch (SerialPortException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        btnCheck = new Button();
+        btnCheck.setTooltip(new Tooltip("Press when Tape has been applied or cut"));
+        btnCheck.setGraphic(new ImageView(
+                new Image(getClass().getResourceAsStream("/Resources/Check.png"))));
+        btnCheck.setDisable(true);
+        btnCheck.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                btnStart.setDisable(false);
+
+            }
+        });
 
         // Add each button the the horizontal box
-        row.getChildren().addAll(btnStart,btnStop, btnPause);
+        row.getChildren().addAll(btnStart, btnStop, btnPause, btnCheck);
         // Add the row and label to this VBox
         getChildren().addAll(lblPlayback, row);
     }
 
     /**
      * Set the lines of g-code to execute on play
+     *
      * @param lines
      */
-    public void setGCodeLines(ArrayList<String> lines)
-    {
+    public void setGCodeLines(ArrayList<String> lines) {
         gCodeLines = lines;
+    }
+
+    public void setParams(double[] params) {
+        this.params = params;
     }
 
     /**
@@ -113,37 +172,71 @@ public class PlaybackVBox
         // Start will most likely be pressed
         // more than once, keep track of it.
         private int numTimes = 0;
+        private int restart = 0;
 
         @Override
         public void handle(ActionEvent event)
         {
-            if (numTimes == 1)
+
+            if (stopPressed)
             {
+                stopPressed = false;
                 try {
-                    arduinoSerial.writeOut("Y F100\n");
+                    arduinoSerial.writeOut("~\n");
                 } catch (SerialPortException e) {
                     e.printStackTrace();
                 }
             }
+            if (pausePressed)
+            {
+                pausePressed = false;
+                try {
+                    arduinoSerial.writeOut("~\n");
+                } catch (SerialPortException e) {
+                    e.printStackTrace();
+                }
+                btnStart.setDisable(true);
+                return;
+            }
+            if (numTimes == 1)
+            {
+                try {
+                    for (int i = 4; i < gCodeLines.size(); i++)
+                    {
+                        arduinoSerial.writeOut(gCodeLines.get(i));
+                        System.out.println(gCodeLines.get(i));
+                    }
+                    numTimes = 0;
+                } catch (SerialPortException e) {
+                    e.printStackTrace();
+                }
+
+            }
             else
             {
-                // Execute each line of gCode
+                parentGui.toggleControls(true);
+                btnStart.setDisable(true);
+                btnCheck.setDisable(false);
                 for (String s : gCodeLines)
                 {
                     try
                     {
+                        if (s.equals("!\n"))
+                        {
+                            break;
+                        }
+                        System.out.println(s);
                         arduinoSerial.writeOut(s);
                     }
-                    catch (SerialPortException e)
+                    catch(SerialPortException e)
                     {
-                        e.printStackTrace();
+
                     }
                 }
-                System.out.println("Start");
                 numTimes++;
+
             }
+
         }
     }
-
-
 }

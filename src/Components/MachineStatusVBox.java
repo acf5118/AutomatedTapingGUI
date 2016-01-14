@@ -79,8 +79,9 @@ public class MachineStatusVBox
             try
             {
                 arduinoSerial.connectToArduino();
+                Thread.sleep(2000);
             }
-            catch (SerialPortException e)
+            catch (SerialPortException | InterruptedException e)
             {
                 ivConnection.setImage(new Image(
                         getClass().getResourceAsStream("/Resources/Warning.png")));
@@ -90,6 +91,7 @@ public class MachineStatusVBox
             ivConnection.setImage(new Image(
                     getClass().getResourceAsStream("/Resources/Connected.png")));
             lblConnection.setText("Connection Established");
+
             parent.getControlButtons().get(0).setDisable(false);
             try
             {
@@ -99,6 +101,7 @@ public class MachineStatusVBox
             {
                 System.out.println("Error writing G20");
             }
+            //((Button)event.getSource()).setDisable(true);
         }
     }
 

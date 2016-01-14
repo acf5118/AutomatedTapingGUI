@@ -15,18 +15,22 @@ public class GCodeGenerator
     public static ArrayList<String> generateLines(double[] params)
     {
         ArrayList<String> lines = new ArrayList<>();
+
         lines.add("G20\n");
-        lines.add("G91 G00 Y" + params[4] + "\n");
-        // Needs to pause GCode
+        lines.add("G90 G01 Y0.0000\n");
+        lines.add("G91 G01 Y" + params[4] + "\n");
+        // Pause command
+        //lines.add("G91 G00 Y0.0000\n");
+        lines.add("!\n");
+
         lines.add("G91 G01 X" + params[1] + " Y" + params[5] + " F" + params[8] + "\n");
-        lines.add("G91 G01 X" + params[2] + " F" + params[7] + "\n");
+        lines.add("G91 G01 X" + params[2] + " Y0.0000" + " F" + params[7] + "\n");
         lines.add("G91 G01 X" + params[3] + " Y" + params[6] + " F" + params[8] + "\n");
-        lines.add("G91 G01 X" + params[2] + " F" + params[7] + "\n");
+        lines.add("G91 G01 X" + params[2] + " Y0.0000" + " F" + params[7] + "\n");
         lines.add("G91 G01 X" + params[1] + " Y" + params[5] + " F" + params[8] + "\n");
-        for (String s: lines)
-        {
-            System.out.println(s);
-        }
+
+
+
         return lines;
     }
 
@@ -61,4 +65,8 @@ public class GCodeGenerator
     }
 
     public static String getGCodeZeroMessage(double speed){return "G20 G01 G90 Y0.0000 F" + speed; }
+
+
+    public static String[] getGCodeStopMessage(){return new String[]{"!\n", "M0\n","~\n"};}
+
 }

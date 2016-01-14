@@ -40,4 +40,24 @@ public class ArduinoSerial
         sp.writeString(s);
     }
 
+    public void reconnect()
+    {
+        try {
+            sp.closePort();
+            sp.openPort();
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void reset()
+    {
+        try {
+            sp.writeInt(0x18);
+            sp.writeString("\n");
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

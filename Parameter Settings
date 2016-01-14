@@ -1,0 +1,3 @@
+c Parameter file
+c <x increment> <x speed> <y increment> <y speed> <max part RPM>
+p 1.0 300.0 1.0 300.0 120.0 
