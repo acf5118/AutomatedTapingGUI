@@ -16,20 +16,18 @@ public class GCodeGenerator
     {
         ArrayList<String> lines = new ArrayList<>();
 
-        lines.add("G20\n");
-        lines.add("G90 G01 Y0.0000\n");
-        lines.add("G91 G01 Y" + params[4] + "\n");
+        lines.add("G20");
+        lines.add("G90 G01 Y0.0000");
+        lines.add("G91 G01 Y" + params[4]);
         // Pause command
         //lines.add("G91 G00 Y0.0000\n");
-        lines.add("!\n");
+        lines.add("!");
 
-        lines.add("G91 G01 X" + params[1] + " Y" + params[5] + " F" + params[8] + "\n");
-        lines.add("G91 G01 X" + params[2] + " Y0.0000" + " F" + params[7] + "\n");
-        lines.add("G91 G01 X" + params[3] + " Y" + params[6] + " F" + params[8] + "\n");
-        lines.add("G91 G01 X" + params[2] + " Y0.0000" + " F" + params[7] + "\n");
-        lines.add("G91 G01 X" + params[1] + " Y" + params[5] + " F" + params[8] + "\n");
-
-
+        lines.add("G91 G01 X" + params[1] + " Y" + params[5] + " F" + params[8]);
+        lines.add("G91 G01 X" + params[2] + " Y0.0000" + " F" + params[7]);
+        lines.add("G91 G01 X" + params[3] + " Y" + params[6] + " F" + params[8]);
+        lines.add("G91 G01 X" + params[2] + " Y0.0000" + " F" + params[7]);
+        lines.add("G91 G01 X" + params[1] + " Y" + params[5] + " F" + params[8]);
 
         return lines;
     }
@@ -64,9 +62,11 @@ public class GCodeGenerator
         return "G20 G01 G91 Y" + increment*sign + " F" + speed;
     }
 
-    public static String getGCodeZeroMessage(double speed){return "G20 G01 G90 Y0.0000 F" + speed; }
+    public static String getGCodeSetZeroMessage(double speed){return "G92.1";}
+
+    public static String getGCodeGoToZeroMessage(){return "G28 Y0";}
 
 
-    public static String[] getGCodeStopMessage(){return new String[]{"!\n", "M0\n","~\n"};}
+    public static String[] getGCodeStopMessage(){return new String[]{"!", "M0"};}
 
 }

@@ -2,7 +2,8 @@ package Main;
 
 import FileIO.ProgramFileReader;
 import GCodeUtil.GCodeGenerator;
-import Serial.ArduinoSerial;
+import Serial.SerialCommunication;
+import Serial.UpdateMessageEnum;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -23,21 +24,21 @@ import java.util.ArrayList;
 public class LaMachinaGui extends Application
 {
     private final int SPACING = 10;
-    private final int WIDTH = 530, HEIGHT = 425;
+    private final int WIDTH = 530, HEIGHT = 460;
     private double[] params;
     private Stage primaryStage;
 
     private Scene scene;
-    private MenuBar menuBar;
     private HBox firstRow;
     private VBox firstColumn, secondColumn;
-    private ArduinoSerial arduinoSerial;
+    private SerialCommunication serialComm;
 
     // Different Components
     private MovementControlsVBox mvControls;
     private PlaybackVBox playback;
     private QuickViewVBox quickView;
     private MachineStatusVBox machineStatus;
+    private LaMachinaMenuBar menuBar;
 
     /**
      * Starting point for the GUI creation
@@ -54,7 +55,8 @@ public class LaMachinaGui extends Application
         scene.setFill(Color.OLDLACE);
         scene.getStylesheets().addAll("Style.css");
         primaryStage.setScene(scene);
-        arduinoSerial = new ArduinoSerial();
+
+        serialComm = new SerialCommunication(this);
 
         firstRow = new HBox(SPACING*2);
         createMenuBar();
@@ -77,8 +79,8 @@ public class LaMachinaGui extends Application
      */
     public void createMenuBar()
     {
-        ((VBox)scene.getRoot()).getChildren().addAll(
-                new LaMachinaMenuBar(primaryStage,params, this));
+        menuBar = new LaMachinaMenuBar(primaryStage,params, this);
+        ((VBox)scene.getRoot()).getChildren().addAll(menuBar);
     }
 
     /**
@@ -92,9 +94,9 @@ public class LaMachinaGui extends Application
 
         firstColumn.setPadding(new Insets(10, 0, 10, 10));
         mvControls = new MovementControlsVBox(
-                arduinoSerial,params, this);
+                serialComm,params, this);
         quickView = new QuickViewVBox(primaryStage);
-        machineStatus = new MachineStatusVBox(arduinoSerial, this);
+        machineStatus = new MachineStatusVBox(serialComm, this);
         firstColumn.getChildren().addAll(
                 machineStatus, mvControls, quickView);
         firstRow.getChildren().addAll(firstColumn);
@@ -109,7 +111,7 @@ public class LaMachinaGui extends Application
         secondColumn = new VBox();
         secondColumn.setSpacing(SPACING);
         secondColumn.setPadding(new Insets(SPACING, SPACING, SPACING, SPACING));
-        playback = new PlaybackVBox(arduinoSerial, this);
+        playback = new PlaybackVBox(serialComm, this);
         secondColumn.getChildren().addAll(playback, new PartCreationVBox(this));
         firstRow.getChildren().addAll(secondColumn);
     }
@@ -137,7 +139,19 @@ public class LaMachinaGui extends Application
 
 
     }
-    public Stage getPrimaryStage(){return primaryStage;}
 
+    public Stage getPrimaryStage(){return primaryStage;}
+    //public ArduinoSerialConnection getArduinoSerial(){return arduinoSerial;}
+    public void enableSerialMonitor(){}
     public void reset(){mvControls.reset();}
+
+    public void updateState(UpdateMessageEnum type, String[] args)
+    {
+        switch(type)
+        {
+            case CONNECTION:
+                machineStatus.updateStatus(args);
+                break;
+        }
+    }
 }

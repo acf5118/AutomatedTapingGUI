@@ -59,6 +59,24 @@ public class LaMachinaMenuBar extends MenuBar
         menuFile.getItems().add(miOpen);
         menuSetting.getItems().add(miParameters);
 
+        MenuItem miSerialMonitor = new MenuItem("Serial Monitor");
+        miSerialMonitor.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                Scene scene = new Scene(new SerialMonitorVBox(params, stage, parentGui), 200,200); stage.show();
+                stage.setTitle("Serial Monitor");
+                scene.getStylesheets().addAll("Style.css");
+                stage.setX(parentStage.getX() + 250);
+                stage.setY(parentStage.getY() + 100);
+
+                stage.setScene(scene);
+                stage.show();
+            }
+        });
+        //miSerialMonitor.setDisable(true);
+
+        menuView.getItems().add(miSerialMonitor);
         // Add all of the menus to the menubar
         getMenus().addAll(menuFile, menuEdit, menuView, menuSetting);
     }

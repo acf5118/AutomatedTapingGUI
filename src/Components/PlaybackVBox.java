@@ -2,7 +2,7 @@ package Components;
 
 import GCodeUtil.GCodeGenerator;
 import Main.LaMachinaGui;
-import Serial.ArduinoSerial;
+import Serial.SerialCommunication;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,7 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import jssc.SerialPortException;
 
 import java.util.ArrayList;
 
@@ -21,10 +20,11 @@ import java.util.ArrayList;
  * Created by Adam Fowles on 1/6/2016.
  */
 public class PlaybackVBox
-        extends VBox implements ComponentInterface {
+        extends VBox implements ComponentInterface
+{
     // private fields
     private ArrayList<String> gCodeLines;
-    private ArduinoSerial arduinoSerial;
+    private SerialCommunication comm;
     private Button btnStart, btnStop, btnPause, btnCheck;
     private double[] params;
     private boolean pausePressed, stopPressed;
@@ -34,7 +34,7 @@ public class PlaybackVBox
      * Constructor for the Machine Control
      * VBox.
      */
-    public PlaybackVBox(ArduinoSerial ar, LaMachinaGui parent)
+    public PlaybackVBox(SerialCommunication c, LaMachinaGui parent)
     {
         // Call to VBox constructor
         super();
@@ -46,7 +46,7 @@ public class PlaybackVBox
         // Each G Code line is a string in this list
         gCodeLines = new ArrayList<>();
         // Serial Connection to the Arduino
-        arduinoSerial = ar;
+        comm = c;
         // Create all the inner components
         pausePressed = false; stopPressed = false;
         parentGui = parent;
@@ -84,15 +84,8 @@ public class PlaybackVBox
             @Override
             public void handle(ActionEvent event) {
                 String[] s = GCodeGenerator.getGCodeStopMessage();
-                try
-                {
-                    arduinoSerial.writeOut(s[0]);
-                    //arduinoSerial.reset();
-                }
-                catch(SerialPortException e)
-                {
 
-                }
+                comm.reconnect();
                 stopPressed = true;
                 btnStart.setDisable(true);
                 btnStop.setDisable(true);
@@ -101,7 +94,6 @@ public class PlaybackVBox
                 btnStart.setOnAction(new StartEventHandler());
                 pausePressed = false;
                 parentGui.reset();
-                //arduinoSerial.reconnect();
             }
         });
         btnPause = new Button();
@@ -112,15 +104,12 @@ public class PlaybackVBox
         btnPause.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    arduinoSerial.writeOut("!\n");
+                    comm.sendMessage("!");
                     pausePressed = true;
                     btnStart.setDisable(false);
-                } catch (SerialPortException e) {
-                    e.printStackTrace();
-                }
             }
         });
+
         btnCheck = new Button();
         btnCheck.setTooltip(new Tooltip("Press when Tape has been applied or cut"));
         btnCheck.setGraphic(new ImageView(
@@ -181,36 +170,26 @@ public class PlaybackVBox
             if (stopPressed)
             {
                 stopPressed = false;
-                try {
-                    arduinoSerial.writeOut("~\n");
-                } catch (SerialPortException e) {
-                    e.printStackTrace();
-                }
+                comm.sendMessage("~");
+
             }
             if (pausePressed)
             {
                 pausePressed = false;
-                try {
-                    arduinoSerial.writeOut("~\n");
-                } catch (SerialPortException e) {
-                    e.printStackTrace();
-                }
+                comm.sendMessage("~");
+
                 btnStart.setDisable(true);
                 return;
             }
             if (numTimes == 1)
             {
-                try {
-                    for (int i = 4; i < gCodeLines.size(); i++)
-                    {
-                        arduinoSerial.writeOut(gCodeLines.get(i));
-                        System.out.println(gCodeLines.get(i));
-                    }
-                    numTimes = 0;
-                } catch (SerialPortException e) {
-                    e.printStackTrace();
-                }
 
+                for (int i = 4; i < gCodeLines.size(); i++)
+                {
+                    comm.sendMessage(gCodeLines.get(i));
+                    System.out.println(gCodeLines.get(i));
+                }
+                numTimes = 0;
             }
             else
             {
@@ -219,19 +198,12 @@ public class PlaybackVBox
                 btnCheck.setDisable(false);
                 for (String s : gCodeLines)
                 {
-                    try
-                    {
-                        if (s.equals("!\n"))
-                        {
-                            break;
-                        }
-                        System.out.println(s);
-                        arduinoSerial.writeOut(s);
-                    }
-                    catch(SerialPortException e)
-                    {
 
+                    if (s.equals("!"))
+                    {
+                        break;
                     }
+                    comm.sendMessage(s);
                 }
                 numTimes++;
 

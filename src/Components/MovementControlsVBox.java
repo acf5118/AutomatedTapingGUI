@@ -2,7 +2,7 @@ package Components;
 
 import GCodeUtil.GCodeGenerator;
 import Main.LaMachinaGui;
-import Serial.ArduinoSerial;
+import Serial.SerialCommunication;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,7 +13,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import jssc.SerialPortException;
 
 import java.util.ArrayList;
 
@@ -23,9 +22,10 @@ import java.util.ArrayList;
 public class MovementControlsVBox
         extends VBox implements ComponentInterface
 {
-    private ArduinoSerial arduinoSerial;
+    private SerialCommunication comm;
     private ArrayList<Button> buttons;
-    private Button btnZero, btnLeft, btnRight, btnClockwise, btnCounterClock;
+    private Button btnGoToZero,btnSetZero, btnLeft,
+            btnRight, btnClockwise, btnCounterClock;
     private double[] params;
     private boolean zeroBefore;
     private LaMachinaGui parent;
@@ -33,7 +33,7 @@ public class MovementControlsVBox
     /**
      * Constructor
      */
-    public MovementControlsVBox(ArduinoSerial as,
+    public MovementControlsVBox(SerialCommunication as,
                                 double[] params,
                                 LaMachinaGui parent)
     {
@@ -44,7 +44,7 @@ public class MovementControlsVBox
         // Inside offsets, none for the top, and half spacing for
         // the right and left, full spacing on bottom
         setPadding(new Insets(0,SPACING/2,SPACING,SPACING/2));
-        arduinoSerial = as;
+        comm = as;
         zeroBefore = false;
         buttons = new ArrayList<>();
         createComponents();
@@ -55,10 +55,41 @@ public class MovementControlsVBox
         Label lblBorderTitle = new Label("Controls");
         lblBorderTitle.getStyleClass().add("bordered-titled-title");
 
-        btnZero = new Button("Zero");
-        btnZero.setTooltip(new Tooltip("Zero the Machine"));
-        btnZero.setOnAction(new GCodeEventHandler(GCodeGenerator.getGCodeZeroMessage(params[3])));
-        buttons.add(btnZero);
+        btnGoToZero = new Button("Home");
+        btnGoToZero.setTooltip(new Tooltip("Zero the Machine"));
+        btnGoToZero.setOnAction(new EventHandler<ActionEvent>() {
+            private int count = 1;
+            @Override
+            public void handle(ActionEvent event)
+            {
+                if (count == 0)
+                {
+                    comm.sendMessage("$H");
+                    count++;
+                }
+                else
+                {
+                    comm.sendMessage(GCodeGenerator.getGCodeGoToZeroMessage());
+                }
+                if (!zeroBefore)
+                {
+                    zeroBefore = true;
+                    for (Button b: buttons)
+                    {
+                        b.setDisable(false);
+                    }
+                    parent.enablePlayback();
+
+                }
+            }
+        });
+        buttons.add(btnGoToZero);
+        /*
+        btnSetZero = new Button("Set Zero");
+        btnSetZero.setTooltip(new Tooltip("Set the current position as zero"));
+        btnSetZero.setOnAction(new GCodeEventHandler(GCodeGenerator.getGCodeSetZeroMessage(params[3])));
+        buttons.add(btnSetZero);
+        */
         btnLeft = new Button();
         btnLeft.setGraphic(new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Left Arrow.png"))));
@@ -97,7 +128,7 @@ public class MovementControlsVBox
         gpMovement.setAlignment(Pos.CENTER);
         HBox r0 = new HBox(SPACING);
         r0.setAlignment(Pos.CENTER);
-        r0.getChildren().add(btnZero);
+        r0.getChildren().addAll(btnGoToZero);//, btnSetZero);
 
         col.getChildren().addAll(r0, gpMovement);
         getChildren().addAll(lblBorderTitle, col);
@@ -115,23 +146,8 @@ public class MovementControlsVBox
         @Override
         public void handle(ActionEvent event)
         {
-            try
-            {
-                arduinoSerial.writeOut(code+"\n");
-            } catch (SerialPortException e)
-            {
-                System.out.println("Couldnt write code");
-            }
-            if (!zeroBefore)
-            {
-                zeroBefore = true;
-                for (Button b: buttons)
-                {
-                    b.setDisable(false);
-                }
-                parent.enablePlayback();
 
-            }
+            comm.sendMessage(code);
         }
     }
 
@@ -145,8 +161,12 @@ public class MovementControlsVBox
 
     public void updateButtonGCode()
     {
-        btnZero.setOnAction(new GCodeEventHandler(
-                GCodeGenerator.getGCodeZeroMessage(params[3])));
+        /*
+        btnGoToZero.setOnAction(new GCodeEventHandler(
+                GCodeGenerator.getGCodeGoToZeroMessage()));
+        btnSetZero.setOnAction(new GCodeEventHandler(
+                GCodeGenerator.getGCodeSetZeroMessage(params[3])));
+                */
         btnLeft.setOnAction(new GCodeEventHandler(
                 GCodeGenerator.getGCodeTranslateMessage(params[2], params[3], -1)));
         btnRight.setOnAction(new GCodeEventHandler(
@@ -168,7 +188,7 @@ public class MovementControlsVBox
     public void reset()
     {
         zeroBefore = false;
-        btnZero.setDisable(false);
+        btnGoToZero.setDisable(false);
         btnLeft.setDisable(true);
         btnRight.setDisable(true);
         btnClockwise.setDisable(true);

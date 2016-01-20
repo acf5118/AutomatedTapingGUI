@@ -99,6 +99,18 @@ public class PartCreationVBox
         tfTapePercent.setPrefWidth(TF_SIZE);
 
         // Sixth items
+        Label lblNumLayers = new Label("Number of Layers:");
+        ObservableList<Integer> optionsLayers =
+                FXCollections.observableArrayList(
+                        2,
+                        4,
+                        6
+                );
+        ComboBox<Integer> comboNumLayers = new ComboBox(optionsLayers);
+        comboNumLayers.setValue(optionsLayers.get(0));
+        comboNumLayers.setPrefWidth(TF_SIZE);
+
+        // Seventh items
         Label lblStartEnd = new Label("Start and End of Sections:");
         TextField tfStart = new TextField();
         tfStart.setTooltip(new Tooltip("Comma separate values \nfor multiple sections"));
@@ -109,26 +121,26 @@ public class PartCreationVBox
         tfEnd.setPromptText("End");
         tfEnd.setPrefWidth(TF_SIZE/2 - 1);
 
-        // Seventh items
+        // Eighth items
         Label lblPartRPM = new Label("Part RPM:");
         TextField tfPartRPM = new TextField();
         tfPartRPM.setPromptText("Enter RPM");
         tfPartRPM.setPrefWidth(TF_SIZE);
 
-        // Either items
+        // Ninth items
         cbApply = new CheckBox("Load Changes on Creation");
         cbApply.setPadding(new Insets(0,0,SPACING/2,0));
 
         // Spacers separating text field from labels
-        Region s1 = new Region(),s2 = new Region(),
-                s3 = new Region(),s4 = new Region(),
-                s5 = new Region(),s6 = new Region(),
-                s7 = new Region();
+        Region s1 = new Region(), s2 = new Region(),
+                s3 = new Region(), s4 = new Region(),
+                s5 = new Region(), s6 = new Region(),
+                s7 = new Region(), s8 = new Region();
 
         HBox.setHgrow(s1, Priority.ALWAYS);HBox.setHgrow(s2, Priority.ALWAYS);
         HBox.setHgrow(s3, Priority.ALWAYS);HBox.setHgrow(s4, Priority.ALWAYS);
         HBox.setHgrow(s5, Priority.ALWAYS);HBox.setHgrow(s6, Priority.ALWAYS);
-        HBox.setHgrow(s7, Priority.ALWAYS);
+        HBox.setHgrow(s7, Priority.ALWAYS);HBox.setHgrow(s8, Priority.ALWAYS);
 
         // Rows 1 through 7
         HBox r1 = new HBox(SPACING);
@@ -146,11 +158,14 @@ public class PartCreationVBox
         HBox r5 = new HBox(SPACING);
         r5.getChildren().addAll(lblTapePercent,s5, tfTapePercent);
 
-        HBox r6 = new HBox(SPACING/5);
-        r6.getChildren().addAll(lblStartEnd, s6, tfStart, tfEnd);
+        HBox r6 = new HBox(SPACING);
+        r6.getChildren().addAll(lblNumLayers, s6, comboNumLayers);
 
-        HBox r7 = new HBox(SPACING);
-        r7.getChildren().addAll(lblPartRPM, s7, tfPartRPM);
+        HBox r7 = new HBox(SPACING/5);
+        r7.getChildren().addAll(lblStartEnd, s7, tfStart, tfEnd);
+
+        HBox r8 = new HBox(SPACING);
+        r8.getChildren().addAll(lblPartRPM, s8, tfPartRPM);
 
         fields.add(tfPartLength);
         fields.add(tfPartDiameter);
@@ -166,7 +181,7 @@ public class PartCreationVBox
         separator.setPadding(new Insets(0,0,5,0));
 
         // add all the components to this VBox
-        getChildren().addAll(lblBorderTitle,r1,r2,r3,r4,r5,r6,r7,
+        getChildren().addAll(lblBorderTitle,r1,r2,r3,r4,r5,r6,r7,r8,
                 separator, cbApply, new FileControlHBox(this,parent));
 
         // Make sure everything expands properly
@@ -180,6 +195,7 @@ public class PartCreationVBox
         VBox.setVgrow(r5, Priority.ALWAYS);
         VBox.setVgrow(r6, Priority.ALWAYS);
         VBox.setVgrow(r7, Priority.ALWAYS);
+        VBox.setVgrow(r8, Priority.ALWAYS);
 
     }
 

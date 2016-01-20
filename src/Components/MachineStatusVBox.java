@@ -1,11 +1,10 @@
 package Components;
 
 import Main.LaMachinaGui;
-import Serial.ArduinoSerial;
+import Serial.SerialCommunication;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,13 +22,15 @@ public class MachineStatusVBox
 {
     private LaMachinaGui parent;
 
-    private ArduinoSerial arduinoSerial;
+    private SerialCommunication comm;
     private ImageView ivConnection;
     private Label lblConnection, lblCurrFile;
+    private Button btnConnect;
+
     /**
      * Constructor
      */
-    public MachineStatusVBox(ArduinoSerial as, LaMachinaGui parent)
+    public MachineStatusVBox(SerialCommunication as, LaMachinaGui parent)
     {
         super();
         this.parent = parent;
@@ -38,7 +39,7 @@ public class MachineStatusVBox
         setPadding(new Insets(0,SPACING/2,SPACING/2,SPACING/2));
         getStyleClass().add("bordered-titled-border");
         createComponents();
-        arduinoSerial = as;
+        comm = as;
     }
 
     /**
@@ -55,7 +56,7 @@ public class MachineStatusVBox
         lblCurrFile = new Label("No File Currently Loaded");
         lblConnection = new Label("Not Connected");
 
-        Button btnConnect = new Button("Connect to Machine");
+        btnConnect = new Button("Connect to Machine");
         btnConnect.setOnAction(new ConnectEventHandler());
         //btnConnect.getStyleClass().add("glass-grey");
 
@@ -78,31 +79,33 @@ public class MachineStatusVBox
         {
             try
             {
-                arduinoSerial.connectToArduino();
+                comm.connect();
                 Thread.sleep(2000);
             }
-            catch (SerialPortException | InterruptedException e)
+            catch (InterruptedException e)
             {
-                ivConnection.setImage(new Image(
-                        getClass().getResourceAsStream("/Resources/Warning.png")));
-                lblConnection.setText("Could not connect");
-                return;
+
             }
+
+        }
+    }
+
+    public void updateStatus(String[] status)
+    {
+        if (status[0].equals("true"))
+        {
+            ivConnection.setImage(new Image(
+                    getClass().getResourceAsStream("/Resources/Warning.png")));
+        }
+        else
+        {
             ivConnection.setImage(new Image(
                     getClass().getResourceAsStream("/Resources/Connected.png")));
-            lblConnection.setText("Connection Established");
-
             parent.getControlButtons().get(0).setDisable(false);
-            try
-            {
-                arduinoSerial.writeOut("G20\n");
-            }
-            catch (SerialPortException e)
-            {
-                System.out.println("Error writing G20");
-            }
-            //((Button)event.getSource()).setDisable(true);
+            comm.sendMessage("G20");
+            btnConnect.setDisable(true);
         }
+        lblConnection.setText(status[1]);
     }
 
     public void setFilename(String filename)
