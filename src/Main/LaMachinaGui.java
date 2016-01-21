@@ -5,16 +5,20 @@ import GCodeUtil.GCodeGenerator;
 import Serial.SerialCommunication;
 import Serial.UpdateMessageEnum;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
 import Components.*;
+import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
 
@@ -56,6 +60,11 @@ public class LaMachinaGui extends Application
         scene.getStylesheets().addAll("Style.css");
         primaryStage.setScene(scene);
 
+        // Set the application to the center to the screen
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        primaryStage.setX((screenBounds.getWidth() - WIDTH) / 2);
+        primaryStage.setY((screenBounds.getHeight() - HEIGHT) / 2);
+
         serialComm = new SerialCommunication(this);
 
         firstRow = new HBox(SPACING*2);
@@ -71,6 +80,12 @@ public class LaMachinaGui extends Application
         VBox.setVgrow(firstRow, Priority.ALWAYS);
         ((VBox) scene.getRoot()).getChildren().addAll(firstRow);
 
+        this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                serialComm.shutdown();
+            }
+        });
         this.primaryStage.show();
     }
 
@@ -79,7 +94,7 @@ public class LaMachinaGui extends Application
      */
     public void createMenuBar()
     {
-        menuBar = new LaMachinaMenuBar(primaryStage,params, this);
+        menuBar = new LaMachinaMenuBar(primaryStage,params, this, serialComm);
         ((VBox)scene.getRoot()).getChildren().addAll(menuBar);
     }
 

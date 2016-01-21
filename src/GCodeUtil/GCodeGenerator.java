@@ -7,6 +7,15 @@ import java.util.ArrayList;
  */
 public class GCodeGenerator
 {
+    // Real time
+    public static final String PAUSE = "!";
+    public static final String RESUME = "~";
+    public static final byte RESET = 0x18;
+    // Non real time
+    public static final String UNLOCK = "$X";
+    public static final String HOME = "$H";
+
+
     /**
      * Generate the  G code lines for the arduino program
      * @param params - the parameters used to generate the code
@@ -21,7 +30,8 @@ public class GCodeGenerator
         lines.add("G91 G01 Y" + params[4]);
         // Pause command
         //lines.add("G91 G00 Y0.0000\n");
-        lines.add("!");
+
+        lines.add(PAUSE);
 
         lines.add("G91 G01 X" + params[1] + " Y" + params[5] + " F" + params[8]);
         lines.add("G91 G01 X" + params[2] + " Y0.0000" + " F" + params[7]);
@@ -62,9 +72,7 @@ public class GCodeGenerator
         return "G20 G01 G91 Y" + increment*sign + " F" + speed;
     }
 
-    public static String getGCodeSetZeroMessage(double speed){return "G92.1";}
-
-    public static String getGCodeGoToZeroMessage(){return "G28 Y0";}
+    public static String getGCodeGoToZeroMessage(){return "G20 G90 Y0";}
 
 
     public static String[] getGCodeStopMessage(){return new String[]{"!", "M0"};}

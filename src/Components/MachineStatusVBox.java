@@ -102,7 +102,6 @@ public class MachineStatusVBox
             ivConnection.setImage(new Image(
                     getClass().getResourceAsStream("/Resources/Connected.png")));
             parent.getControlButtons().get(0).setDisable(false);
-            comm.sendMessage("G20");
             btnConnect.setDisable(true);
         }
         lblConnection.setText(status[1]);

@@ -58,7 +58,7 @@ public class MovementControlsVBox
         btnGoToZero = new Button("Home");
         btnGoToZero.setTooltip(new Tooltip("Zero the Machine"));
         btnGoToZero.setOnAction(new EventHandler<ActionEvent>() {
-            private int count = 1;
+            private int count = 0;
             @Override
             public void handle(ActionEvent event)
             {
@@ -148,6 +148,7 @@ public class MovementControlsVBox
         {
 
             comm.sendMessage(code);
+
         }
     }
 

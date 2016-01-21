@@ -2,12 +2,16 @@ package Components;
 
 import FileIO.ProgramFileReader;
 import Main.LaMachinaGui;
+import Serial.SerialCommunication;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -22,16 +26,19 @@ public class LaMachinaMenuBar extends MenuBar
     private Stage parentStage;
     private double[] params;
     private LaMachinaGui parentGui;
+    private SerialCommunication comm;
 
     public LaMachinaMenuBar(Stage parent,
                             double[] params,
-                            LaMachinaGui gui)
+                            LaMachinaGui gui,
+                            SerialCommunication comm)
     {
         super();
         createMenu();
         parentStage = parent;
         this.params = params;
         this.parentGui = gui;
+        this.comm = comm;
     }
 
     public void createMenu()
@@ -64,7 +71,9 @@ public class LaMachinaMenuBar extends MenuBar
             @Override
             public void handle(ActionEvent event) {
                 Stage stage = new Stage();
-                Scene scene = new Scene(new SerialMonitorVBox(params, stage, parentGui), 200,200); stage.show();
+                SerialMonitorVBox smv = new SerialMonitorVBox(params, stage, comm);
+                VBox.setVgrow(smv, Priority.ALWAYS);
+                Scene scene = new Scene(smv, 200,200); stage.show();
                 stage.setTitle("Serial Monitor");
                 scene.getStylesheets().addAll("Style.css");
                 stage.setX(parentStage.getX() + 250);
