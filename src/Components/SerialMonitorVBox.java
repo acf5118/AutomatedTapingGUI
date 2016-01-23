@@ -49,6 +49,9 @@ public class SerialMonitorVBox
     @Override
     public void createComponents()
     {
+        textArea = new TextArea();
+        textArea.setEditable(false);
+        textArea.setFocusTraversable(false);
         TextField tfEnterCmds = new TextField();
         tfEnterCmds.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -67,8 +70,6 @@ public class SerialMonitorVBox
                 }
             }
         });
-
-        textArea = new TextArea();
         HBox.setHgrow(textArea, Priority.ALWAYS);
         VBox.setVgrow(textArea, Priority.ALWAYS);
         getChildren().addAll(textArea, tfEnterCmds);

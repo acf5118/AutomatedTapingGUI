@@ -100,7 +100,7 @@ public class LaMachinaGui extends Application
      */
     public void createMenuBar()
     {
-        menuBar = new LaMachinaMenuBar(primaryStage,params, this, serialComm);
+        menuBar = new LaMachinaMenuBar(primaryStage, params, this, serialComm);
         ((VBox)scene.getRoot()).getChildren().addAll(menuBar);
     }
 
@@ -177,6 +177,7 @@ public class LaMachinaGui extends Application
         {
             case CONNECTION:
                 machineStatus.updateStatus(args);
+                menuBar.enableSerialMonitor();
                 break;
         }
     }

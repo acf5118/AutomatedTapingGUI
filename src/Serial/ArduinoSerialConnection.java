@@ -1,8 +1,6 @@
 package Serial;
 
 import jssc.*;
-import java.util.Observable;
-
 
 /**
  * Created by Adam Fowles on 1/9/2016.
@@ -12,6 +10,7 @@ public class ArduinoSerialConnection extends AbstractSerialConnection
 {
     // Input read from the serial connection
     private StringBuilder inputBuffer;
+    private int count = 0;
 
     /**
      * Overridden method from implementing SerialPortEventListener
@@ -21,6 +20,7 @@ public class ArduinoSerialConnection extends AbstractSerialConnection
     @Override
     public void serialEvent(SerialPortEvent serialPortEvent)
     {
+        if (count == 0){count++;return;}
         String[] messages = null;
         if (inputBuffer == null)
         {
@@ -33,22 +33,28 @@ public class ArduinoSerialConnection extends AbstractSerialConnection
             {
                 String s = new String(buf, 0, buf.length);
                 inputBuffer.append(s);
+                System.out.println("Monitor: ");
                 if (inputBuffer.toString().contains("\r\n"))
                 {
                     messages = inputBuffer.toString().split("\r\n", -1);
-                    System.out.println("Monitor: ");
+
                     for (int i = 0; i < messages.length; i++)
                     {
                         System.out.println(messages[i]);
+                        if (i + 1 < messages.length) {}
+                        else
+                        {
+                            inputBuffer = new StringBuilder().append(messages[i]);
+                        }
                     }
                 }
+
                 else
                 {
                     System.out.println("Monitor: " + s);
                     messages = new String[]{s.toString()};
                 }
             }
-            inputBuffer = new StringBuilder();
         }
         catch (SerialPortException e)
         {
@@ -119,6 +125,4 @@ public class ArduinoSerialConnection extends AbstractSerialConnection
             }
         }
     }
-
-    public StringBuilder getSerialBuffer(){return inputBuffer;}
 }

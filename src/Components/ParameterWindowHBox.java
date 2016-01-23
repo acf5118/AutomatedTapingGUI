@@ -198,13 +198,21 @@ public class ParameterWindowHBox
         @Override
         public void handle(ActionEvent event)
         {
-            double[] parameters = new double[]{
-                    Double.parseDouble(tfIncRotate.getText()),
-                    Double.parseDouble(tfFeedRateRotate.getText()),
-                    Double.parseDouble(tfIncTranslate.getText()),
-                    Double.parseDouble(tfFeedRateTranslate.getText()),
-                    120};
-
+            double[] parameters;
+            try
+            {
+                 parameters = new double[]{
+                        Double.parseDouble(tfIncRotate.getText()),
+                        Double.parseDouble(tfFeedRateRotate.getText()),
+                        Double.parseDouble(tfIncTranslate.getText()),
+                        Double.parseDouble(tfFeedRateTranslate.getText()),
+                        120};
+            }
+            catch(NumberFormatException e)
+            {
+                //TODO tell the user
+                return;
+            }
             ProgramFileWriter.writeParameterFile(parameters);
             // Close the window after you apply the new values
             params = parameters;

@@ -14,6 +14,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class LaMachinaMenuBar extends MenuBar
     private double[] params;
     private LaMachinaGui parentGui;
     private SerialCommunication comm;
+    private MenuItem miSerialMonitor;
 
     public LaMachinaMenuBar(Stage parent,
                             double[] params,
@@ -34,11 +36,11 @@ public class LaMachinaMenuBar extends MenuBar
                             SerialCommunication comm)
     {
         super();
-        createMenu();
         parentStage = parent;
         this.params = params;
         this.parentGui = gui;
         this.comm = comm;
+        createMenu();
     }
 
     public void createMenu()
@@ -66,24 +68,9 @@ public class LaMachinaMenuBar extends MenuBar
         menuFile.getItems().add(miOpen);
         menuSetting.getItems().add(miParameters);
 
-        MenuItem miSerialMonitor = new MenuItem("Serial Monitor");
-        miSerialMonitor.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Stage stage = new Stage();
-                SerialMonitorVBox smv = new SerialMonitorVBox(params, stage, comm);
-                VBox.setVgrow(smv, Priority.ALWAYS);
-                Scene scene = new Scene(smv, 200,200); stage.show();
-                stage.setTitle("Serial Monitor");
-                scene.getStylesheets().addAll("Style.css");
-                stage.setX(parentStage.getX() + 250);
-                stage.setY(parentStage.getY() + 100);
-
-                stage.setScene(scene);
-                stage.show();
-            }
-        });
-        //miSerialMonitor.setDisable(true);
+        miSerialMonitor = new MenuItem("Serial Monitor");
+        miSerialMonitor.setOnAction(new SerialMonitorEventHandler());
+        miSerialMonitor.setDisable(true);
 
         menuView.getItems().add(miSerialMonitor);
         // Add all of the menus to the menubar
@@ -102,14 +89,45 @@ public class LaMachinaMenuBar extends MenuBar
             scene.getStylesheets().addAll("Style.css");
             stage.setX(parentStage.getX() + 250);
             stage.setY(parentStage.getY() + 100);
-
             stage.setScene(scene);
             stage.show();
         }
     }
 
+    private class SerialMonitorEventHandler
+            implements EventHandler<ActionEvent>
+    {
+        private Stage stage;
+        public SerialMonitorEventHandler()
+        {
+            stage = new Stage();
+            SerialMonitorVBox smv = new SerialMonitorVBox(params, stage, comm);
+            VBox.setVgrow(smv, Priority.ALWAYS);
+            Scene scene = new Scene(smv, 300,250);
+            stage.setTitle("Serial Monitor");
+            scene.getStylesheets().addAll("Style.css");
+            stage.setX(parentStage.getX() + 250);
+            stage.setY(parentStage.getY() + 100);
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent t) {
+                    stage.hide();
+                }
+            });
+            stage.setScene(scene);
+        }
+        @Override
+        public void handle(ActionEvent event) {
+            stage.show();
+        }
+    }
     public void setParams(double[] params)
     {
         this.params = params;
+    }
+
+    public void enableSerialMonitor()
+    {
+        miSerialMonitor.setDisable(false);
     }
 }
