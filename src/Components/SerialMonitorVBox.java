@@ -1,5 +1,6 @@
 package Components;
 
+import GCodeUtil.GCodeGenerator;
 import Main.LaMachinaGui;
 import Serial.ArduinoSerialConnection;
 import Serial.SerialCommunication;
@@ -56,6 +57,12 @@ public class SerialMonitorVBox
                 {
                     comm.sendMessage(tfEnterCmds.getText());
                     textArea.appendText(">>> " + tfEnterCmds.getText() + "\n");
+                    tfEnterCmds.clear();
+                }
+                if (event.isControlDown() && event.getCode() == KeyCode.X)
+                {
+                    comm.sendByte(GCodeGenerator.RESET);
+                    textArea.appendText(">>> CTRL - X");
                     tfEnterCmds.clear();
                 }
             }

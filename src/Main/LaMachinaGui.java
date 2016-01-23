@@ -4,6 +4,7 @@ import FileIO.ProgramFileReader;
 import GCodeUtil.GCodeGenerator;
 import Serial.SerialCommunication;
 import Serial.UpdateMessageEnum;
+import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -43,6 +44,11 @@ public class LaMachinaGui extends Application
     private QuickViewVBox quickView;
     private MachineStatusVBox machineStatus;
     private LaMachinaMenuBar menuBar;
+
+    public void init() throws Exception
+    {
+        Thread.sleep(2000);
+    }
 
     /**
      * Starting point for the GUI creation
@@ -137,13 +143,18 @@ public class LaMachinaGui extends Application
      */
     public static void main(String[] args)
     {
-        launch(args);
+        LauncherImpl.launchApplication(LaMachinaGui.class, GraphicsPreloader.class, args);
     }
 
     public ArrayList<Button> getControlButtons(){return mvControls.getButtons();}
     public void enablePlayback(){playback.enableButtons();}
     public void toggleControls(boolean toggle){mvControls.toggleAllButtons(toggle);}
-    public void updateParameters(double[] params){mvControls.updateParameters(params);}
+    public void updateParameters(double[] params)
+    {
+        mvControls.updateParameters(params);
+        menuBar.setParams(params);
+    }
+
     public void updateProgramParameters(double[] params, double[] mod, String filename)
     {
         playback.setGCodeLines(GCodeGenerator.generateLines(mod));

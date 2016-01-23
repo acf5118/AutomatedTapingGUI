@@ -1,7 +1,6 @@
-1. Getting save setting file to save and read
-2. Create if else statement for max rpm (x axis surface speed) critera
-3. Input function to create linearly interpolated feed rate (for constant feed rate w/ transition)
-4. Input function for finding X (rotation) distance required with input parameters
-5. Figure out how to pause and resume a G-Code file while it's running (check universal g-code sender)
+2. Change curser location when opening serial monitor
+3. Add a reset button
+4. Add a warning display when a reset is required
+5. Add startup splash screen
 6.
 

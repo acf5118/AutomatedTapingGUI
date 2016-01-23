@@ -107,4 +107,9 @@ public class LaMachinaMenuBar extends MenuBar
             stage.show();
         }
     }
+
+    public void setParams(double[] params)
+    {
+        this.params = params;
+    }
 }

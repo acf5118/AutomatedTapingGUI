@@ -88,6 +88,17 @@ public class SerialCommunication
         }
     }
 
+    public void sendByte(Byte b)
+    {
+        try
+        {
+            connection.writeByte(b);
+        }
+        catch (SerialPortException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Shutting down the device does a disconnect
@@ -100,8 +111,8 @@ public class SerialCommunication
         }
         catch (SerialPortException e)
         {
-            //TODO do something else
-            e.printStackTrace();
+            // Not much to do here
+            //e.printStackTrace();
         }
     }
 

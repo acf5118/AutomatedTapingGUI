@@ -1,6 +1,5 @@
 package Components;
 
-import FileIO.ProgramFileReader;
 import FileIO.ProgramFileWriter;
 import Main.LaMachinaGui;
 import javafx.event.ActionEvent;
@@ -208,6 +207,12 @@ public class ParameterWindowHBox
 
             ProgramFileWriter.writeParameterFile(parameters);
             // Close the window after you apply the new values
+            params = parameters;
+            tfIncRotate.setPromptText(Double.toString(parameters[0]));
+            tfFeedRateRotate.setPromptText(Double.toString(parameters[1]));
+            tfIncTranslate.setPromptText(Double.toString(parameters[2]));
+            tfFeedRateTranslate.setPromptText(Double.toString(parameters[3]));
+
             parent.updateParameters(parameters);
             window.close();
         }
