@@ -1,25 +1,21 @@
 package Components;
 
 import GCodeUtil.GCodeGenerator;
-import Main.LaMachinaGui;
-import Serial.ArduinoSerialConnection;
 import Serial.SerialCommunication;
 import javafx.application.Platform;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.ScrollPane;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -33,6 +29,7 @@ public class SerialMonitorVBox
     private SerialCommunication comm;
     private StringBuilder inputBuffer;
     private TextArea textArea;
+    private TextField tfEnterCmds;
 
     SerialMonitorVBox(double[] params,
                       Stage window,
@@ -49,10 +46,18 @@ public class SerialMonitorVBox
     @Override
     public void createComponents()
     {
+        HBox r = new HBox(SPACING);
+        r.setPadding(new Insets(5,5,5,5));
         textArea = new TextArea();
         textArea.setEditable(false);
         textArea.setFocusTraversable(false);
-        TextField tfEnterCmds = new TextField();
+        textArea.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                tfEnterCmds.requestFocus();
+            }
+        });
+        tfEnterCmds = new TextField();
         tfEnterCmds.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -70,9 +75,19 @@ public class SerialMonitorVBox
                 }
             }
         });
+        Button btnClear = new Button("Clear");
+        btnClear.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                textArea.clear();
+            }
+        });
+
+        r.getChildren().addAll(tfEnterCmds, btnClear);
         HBox.setHgrow(textArea, Priority.ALWAYS);
         VBox.setVgrow(textArea, Priority.ALWAYS);
-        getChildren().addAll(textArea, tfEnterCmds);
+        HBox.setHgrow(tfEnterCmds, Priority.ALWAYS);
+        getChildren().addAll(textArea, r);
     }
 
     @Override
