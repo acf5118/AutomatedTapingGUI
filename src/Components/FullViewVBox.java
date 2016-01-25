@@ -6,12 +6,21 @@ import javafx.scene.layout.VBox;
 
 /**
  * Created by Adam Fowles on 1/11/2016.
+ * The full view of all the current parameters
+ * from the fill about to be played
  */
 public class FullViewVBox
         extends VBox implements ComponentInterface
 {
     private double[] params;
 
+    /**
+     * Constructor for the HBox that displays
+     * the full view of all the current parameters
+     * to be played.
+     * @param params - parameters once
+     *               they have been modified
+     */
     public FullViewVBox(double[] params)
     {
         super(SPACING);

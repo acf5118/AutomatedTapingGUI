@@ -1,5 +1,7 @@
-package Components;
+package Components.Menu;
 
+import Components.ParameterWindowHBox;
+import Components.SerialMonitorVBox;
 import FileIO.ProgramFileReader;
 import Main.LaMachinaGui;
 import Serial.SerialCommunication;
@@ -9,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -24,9 +25,9 @@ import java.util.ArrayList;
  */
 public class LaMachinaMenuBar extends MenuBar
 {
+    private LaMachinaGui parentGui;
     private Stage parentStage;
     private double[] params;
-    private LaMachinaGui parentGui;
     private SerialCommunication comm;
     private MenuItem miSerialMonitor;
 
@@ -46,7 +47,7 @@ public class LaMachinaMenuBar extends MenuBar
     public void createMenu()
     {
         // List of menus
-        Menu menuFile = new Menu("File");
+        Menu menuFile = new FileMenu(parentGui, comm);
         Menu menuEdit = new Menu("Edit");
         Menu menuView = new Menu("View");
         Menu menuSetting = new Menu("Settings");
@@ -54,18 +55,7 @@ public class LaMachinaMenuBar extends MenuBar
         MenuItem miParameters = new MenuItem("Parameters");
         miParameters.setOnAction(new ParametersEventHandler());
 
-        MenuItem miOpen = new MenuItem("Open Program File");
-        miOpen.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FileChooser fc = new FileChooser();
-                File file = fc.showOpenDialog(parentGui.getPrimaryStage());
-                if (file == null){return;}
-                ArrayList<double[]> pr = ProgramFileReader.readProgramFile(file);
-                parentGui.updateProgramParameters(pr.get(0), pr.get(1), file.getName());
-            }
-        });
-        menuFile.getItems().add(miOpen);
+
         menuSetting.getItems().add(miParameters);
 
         miSerialMonitor = new MenuItem("Serial Monitor");

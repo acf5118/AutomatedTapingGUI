@@ -1,5 +1,6 @@
 package Main;
 
+import Components.Menu.LaMachinaMenuBar;
 import FileIO.ProgramFileReader;
 import GCodeUtil.GCodeGenerator;
 import Serial.SerialCommunication;
@@ -137,15 +138,6 @@ public class LaMachinaGui extends Application
         firstRow.getChildren().addAll(secondColumn);
     }
 
-    /**
-     * Starts application
-     * @param args - program arguments (none used)
-     */
-    public static void main(String[] args)
-    {
-        LauncherImpl.launchApplication(LaMachinaGui.class, GraphicsPreloader.class, args);
-    }
-
     public ArrayList<Button> getControlButtons(){return mvControls.getButtons();}
     public void enablePlayback(){playback.enableButtons();}
     public void toggleControls(boolean toggle){mvControls.toggleAllButtons(toggle);}
@@ -180,5 +172,20 @@ public class LaMachinaGui extends Application
                 menuBar.enableSerialMonitor();
                 break;
         }
+    }
+
+    public void quit()
+    {
+        serialComm.shutdown();
+        primaryStage.close();
+    }
+
+    /**
+     * Starts application
+     * @param args - program arguments (none used)
+     */
+    public static void main(String[] args)
+    {
+        LauncherImpl.launchApplication(LaMachinaGui.class, GraphicsPreloader.class, args);
     }
 }

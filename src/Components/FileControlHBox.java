@@ -37,9 +37,9 @@ public class FileControlHBox
     {
         super();
         this.parent = parent;
-        setSpacing(SPACING / 2);
         this.parentGui = gui;
         errors = false;
+        setSpacing(SPACING / 2);
         createComponents();
     }
 
@@ -62,10 +62,10 @@ public class FileControlHBox
                 getClass().getResourceAsStream("/Resources/Eraser.png"))));
         // Label for displaying error messages
         lblErrors = new Label();
+        // Set the label color to red
         lblErrors.setStyle("-fx-text-fill: #e60000;");
 
         getChildren().addAll(btnSave,btnErase, lblErrors );
-
     }
 
     /**

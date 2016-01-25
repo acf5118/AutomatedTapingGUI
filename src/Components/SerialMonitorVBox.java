@@ -27,13 +27,12 @@ public class SerialMonitorVBox
 {
 
     private SerialCommunication comm;
-    private StringBuilder inputBuffer;
     private TextArea textArea;
     private TextField tfEnterCmds;
 
-    SerialMonitorVBox(double[] params,
-                      Stage window,
-                      SerialCommunication comm)
+    public SerialMonitorVBox(double[] params,
+                             Stage window,
+                             SerialCommunication comm)
     {
         super();
 
