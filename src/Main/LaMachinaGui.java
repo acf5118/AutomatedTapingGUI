@@ -90,7 +90,7 @@ public class LaMachinaGui extends Application
         this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t) {
-                serialComm.shutdown();
+                quit();
             }
         });
         this.primaryStage.show();
@@ -173,10 +173,16 @@ public class LaMachinaGui extends Application
                 break;
         }
     }
+    public void setAlarmMessage()
+    {
+        machineStatus.setAlarm();
+    }
 
     public void quit()
     {
         serialComm.shutdown();
+        quickView.close();
+        menuBar.closeWindows();
         primaryStage.close();
     }
 

@@ -24,7 +24,7 @@ public class MachineStatusVBox
 
     private SerialCommunication comm;
     private ImageView ivConnection;
-    private Label lblConnection, lblCurrFile;
+    private Label lblConnection, lblCurrFile, lblMachineStatus;
     private Button btnConnect;
 
     /**
@@ -63,10 +63,11 @@ public class MachineStatusVBox
         ivConnection = new ImageView(
                 new Image(getClass().getResourceAsStream("/Resources/Not Connected.png")));
 
+        lblMachineStatus = new Label("Status: Good");
         HBox r1 = new HBox(SPACING);
         r1.getChildren().addAll(lblConnection, ivConnection);
 
-        col.getChildren().addAll(btnConnect, r1, lblCurrFile);
+        col.getChildren().addAll(btnConnect, r1, lblCurrFile, lblMachineStatus);
         getChildren().addAll(lblStatus, col);
 
     }
@@ -107,6 +108,7 @@ public class MachineStatusVBox
         lblConnection.setText(status[1]);
     }
 
+    public void setAlarm(){lblMachineStatus.setText("Status: ALARM");}
     public void setFilename(String filename)
     {
         lblCurrFile.setText("Loaded: " + filename);

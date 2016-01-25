@@ -1,6 +1,7 @@
 package Components;
 
 import GCodeUtil.GCodeGenerator;
+import Main.LaMachinaGui;
 import Serial.SerialCommunication;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,7 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -29,16 +29,16 @@ public class SerialMonitorVBox
     private SerialCommunication comm;
     private TextArea textArea;
     private TextField tfEnterCmds;
+    private LaMachinaGui parentGui;
 
     public SerialMonitorVBox(double[] params,
-                             Stage window,
+                             LaMachinaGui parentGui,
                              SerialCommunication comm)
     {
         super();
-
+        this.parentGui = parentGui;
         this.comm = comm;
         this.comm.addSerialMonitorObserver(this);
-
         createComponents();
     }
 
@@ -100,6 +100,10 @@ public class SerialMonitorVBox
         Platform.runLater(() -> {
             for (String s: c)
             {
+                if (s.contains("ALARM"))
+                {
+                    parentGui.setAlarmMessage();
+                }
                 textArea.appendText(s + "\n");
             }
         });

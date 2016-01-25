@@ -25,6 +25,7 @@ public class QuickViewVBox
     private double[] params, mod;
     private Stage parentStage;
     private Label lop, dop, wop;
+    private Stage fullViewStage;
 
     public QuickViewVBox(Stage parentStage)
     {
@@ -70,15 +71,19 @@ public class QuickViewVBox
         @Override
         public void handle(ActionEvent event)
         {
-            Stage stage = new Stage();
-            Scene scene = new Scene(new FullViewVBox(mod)); stage.show();
-            stage.setTitle("Full View");
-            scene.getStylesheets().addAll("Style.css");
-            stage.setX(parentStage.getX() + 250);
-            stage.setY(parentStage.getY() + 100);
+            if (fullViewStage == null)
+            {
+                fullViewStage = new Stage();
+                Scene scene = new Scene(new FullViewVBox(mod));
+                fullViewStage.setTitle("Full View");
+                scene.getStylesheets().addAll("Style.css");
+                fullViewStage.setX(parentStage.getX() + 250);
+                fullViewStage.setY(parentStage.getY() + 100);
 
-            stage.setScene(scene);
-            stage.show();
+                fullViewStage.setScene(scene);
+            }
+            fullViewStage.show();
+            fullViewStage.toFront();
 
         }
     }
@@ -92,5 +97,13 @@ public class QuickViewVBox
         dop.setText("Diameter of Part: " + p[1]);
         wop.setText("Tape Width: " + p[2]);
 
+    }
+
+    public void close()
+    {
+        if (fullViewStage != null)
+        {
+            fullViewStage.close();
+        }
     }
 }

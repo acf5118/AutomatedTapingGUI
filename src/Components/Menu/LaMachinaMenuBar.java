@@ -30,6 +30,7 @@ public class LaMachinaMenuBar extends MenuBar
     private double[] params;
     private SerialCommunication comm;
     private MenuItem miSerialMonitor;
+    private Stage parameterWindowStage, serialMonitorStage;
 
     public LaMachinaMenuBar(Stage parent,
                             double[] params,
@@ -73,42 +74,49 @@ public class LaMachinaMenuBar extends MenuBar
         @Override
         public void handle(ActionEvent event)
         {
-            Stage stage = new Stage();
-            Scene scene = new Scene(new ParameterWindowHBox(params, stage, parentGui)); stage.show();
-            stage.setTitle("Parameters");
-            scene.getStylesheets().addAll("Style.css");
-            stage.setX(parentStage.getX() + 250);
-            stage.setY(parentStage.getY() + 100);
-            stage.setScene(scene);
-            stage.show();
+            if (parameterWindowStage == null)
+            {
+                parameterWindowStage = new Stage();
+                Scene scene = new Scene(new ParameterWindowHBox(params,
+                        parameterWindowStage, parentGui));
+                parameterWindowStage.setTitle("Parameters");
+                scene.getStylesheets().addAll("Style.css");
+                parameterWindowStage.setX(parentStage.getX() + 250);
+                parameterWindowStage.setY(parentStage.getY() + 100);
+                parameterWindowStage.setScene(scene);
+            }
+            parameterWindowStage.show();
+            parameterWindowStage.toFront();
         }
     }
 
     private class SerialMonitorEventHandler
             implements EventHandler<ActionEvent>
     {
-        private Stage stage;
-        public SerialMonitorEventHandler()
-        {
-            stage = new Stage();
-            SerialMonitorVBox smv = new SerialMonitorVBox(params, stage, comm);
-            VBox.setVgrow(smv, Priority.ALWAYS);
-            Scene scene = new Scene(smv, 300,250);
-            stage.setTitle("Serial Monitor");
-            scene.getStylesheets().addAll("Style.css");
-            stage.setX(parentStage.getX() + 250);
-            stage.setY(parentStage.getY() + 100);
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent t) {
-                    stage.hide();
-                }
-            });
-            stage.setScene(scene);
-        }
         @Override
-        public void handle(ActionEvent event) {
-            stage.show();
+        public void handle(ActionEvent event)
+        {
+            if (serialMonitorStage == null)
+            {
+                serialMonitorStage = new Stage();
+                SerialMonitorVBox smv = new SerialMonitorVBox(
+                        params, parentGui, comm);
+                VBox.setVgrow(smv, Priority.ALWAYS);
+                Scene scene = new Scene(smv, 300, 250);
+                serialMonitorStage.setTitle("Serial Monitor");
+                scene.getStylesheets().addAll("Style.css");
+                serialMonitorStage.setX(parentStage.getX() + 250);
+                serialMonitorStage.setY(parentStage.getY() + 100);
+                serialMonitorStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent t) {
+                        serialMonitorStage.hide();
+                    }
+                });
+                serialMonitorStage.setScene(scene);
+            }
+            serialMonitorStage.show();
+            serialMonitorStage.toFront();
         }
     }
     public void setParams(double[] params)
@@ -119,5 +127,17 @@ public class LaMachinaMenuBar extends MenuBar
     public void enableSerialMonitor()
     {
         miSerialMonitor.setDisable(false);
+    }
+
+    public void closeWindows()
+    {
+        if (serialMonitorStage != null)
+        {
+            serialMonitorStage.close();
+        }
+        if (parameterWindowStage != null)
+        {
+            parameterWindowStage.close();
+        }
     }
 }

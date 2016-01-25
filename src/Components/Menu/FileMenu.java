@@ -70,6 +70,6 @@ public class FileMenu extends Menu
             }
         });
         // Add all the menu items
-        getItems().addAll(miOpen, miQuit, miReset);
+        getItems().addAll(miOpen, miReset, miQuit);
     }
 }
