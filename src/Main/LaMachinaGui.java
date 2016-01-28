@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
@@ -62,6 +63,8 @@ public class LaMachinaGui extends Application
         this.params = ProgramFileReader.readParameterFile(this.getClass());
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("La Machina GUI");
+        this.primaryStage.getIcons().add(new Image(
+                getClass().getResourceAsStream("/Resources/LM Icon.png")));
         scene = new Scene(new VBox(), WIDTH, HEIGHT);
         scene.setFill(Color.OLDLACE);
         scene.getStylesheets().addAll("Style.css");
