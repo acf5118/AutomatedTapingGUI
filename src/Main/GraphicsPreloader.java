@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * Created by Adam Fowles on 1/22/2016.
@@ -28,6 +29,7 @@ public class GraphicsPreloader extends Preloader
 
     public void start(Stage stage) throws Exception {
         this.stage = stage;
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(createPreloaderScene());
         stage.show();
     }

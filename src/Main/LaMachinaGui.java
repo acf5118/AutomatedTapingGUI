@@ -32,6 +32,7 @@ public class LaMachinaGui extends Application
 {
     private final int SPACING = 10;
     private final int WIDTH = 530, HEIGHT = 460;
+    private final long SPLASH_SCREEN_DELAY = 2000;
     private double[] params;
     private Stage primaryStage;
 
@@ -49,7 +50,7 @@ public class LaMachinaGui extends Application
 
     public void init() throws Exception
     {
-        Thread.sleep(2000);
+       Thread.sleep(SPLASH_SCREEN_DELAY);
     }
 
     /**
@@ -62,7 +63,7 @@ public class LaMachinaGui extends Application
     {
         this.params = ProgramFileReader.readParameterFile(this.getClass());
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("La Machina GUI");
+        this.primaryStage.setTitle("La Machina");
         this.primaryStage.getIcons().add(new Image(
                 getClass().getResourceAsStream("/Resources/LM Icon.png")));
         scene = new Scene(new VBox(), WIDTH, HEIGHT);
