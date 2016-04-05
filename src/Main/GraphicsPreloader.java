@@ -22,7 +22,7 @@ public class GraphicsPreloader extends Preloader
         bar = new ProgressBar();
         BorderPane p = new BorderPane();
         ImageView iv = new ImageView();
-        iv.setImage(new Image(getClass().getResourceAsStream("/Resources/Render.jpg")));
+        iv.setImage(new Image(getClass().getResourceAsStream("/Resources/Render.png")));
         p.setCenter(bar);
         p.setTop(iv);
         return new Scene(p);
