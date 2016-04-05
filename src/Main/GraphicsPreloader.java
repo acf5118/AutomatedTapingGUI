@@ -17,27 +17,33 @@ public class GraphicsPreloader extends Preloader
     ProgressBar bar;
     Stage stage;
 
+
     private Scene createPreloaderScene() {
         bar = new ProgressBar();
         BorderPane p = new BorderPane();
         ImageView iv = new ImageView();
-        iv.setImage(new Image(getClass().getResourceAsStream("/Resources/MexicanFlag.png")));
+        iv.setImage(new Image(getClass().getResourceAsStream("/Resources/Render.jpg")));
         p.setCenter(bar);
         p.setTop(iv);
         return new Scene(p);
     }
 
+
     public void start(Stage stage) throws Exception {
         this.stage = stage;
+        this.stage.getIcons().add(new Image(
+                getClass().getResourceAsStream("/Resources/LM Icon.png")));
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(createPreloaderScene());
         stage.show();
     }
 
+
     @Override
     public void handleProgressNotification(javafx.application.Preloader.ProgressNotification pn) {
         bar.setProgress(pn.getProgress());
     }
+
 
     @Override
     public void handleStateChangeNotification(javafx.application.Preloader.StateChangeNotification evt) {
