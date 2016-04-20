@@ -64,10 +64,11 @@ public class MovementControlsVBox
             @Override
             public void handle(ActionEvent event)
             {
+                comm.sendByte(GCodeGenerator.RESET);
                 if (count == 0)
                 {
                     comm.sendMessage("$H");
-                   // count++;
+                    //count++;
                 }
                 else
                 {
