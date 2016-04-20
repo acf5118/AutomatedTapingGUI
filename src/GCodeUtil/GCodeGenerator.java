@@ -25,19 +25,19 @@ public class GCodeGenerator
     {
         ArrayList<String> lines = new ArrayList<>();
 
+        lines.add("$H");
         lines.add("G20");
-        lines.add("G90 G01 Y0.0000");
-        lines.add("G91 G01 Y" + params[4]);
+        lines.add("G91 G01 Y" + params[4] + " F" + params[8]);
         // Pause command
         //lines.add("G91 G00 Y0.0000\n");
 
         lines.add(PAUSE);
 
-        lines.add("G91 G01 X" + params[1] + " Y" + params[5] + " F" + params[8]);
-        lines.add("G91 G01 X" + params[2] + " Y0.0000" + " F" + params[7]);
-        lines.add("G91 G01 X" + params[3] + " Y" + params[6] + " F" + params[8]);
-        lines.add("G91 G01 X" + params[2] + " Y0.0000" + " F" + params[7]);
-        lines.add("G91 G01 X" + params[1] + " Y" + params[5] + " F" + params[8]);
+        lines.add("G91 G01 X" + -params[1] + " Y" + params[5] + " F" + params[8]);
+        lines.add("G91 G01 X" + -params[2] + " Y0.0000" + " F" + params[7]);
+        lines.add("G91 G01 X" + -params[3] + " Y" + -params[6] + " F" + params[8]);
+        lines.add("G91 G01 X" + -params[2] + " Y0.0000" + " F" + params[7]);
+        lines.add("G91 G01 X" + -params[1] + " Y" + params[5] + " F" + params[8]);
 
         return lines;
     }
