@@ -67,7 +67,7 @@ public class MovementControlsVBox
                 if (count == 0)
                 {
                     comm.sendMessage("$H");
-                    count++;
+                   // count++;
                 }
                 else
                 {

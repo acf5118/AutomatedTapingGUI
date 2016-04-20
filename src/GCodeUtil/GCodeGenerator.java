@@ -47,7 +47,7 @@ public class GCodeGenerator
         double tHalfLength = (params[5] - params[4])/2;
         double y1 = params[4] + tHalfLength - params[2]/2;
         double y2 = tHalfLength - params[2]/2;
-        double y3 = -2*y2;
+        double y3 = 2*y2;
         double x1 = ((tHalfLength + params[2]/2)*params[1] * Math.PI)
                 /(params[2]*((100-params[3])/100));
         double x2 = Math.PI*params[1]*1.5;
