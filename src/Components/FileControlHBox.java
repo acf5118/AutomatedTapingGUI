@@ -81,6 +81,7 @@ public class FileControlHBox
             ArrayList<Double> values = new ArrayList<>();
             // List of fields from Part Creation
             ArrayList<TextField> fields = parent.getFields();
+
             // Whether or not there are errors with the
             // input data
             errors = false;
@@ -107,6 +108,7 @@ public class FileControlHBox
                     }
                 }
             }
+            values.add((double)parent.getRPM());
 
             // If there are no errors, a save file can
             // be created

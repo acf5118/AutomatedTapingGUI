@@ -83,7 +83,7 @@ public class SerialCommunication
         }
         catch (SerialPortException e)
         {
-            //TODO do something else
+
             e.printStackTrace();
         }
     }

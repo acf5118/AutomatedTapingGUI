@@ -25,6 +25,7 @@ public class PartCreationVBox
     private ArrayList<TextField> fields;
     private LaMachinaGui parent;
     private CheckBox cbApply;
+    private ComboBox<Integer> cbPartRPM;
 
     /**
      * Constructor for this part of
@@ -106,7 +107,7 @@ public class PartCreationVBox
                         4,
                         6
                 );
-        ComboBox<Integer> comboNumLayers = new ComboBox(optionsLayers);
+        ComboBox<Integer> comboNumLayers = new ComboBox<>(optionsLayers);
         comboNumLayers.setValue(optionsLayers.get(0));
         comboNumLayers.setPrefWidth(TF_SIZE);
 
@@ -123,9 +124,16 @@ public class PartCreationVBox
 
         // Eighth items
         Label lblPartRPM = new Label("Part RPM:");
-        TextField tfPartRPM = new TextField();
-        tfPartRPM.setPromptText("Enter RPM");
-        tfPartRPM.setPrefWidth(TF_SIZE);
+        ObservableList<Integer> rmpList =
+                FXCollections.observableArrayList(
+                        30,
+                        60,
+                        90,
+                        120
+                );
+        cbPartRPM = new ComboBox<>(rmpList);
+        cbPartRPM.setValue(rmpList.get(1));
+        cbPartRPM.setPrefWidth(TF_SIZE);
 
         // Ninth items
         cbApply = new CheckBox("Load Changes on Creation");
@@ -165,7 +173,7 @@ public class PartCreationVBox
         r7.getChildren().addAll(lblStartEnd, s7, tfStart, tfEnd);
 
         HBox r8 = new HBox(SPACING);
-        r8.getChildren().addAll(lblPartRPM, s8, tfPartRPM);
+        r8.getChildren().addAll(lblPartRPM, s8, cbPartRPM);
 
         fields.add(tfPartLength);
         fields.add(tfPartDiameter);
@@ -173,7 +181,7 @@ public class PartCreationVBox
         fields.add(tfTapePercent);
         fields.add(tfStart);
         fields.add(tfEnd);
-        fields.add(tfPartRPM);
+        //fields.add(tfPartRPM);
 
 
         // Add a separator between rows 6 and 7
@@ -200,6 +208,7 @@ public class PartCreationVBox
     }
 
     public ArrayList<TextField> getFields(){return fields;}
+    public int getRPM(){return cbPartRPM.getValue();}
     public boolean loadChanges(){return cbApply.isSelected();}
 
 }
