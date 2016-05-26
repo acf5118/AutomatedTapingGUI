@@ -1,6 +1,7 @@
 package Components.Menu;
 
 import FileIO.ProgramFileReader;
+import GCodeUtil.ArrayMapTuple;
 import GCodeUtil.GCodeGenerator;
 import Main.LaMachinaGui;
 import Serial.SerialCommunication;
@@ -49,8 +50,8 @@ public class FileMenu extends Menu
                 FileChooser fc = new FileChooser();
                 File file = fc.showOpenDialog(parentGui.getPrimaryStage());
                 if (file == null){return;}
-                ArrayList<double[]> pr = ProgramFileReader.readProgramFile(file);
-                parentGui.updateProgramParameters(pr.get(0), pr.get(1), file.getName());
+                ArrayMapTuple pr = ProgramFileReader.readProgramFile(file);
+                parentGui.updateProgramParameters(pr.params, pr.mod, file.getName());
             }
         });
         // Quits the program

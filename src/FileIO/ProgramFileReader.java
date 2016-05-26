@@ -1,7 +1,11 @@
 package FileIO;
 
+import GCodeUtil.ArrayMapTuple;
+import GCodeUtil.Strings;
+
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Adam Fowles on 1/10/2016.
@@ -20,11 +24,10 @@ public class ProgramFileReader
      * @param file - the file to read from
      * @return - the read in data.
      */
-    public static ArrayList<double[]> readProgramFile(File file)
+    public static ArrayMapTuple readProgramFile(File file)
     {
-        double[] params = new double[7];
+        HashMap<String, Double> params = new HashMap<>();
         double[] mod = new double[9];
-        ArrayList<double[]> returnTuple = new ArrayList<>();
         BufferedReader reader = null;
         String line, s[];
         // Checks on input
@@ -44,16 +47,15 @@ public class ProgramFileReader
                 if (s[0].equals("c")) {
                     continue;
                 }
-                //c <length> <x1> <x2> <x3> <y1> <y2> <y3> <f1> <f2>
+                //c <diameter> <Tape Width> <Tape Overlap %> <Start> <End> <Part RPM>
                 else if (s[0].equals("p1"))
                 {
-                    params[0] = Double.parseDouble(s[1]);
-                    params[1] = Double.parseDouble(s[2]);
-                    params[2] = Double.parseDouble(s[3]);
-                    params[3] = Double.parseDouble(s[4]);
-                    params[4] = Double.parseDouble(s[5]);
-                    params[5] = Double.parseDouble(s[6]);
-                    params[6] = Double.parseDouble(s[7]);
+                    params.put(Strings.DIAMETER, Double.parseDouble(s[1]));
+                    params.put(Strings.TAPE_WIDTH, Double.parseDouble(s[2]));
+                    params.put(Strings.TAPE_OL_PERCENT, Double.parseDouble(s[3]));
+                    params.put(Strings.START, Double.parseDouble(s[4]));
+                    params.put(Strings.END, Double.parseDouble(s[5]));
+                    params.put(Strings.RPM, Double.parseDouble(s[6]));
                 }
                 // p represents the parameters
                 else if (s[0].equals("p2"))
@@ -84,10 +86,8 @@ public class ProgramFileReader
         {
             System.out.println("Not a number");
         }
-        returnTuple.add(params);
-        returnTuple.add(mod);
 
-        return returnTuple;
+        return new ArrayMapTuple(params, mod);
     }
 
     /**

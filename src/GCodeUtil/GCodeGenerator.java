@@ -1,6 +1,7 @@
 package GCodeUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Adam Fowles on 1/10/2016.
@@ -42,18 +43,35 @@ public class GCodeGenerator
         return lines;
     }
 
-    public static double[] modifyParameters(double[] params)
+    /**
+     * Based on the input values from the users
+     * create a set of values for the machine
+     * @param params - the user input parameters
+     * @return the values for the machine program to use
+     */
+    public static double[] modifyParameters(HashMap<String, Double> params)
     {
-        double tHalfLength = (params[5] - params[4])/2;
-        double y1 = params[4] + tHalfLength - params[2]/2;
-        double y2 = tHalfLength - params[2]/2;
+        double tHalfLength = (params.get(Strings.END) - params.get(Strings.START))/2;
+        // first and fourth (technically) y displacement the motor goes to
+        double y1 = params.get(Strings.START) + tHalfLength - params.get(Strings.TAPE_WIDTH)/2;
+        // second y displacement
+        double y2 = tHalfLength - params.get(Strings.TAPE_WIDTH)/2;
+        // third y displacement
         double y3 = 2*y2;
-        double x1 = ((tHalfLength + params[2]/2)*params[1] * Math.PI)
-                /(params[2]*((100-params[3])/100));
-        double x2 = Math.PI*params[1]*1.5;
+        // first x displacement
+        double x1 = ((tHalfLength + params.get(Strings.TAPE_WIDTH)/2)
+                *params.get(Strings.DIAMETER) * Math.PI)
+                /(params.get(Strings.TAPE_WIDTH)*((100-params.get(Strings.TAPE_OL_PERCENT))/100));
+        // second x displacement
+        double x2 = Math.PI*params.get(Strings.DIAMETER)*1.5;
+        // third x displacement
         double x3 = 2*x1;
-        double f1 = Math.PI*params[6]*params[1];
+        // feedrate as a function of both translation and rotational motor
+        double f1 = Math.PI*params.get(Strings.RPM)*params.get(Strings.DIAMETER);
+        // feedrate to keep the roational motor at a constant RPM when translational
+        // motor stops moving.
         double f2 = (Math.sqrt(x1*x1 + y2*y2)/x1)*f1;
+
         if (f2 > 200*1.5*Math.PI)
         {
             f2 = 200*1.5*Math.PI;

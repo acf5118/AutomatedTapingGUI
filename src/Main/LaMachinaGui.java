@@ -24,6 +24,7 @@ import Components.*;
 import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Adam Fowles on 1/5/2016.
@@ -151,7 +152,7 @@ public class LaMachinaGui extends Application
         menuBar.setParams(params);
     }
 
-    public void updateProgramParameters(double[] params, double[] mod, String filename)
+    public void updateProgramParameters(HashMap<String, Double> params, double[] mod, String filename)
     {
         playback.setGCodeLines(GCodeGenerator.generateLines(mod));
         playback.setParams(mod);

@@ -1,9 +1,12 @@
 package FileIO;
 
+import GCodeUtil.Strings;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Created by Adam Fowles on 1/10/2016.
@@ -18,7 +21,9 @@ public class ProgramFileWriter
      * @param params - the input parameters (from part creation)
      * @param modified - the modified equation parameters
      */
-    public static void writeFile(File f, double[] params, double[] modified)
+    public static void writeFile(File f,
+                                 HashMap<String, Double> params,
+                                 double[] modified)
     {
         BufferedWriter writer;
         try
@@ -31,11 +36,16 @@ public class ProgramFileWriter
 
             // Write in some file comments
             writer.write("c Program file\n");
-            writer.write("c <length> <diameter> <Tape Width>" +
+            writer.write("c <diameter> <Tape Width>" +
                     " <Tape Overlap %> <Start> <End> <Part RPM>\n");
             // Write the first section - input parameters
             writer.write("p1 ");
-            for (double d : params) {writer.write(d + " ");}
+            writer.write(params.get(Strings.DIAMETER) + " ");
+            writer.write(params.get(Strings.TAPE_WIDTH) + " ");
+            writer.write(params.get(Strings.TAPE_OL_PERCENT) + " ");
+            writer.write(params.get(Strings.START) + " ");
+            writer.write(params.get(Strings.END) + " ");
+            writer.write(params.get(Strings.RPM) + " ");
             // Another file comment
             writer.write("\nc <length> <x1> <x2>" +
                     " <x3> <y1> <y2> <y3> <f1> <f2>\n");

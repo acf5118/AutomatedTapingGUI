@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Adam Fowles on 1/7/2016.
@@ -98,7 +99,7 @@ public class FileControlHBox
                     // try to parse the input data
                     try
                     {
-                        values.add(Double.parseDouble(tf.getText()));
+                        Double.parseDouble(tf.getText());
                     }
                     // catch an error
                     catch(NumberFormatException e)
@@ -108,7 +109,7 @@ public class FileControlHBox
                     }
                 }
             }
-            values.add((double)parent.getRPM());
+            //values.add((double)parent.getRPM());
 
             // If there are no errors, a save file can
             // be created
@@ -122,12 +123,14 @@ public class FileControlHBox
                 // Reset error text field
                 lblErrors.setText("");
 
+                /*
                 //TODO should convert values to double[]...
                 double[] d = new double[values.size()];
                 for (int i = 0; i < values.size(); i++)
                 {
                     d[i] = values.get(i);
                 }
+                */
                 // Pick a file
                 FileChooser fc = new FileChooser();
                 File file = fc.showSaveDialog(parentGui.getPrimaryStage());
@@ -136,16 +139,17 @@ public class FileControlHBox
                 {
                     return;
                 }
+                HashMap<String, Double> userParams = parent.getFieldValues();
                 // Create the modified parameters
-                double [] mod = GCodeGenerator.modifyParameters(d);
+                double [] mod = GCodeGenerator.modifyParameters(userParams);
                 // If the load file is supposed to update the current program
                 if (parent.loadChanges())
                 {
                     // Update the GUI
-                    parentGui.updateProgramParameters(d, mod, file.getName());
+                    parentGui.updateProgramParameters(userParams, mod, file.getName());
                 }
                 // Write the file
-                ProgramFileWriter.writeFile(file, d, mod);
+                ProgramFileWriter.writeFile(file, userParams, mod);
             }
             else
             {

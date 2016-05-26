@@ -1,5 +1,6 @@
 package Components;
 
+import GCodeUtil.Strings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,6 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+
 
 /**
  * Created by Adam Fowles on 1/10/2016.
@@ -22,9 +25,9 @@ public class QuickViewVBox
         extends VBox implements ComponentInterface
 {
     private Button btnFullView;
-    private double[] params, mod;
+    private double[]  mod;
     private Stage parentStage;
-    private Label lop, dop, wop;
+    private Label dop, wop;
     private Stage fullViewStage;
 
     public QuickViewVBox(Stage parentStage)
@@ -44,10 +47,9 @@ public class QuickViewVBox
         lblStatus.getStyleClass().add("bordered-titled-title");
 
         VBox c1 = new VBox(SPACING);
-        lop = new Label("Length of Part: __");
         dop = new Label("Diameter of Part: __");
         wop = new Label("Tape Width: __");
-        c1.getChildren().addAll(lop, dop, wop);
+        c1.getChildren().addAll(dop, wop);
 
         VBox c2 = new VBox();
         btnFullView = new Button();
@@ -89,13 +91,12 @@ public class QuickViewVBox
     }
 
     public void enableFullView(){btnFullView.setDisable(false);}
-    public void setParams(double[] p, double[] m)
+    public void setParams(HashMap<String, Double> p, double[] m)
     {
-        params = p;
+        //params = p;
         mod = m;
-        lop.setText("Length of Part: " + p[0]);
-        dop.setText("Diameter of Part: " + p[1]);
-        wop.setText("Tape Width: " + p[2]);
+        dop.setText("Diameter of Part: " + p.get(Strings.DIAMETER));
+        wop.setText("Tape Width: " + p.get(Strings.TAPE_WIDTH));
 
     }
 
