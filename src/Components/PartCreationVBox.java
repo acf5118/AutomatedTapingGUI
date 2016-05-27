@@ -102,6 +102,8 @@ public class PartCreationVBox
         Label lblTapePercent = new Label("Tape Overlap Percentage:");
         tfTapePercent =  new TextField();
         tfTapePercent.setPromptText("Enter %");
+        // set to 0% overlap by default
+        tfTapePercent.setText("0");
         tfTapePercent.setTooltip(new Tooltip("A value from 0 to 100"));
         tfTapePercent.setPrefWidth(TF_SIZE);
 

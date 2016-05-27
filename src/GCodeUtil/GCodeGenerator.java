@@ -25,7 +25,7 @@ public class GCodeGenerator
     public static ArrayList<String> generateLines(double[] params)
     {
         ArrayList<String> lines = new ArrayList<>();
-
+        System.out.println("*****START*****");
         lines.add("$H");
         lines.add("G20");
         lines.add("G91 G01 Y" + params[4] + " F" + params[8]);
@@ -39,7 +39,12 @@ public class GCodeGenerator
         lines.add("G91 G01 X" + -params[3] + " Y" + -params[6] + " F" + params[8]);
         lines.add("G91 G01 X" + -params[2] + " Y0.0000" + " F" + params[7]);
         lines.add("G91 G01 X" + -params[1] + " Y" + params[5] + " F" + params[8]);
-
+        lines.add("G91 G01 X" + -params[2]/2 + "F" + params[7]);
+        for (String s: lines)
+        {
+            System.out.println(s);
+        }
+        System.out.println("*****END*****");
         return lines;
     }
 
@@ -59,11 +64,11 @@ public class GCodeGenerator
         // third y displacement
         double y3 = 2*y2;
         // first x displacement
-        double x1 = ((tHalfLength + params.get(Strings.TAPE_WIDTH)/2)
+        double x1 = ((tHalfLength - params.get(Strings.TAPE_WIDTH)/2)
                 *params.get(Strings.DIAMETER) * Math.PI)
-                /(params.get(Strings.TAPE_WIDTH)*((100-params.get(Strings.TAPE_OL_PERCENT))/100));
+                /(params.get(Strings.TAPE_WIDTH)*((100-params.get(Strings.TAPE_OL_PERCENT))/100))+(params.get(Strings.DIAMETER)*Math.PI);
         // second x displacement
-        double x2 = Math.PI*params.get(Strings.DIAMETER)*1.5;
+        double x2 = Math.PI*params.get(Strings.DIAMETER)*2.0;
         // third x displacement
         double x3 = 2*x1;
         // feedrate as a function of both translation and rotational motor
@@ -77,6 +82,17 @@ public class GCodeGenerator
             f2 = 200*1.5*Math.PI;
             f1 = f2*(x1/Math.sqrt(x1*x1 + y2*y2));
         }
+        System.out.println("****VALUES****");
+        System.out.println("HalfLength: " + tHalfLength);
+        System.out.println("y1: " + y1);
+        System.out.println("y2: " + y2);
+        System.out.println("y3: " + y3);
+        System.out.println("x1: " + x1);
+        System.out.println("x2: " + x2);
+        System.out.println("x3: " + x3);
+        System.out.println("f1: " + f1);
+        System.out.println("f2: " + f2);
+        System.out.println("****END VALUES****");
         return new double[]{tHalfLength, x1, x2, x3, y1, y2, y3, f1, f2};
     }
 

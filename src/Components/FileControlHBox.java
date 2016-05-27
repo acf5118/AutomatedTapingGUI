@@ -2,6 +2,7 @@ package Components;
 
 import FileIO.ProgramFileWriter;
 import GCodeUtil.GCodeGenerator;
+import GCodeUtil.Strings;
 import Main.LaMachinaGui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -83,6 +84,7 @@ public class FileControlHBox
             // List of fields from Part Creation
             ArrayList<TextField> fields = parent.getFields();
 
+
             // Whether or not there are errors with the
             // input data
             errors = false;
@@ -109,12 +111,26 @@ public class FileControlHBox
                     }
                 }
             }
-            //values.add((double)parent.getRPM());
 
             // If there are no errors, a save file can
             // be created
             if (!errors)
             {
+                HashMap<String, Double> userParams = parent.getFieldValues();
+                // Numerical Error Handling (i.e numbers don't make sense)
+                if (userParams.get(Strings.TAPE_WIDTH) + userParams.get(Strings.END) > 25.8)
+                {
+                    errors = true;
+                    lblErrors.setText("Tape Width plus End\n" +
+                            "beyond bounds of machine");
+                    return;
+                }
+                if (userParams.get(Strings.TAPE_WIDTH) >= (userParams.get(Strings.END) - userParams.get(Strings.START)))
+                {
+                    errors = true;
+                    lblErrors.setText("Tape too wide for tape section");
+                    return;
+                }
                 // Remove any lingering style sheet
                 for (TextField tf: fields)
                 {
@@ -139,7 +155,7 @@ public class FileControlHBox
                 {
                     return;
                 }
-                HashMap<String, Double> userParams = parent.getFieldValues();
+
                 // Create the modified parameters
                 double [] mod = GCodeGenerator.modifyParameters(userParams);
                 // If the load file is supposed to update the current program
