@@ -28,6 +28,8 @@ import java.util.HashMap;
 
 /**
  * Created by Adam Fowles on 1/5/2016.
+ * The main application, starting point
+ * for the program.
  */
 public class LaMachinaGui extends Application
 {
@@ -48,6 +50,9 @@ public class LaMachinaGui extends Application
     private QuickViewVBox quickView;
     private MachineStatusVBox machineStatus;
     private LaMachinaMenuBar menuBar;
+
+    // Debug flag for entire program
+    public static boolean DEBUG = false;
 
     public void init() throws Exception
     {
@@ -164,8 +169,6 @@ public class LaMachinaGui extends Application
     }
 
     public Stage getPrimaryStage(){return primaryStage;}
-    //public ArduinoSerialConnection getArduinoSerial(){return arduinoSerial;}
-    public void enableSerialMonitor(){}
     public void reset(){mvControls.reset();}
 
     public void updateState(UpdateMessageEnum type, String[] args)
@@ -178,11 +181,15 @@ public class LaMachinaGui extends Application
                 break;
         }
     }
+
     public void setAlarmMessage()
     {
         machineStatus.setAlarm();
     }
 
+    /**
+     * Quit the Machine, tidy up
+     */
     public void quit()
     {
         serialComm.shutdown();

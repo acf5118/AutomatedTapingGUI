@@ -147,6 +147,7 @@ public class PartCreationVBox
         // Ninth items
         cbApply = new CheckBox("Load Changes on Creation");
         cbApply.setPadding(new Insets(0,0,SPACING/2,0));
+        cbApply.setSelected(true);
 
         // Spacers separating text field from labels
         Region s1 = new Region(), s2 = new Region(),

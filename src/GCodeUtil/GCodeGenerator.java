@@ -1,5 +1,7 @@
 package GCodeUtil;
 
+import Main.LaMachinaGui;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,7 +27,10 @@ public class GCodeGenerator
     public static ArrayList<String> generateLines(double[] params)
     {
         ArrayList<String> lines = new ArrayList<>();
-        System.out.println("*****START*****");
+        if (LaMachinaGui.DEBUG)
+        {
+            System.out.println("*****START*****");
+        }
         lines.add("$H");
         lines.add("G20");
         lines.add("G91 G01 Y" + params[4] + " F" + params[8]);
@@ -40,11 +45,15 @@ public class GCodeGenerator
         lines.add("G91 G01 X" + -params[2] + " Y0.0000" + " F" + params[7]);
         lines.add("G91 G01 X" + -params[1] + " Y" + params[5] + " F" + params[8]);
         lines.add("G91 G01 X" + -params[2]/2 + "F" + params[7]);
-        for (String s: lines)
+
+        if (LaMachinaGui.DEBUG)
         {
-            System.out.println(s);
+            for (String s : lines)
+            {
+                System.out.println(s);
+            }
+            System.out.println("*****END*****");
         }
-        System.out.println("*****END*****");
         return lines;
     }
 
@@ -82,17 +91,20 @@ public class GCodeGenerator
             f2 = 200*1.5*Math.PI;
             f1 = f2*(x1/Math.sqrt(x1*x1 + y2*y2));
         }
-        System.out.println("****VALUES****");
-        System.out.println("HalfLength: " + tHalfLength);
-        System.out.println("y1: " + y1);
-        System.out.println("y2: " + y2);
-        System.out.println("y3: " + y3);
-        System.out.println("x1: " + x1);
-        System.out.println("x2: " + x2);
-        System.out.println("x3: " + x3);
-        System.out.println("f1: " + f1);
-        System.out.println("f2: " + f2);
-        System.out.println("****END VALUES****");
+        if (LaMachinaGui.DEBUG)
+        {
+            System.out.println("****VALUES****");
+            System.out.println("HalfLength: " + tHalfLength);
+            System.out.println("y1: " + y1);
+            System.out.println("y2: " + y2);
+            System.out.println("y3: " + y3);
+            System.out.println("x1: " + x1);
+            System.out.println("x2: " + x2);
+            System.out.println("x3: " + x3);
+            System.out.println("f1: " + f1);
+            System.out.println("f2: " + f2);
+            System.out.println("****END VALUES****");
+        }
         return new double[]{tHalfLength, x1, x2, x3, y1, y2, y3, f1, f2};
     }
 
