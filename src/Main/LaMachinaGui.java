@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import Components.*;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -49,6 +50,7 @@ public class LaMachinaGui extends Application
     private PlaybackVBox playback;
     private QuickViewVBox quickView;
     private MachineStatusVBox machineStatus;
+    private PartCreationVBox partCreation;
     private LaMachinaMenuBar menuBar;
 
     // Debug flag for entire program
@@ -144,7 +146,8 @@ public class LaMachinaGui extends Application
         secondColumn.setSpacing(SPACING);
         secondColumn.setPadding(new Insets(SPACING, SPACING, SPACING, SPACING));
         playback = new PlaybackVBox(serialComm, this);
-        secondColumn.getChildren().addAll(playback, new PartCreationVBox(this));
+        partCreation = new PartCreationVBox(this);
+        secondColumn.getChildren().addAll(playback, partCreation);
         firstRow.getChildren().addAll(secondColumn);
     }
 
@@ -157,15 +160,16 @@ public class LaMachinaGui extends Application
         menuBar.setParams(params);
     }
 
-    public void updateProgramParameters(HashMap<String, Double> params, double[] mod, String filename)
+    public void updateProgramParameters(HashMap<String, Double> params, double[] mod, File file)
     {
         playback.setGCodeLines(GCodeGenerator.generateLines(mod));
         playback.setParams(mod);
         quickView.setParams(params, mod);
         quickView.enableFullView();
-        machineStatus.setFilename(filename);
-
-
+        machineStatus.setFilename(file.getName());
+        // Update the file choosing based on where the last file came from
+        partCreation.updateFileControl(file);
+        menuBar.updateFileMenu(file);
     }
 
     public Stage getPrimaryStage(){return primaryStage;}

@@ -11,6 +11,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,7 +31,7 @@ public class PartCreationVBox
     private HashMap<String, Double> tfValues;
     private TextField tfPartDiameter, tfPartTapeWidth,
             tfTapePercent, tfStart, tfEnd;
-
+    private FileControlHBox fileControl;
     /**
      * Constructor for this part of
      * the GUI
@@ -195,7 +196,7 @@ public class PartCreationVBox
 
         // add all the components to this VBox
         getChildren().addAll(lblBorderTitle,r1,r2,r3,r4,r5,r6,r7,
-                separator, cbApply, new FileControlHBox(this,parent));
+                separator, cbApply, fileControl = new FileControlHBox(this,parent));
 
         // Make sure everything expands properly
         HBox.setHgrow(this, Priority.ALWAYS);
@@ -227,5 +228,9 @@ public class PartCreationVBox
     public ArrayList<TextField> getFields(){return fields;}
     public int getRPM(){return cbPartRPM.getValue();}
     public boolean loadChanges(){return cbApply.isSelected();}
+    public void updateFileControl(File f)
+    {
+        fileControl.updateFileChooserPath(f);
+    }
 
 }

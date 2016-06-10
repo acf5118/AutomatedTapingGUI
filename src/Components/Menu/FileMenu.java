@@ -22,7 +22,7 @@ public class FileMenu extends Menu
 {
     private LaMachinaGui parentGui;
     private SerialCommunication serialCommunication;
-
+    private FileChooser fc;
     /**
      * Constructor for the file menu
      * @param parentGui
@@ -44,14 +44,15 @@ public class FileMenu extends Menu
     {
         // Opens a menu item to load a new program
         MenuItem miOpen = new MenuItem("Open Program File");
+        fc = new FileChooser();
         miOpen.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                FileChooser fc = new FileChooser();
+
                 File file = fc.showOpenDialog(parentGui.getPrimaryStage());
                 if (file == null){return;}
                 ArrayMapTuple pr = ProgramFileReader.readProgramFile(file);
-                parentGui.updateProgramParameters(pr.params, pr.mod, file.getName());
+                parentGui.updateProgramParameters(pr.params, pr.mod, file);
             }
         });
         // Quits the program
@@ -72,5 +73,10 @@ public class FileMenu extends Menu
         });
         // Add all the menu items
         getItems().addAll(miOpen, miReset, miQuit);
+    }
+
+    public void updateFileChooser(File f)
+    {
+        fc.setInitialDirectory(f.getParentFile());
     }
 }

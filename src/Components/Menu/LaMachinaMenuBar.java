@@ -31,6 +31,7 @@ public class LaMachinaMenuBar extends MenuBar
     private SerialCommunication comm;
     private MenuItem miSerialMonitor;
     private Stage parameterWindowStage, serialMonitorStage;
+    private FileMenu menuFile;
 
     public LaMachinaMenuBar(Stage parent,
                             double[] params,
@@ -48,7 +49,7 @@ public class LaMachinaMenuBar extends MenuBar
     public void createMenu()
     {
         // List of menus
-        Menu menuFile = new FileMenu(parentGui, comm);
+        menuFile = new FileMenu(parentGui, comm);
         Menu menuEdit = new Menu("Edit");
         Menu menuView = new Menu("View");
         Menu menuSetting = new Menu("Settings");
@@ -122,6 +123,11 @@ public class LaMachinaMenuBar extends MenuBar
     public void setParams(double[] params)
     {
         this.params = params;
+    }
+
+    public void updateFileMenu(File f)
+    {
+        menuFile.updateFileChooser(f);
     }
 
     public void enableSerialMonitor()

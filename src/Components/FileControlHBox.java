@@ -28,6 +28,9 @@ public class FileControlHBox
     private LaMachinaGui parentGui;
     private Label lblErrors;
     private boolean errors;
+    private FileChooser fileChooser;
+    // Todo possibly create a file extension for this application
+    private FileChooser.ExtensionFilter extensionFilter;
 
     /**
      * Constructor
@@ -66,7 +69,8 @@ public class FileControlHBox
         lblErrors = new Label();
         // Set the label color to red
         lblErrors.setStyle("-fx-text-fill: #e60000;");
-
+        fileChooser = new FileChooser();
+        extensionFilter = fileChooser.getSelectedExtensionFilter();
         getChildren().addAll(btnSave,btnErase, lblErrors );
     }
 
@@ -148,13 +152,15 @@ public class FileControlHBox
                 }
                 */
                 // Pick a file
-                FileChooser fc = new FileChooser();
-                File file = fc.showSaveDialog(parentGui.getPrimaryStage());
+
+
+                File file = fileChooser.showSaveDialog(parentGui.getPrimaryStage());
                 // If they canceled the file choosing
                 if (file == null)
                 {
                     return;
                 }
+                fileChooser.setInitialDirectory(file.getParentFile());
 
                 // Create the modified parameters
                 double [] mod = GCodeGenerator.modifyParameters(userParams);
@@ -162,7 +168,7 @@ public class FileControlHBox
                 if (parent.loadChanges())
                 {
                     // Update the GUI
-                    parentGui.updateProgramParameters(userParams, mod, file.getName());
+                    parentGui.updateProgramParameters(userParams, mod, file);
                 }
                 // Write the file
                 ProgramFileWriter.writeFile(file, userParams, mod);
@@ -205,5 +211,15 @@ public class FileControlHBox
                 tf.clear();
             }
         }
+    }
+
+    /**
+     * If the user opens a file, set the directory
+     * path to that.
+     * @param f - the file to use as a current directory
+     */
+    public void updateFileChooserPath(File f)
+    {
+        fileChooser.setInitialDirectory(f.getParentFile());
     }
 }
